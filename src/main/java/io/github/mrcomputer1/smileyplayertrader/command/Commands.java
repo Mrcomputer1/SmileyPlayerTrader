@@ -66,23 +66,23 @@ public class Commands {
                 if(cost1b != null){
                     ItemStack cost1 = MerchantUtil.buildItem(cost1b);
                     if(cost1.getItemMeta().hasDisplayName()) {
-                        products = ", Product: " + cost1.getAmount() + "x " + cost1.getItemMeta().getDisplayName();
+                        products = ", Cost 1: " + cost1.getAmount() + "x " + cost1.getItemMeta().getDisplayName();
                     }else{
-                        products = ", Product: " + cost1.getAmount() + "x " + cost1.getType();
+                        products = ", Cost 1: " + cost1.getAmount() + "x " + cost1.getType();
                     }
                 }
 
                 byte[] cost2b = set.getBytes("cost2");
-                String cost2s = "";
+                String cost2s = "Cost 2: UNSET";
                 if(cost2b != null) {
                     ItemStack cost2 = MerchantUtil.buildItem(cost2b);
                     if(cost2.getItemMeta().hasDisplayName()) {
-                        products = ", Product: " + cost2.getAmount() + "x " + cost2.getItemMeta().getDisplayName();
+                        products = ", Cost 2: " + cost2.getAmount() + "x " + cost2.getItemMeta().getDisplayName();
                     }else{
-                        products = ", Product: " + cost2.getAmount() + "x " + cost2.getType();
+                        products = ", Cost 2: " + cost2.getAmount() + "x " + cost2.getType();
                     }
                 }
-                sender.sendMessage(ChatColor.YELLOW + " - " + set.getLong("id") + ", Product: " + products + ", Cost 1: " + cost1s + cost2s + ", Enabled: " +set.getBoolean("enabled"));
+                sender.sendMessage(ChatColor.YELLOW + " - " + set.getLong("id") + products + cost1s + cost2s + ", Enabled: " +set.getBoolean("enabled"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
