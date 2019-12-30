@@ -54,21 +54,33 @@ public class Commands {
                 String products = ", Product: UNSET";
                 if(productb != null){
                     ItemStack product = MerchantUtil.buildItem(productb);
-                    products = ", Product: " + product.getType();
+                    if(product.getItemMeta().hasDisplayName()) {
+                        products = ", Product: " + product.getAmount() + "x " + product.getItemMeta().getDisplayName();
+                    }else{
+                        products = ", Product: " + product.getAmount() + "x " + product.getType();
+                    }
                 }
 
                 byte[] cost1b = set.getBytes("cost1");
                 String cost1s = ", Cost 1: UNSET";
                 if(cost1b != null){
                     ItemStack cost1 = MerchantUtil.buildItem(cost1b);
-                    cost1s = ", Cost 1: " + cost1.getType();
+                    if(cost1.getItemMeta().hasDisplayName()) {
+                        products = ", Product: " + cost1.getAmount() + "x " + cost1.getItemMeta().getDisplayName();
+                    }else{
+                        products = ", Product: " + cost1.getAmount() + "x " + cost1.getType();
+                    }
                 }
 
                 byte[] cost2b = set.getBytes("cost2");
                 String cost2s = "";
                 if(cost2b != null) {
                     ItemStack cost2 = MerchantUtil.buildItem(cost2b);
-                    cost2s = ", Cost 2: " + cost2.getType();
+                    if(cost2.getItemMeta().hasDisplayName()) {
+                        products = ", Product: " + cost2.getAmount() + "x " + cost2.getItemMeta().getDisplayName();
+                    }else{
+                        products = ", Product: " + cost2.getAmount() + "x " + cost2.getType();
+                    }
                 }
                 sender.sendMessage(ChatColor.YELLOW + " - " + set.getLong("id") + ", Product: " + products + ", Cost 1: " + cost1s + cost2s + ", Enabled: " +set.getBoolean("enabled"));
             }
