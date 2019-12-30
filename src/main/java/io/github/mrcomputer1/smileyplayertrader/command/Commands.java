@@ -50,15 +50,27 @@ public class Commands {
 
         try {
             while (set.next()) {
-                ItemStack product = MerchantUtil.buildItem(set.getBytes("product"));
-                ItemStack cost1 = MerchantUtil.buildItem(set.getBytes("cost1"));
+                byte[] productb = set.getBytes("product");
+                String products = ", Product: UNSET";
+                if(productb != null){
+                    ItemStack product = MerchantUtil.buildItem(productb);
+                    products = ", Product: " + product.getType();
+                }
+
+                byte[] cost1b = set.getBytes("cost1");
+                String cost1s = ", Cost 1: UNSET";
+                if(cost1b != null){
+                    ItemStack cost1 = MerchantUtil.buildItem(cost1b);
+                    cost1s = ", Cost 1: " + cost1.getType();
+                }
+
                 byte[] cost2b = set.getBytes("cost2");
                 String cost2s = "";
                 if(cost2b != null) {
-                    ItemStack cost2 = MerchantUtil.buildItem(set.getBytes("cost2"));
+                    ItemStack cost2 = MerchantUtil.buildItem(cost2b);
                     cost2s = ", Cost 2: " + cost2.getType();
                 }
-                sender.sendMessage(ChatColor.YELLOW + " - " + set.getLong("id") + ", Product: " + product.getType() + ", Cost 1: " + cost1.getType() + cost2s + ", Enabled: " +set.getBoolean("enabled"));
+                sender.sendMessage(ChatColor.YELLOW + " - " + set.getLong("id") + ", Product: " + products + ", Cost 1: " + cost1s + cost2s + ", Enabled: " +set.getBoolean("enabled"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

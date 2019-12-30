@@ -1,6 +1,6 @@
 name: "SmileyPlayerTrader"
 description: "Allows you to trade with a player using the Villager GUI"
-version: 1.0.0
+version: 1.0.1
 api-version: "1.15"
 authors:
   - Mrcomputer1
