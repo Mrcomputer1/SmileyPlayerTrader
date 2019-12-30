@@ -48,7 +48,11 @@ public class CommandSmileyPlayerTrader implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "Unknown sub-command! Use /spt for a list of valid commands!");
             }
         }else if(args.length == 2){
-            if(args[0].equalsIgnoreCase("remove")){
+            if(args[0].equalsIgnoreCase("add")){
+                Commands.add((Player)sender, args[1]);
+            }else if(args[0].equalsIgnoreCase("list")){
+                Commands.list((Player)sender, args[1]);
+            }else if(args[0].equalsIgnoreCase("remove")){
                 try {
                     Commands.remove((Player) sender, Long.parseLong(args[1]));
                 }catch(NumberFormatException e){

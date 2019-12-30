@@ -23,6 +23,10 @@ public class Commands {
         OfflinePlayer target = sender;
         if(username != null){
             target = Bukkit.getOfflinePlayer(username);
+            if(!sender.hasPermission("smileyplayertrader.others")){
+                sender.sendMessage(ChatColor.RED + "Whoops! You are not authorized to edit others products!");
+                return;
+            }
         }
 
         SmileyPlayerTrader.getInstance().getDatabase().run("INSERT INTO products (merchant, product, cost1, cost2, enabled) VALUES (?, ?, ?, ?, ?)",
@@ -35,6 +39,10 @@ public class Commands {
         OfflinePlayer target = sender;
         if(username != null){
             target = Bukkit.getOfflinePlayer(username);
+            if(!sender.hasPermission("smileyplayertrader.others")){
+                sender.sendMessage(ChatColor.RED + "Whoops! You are not authorized to edit others products!");
+                return;
+            }
         }
 
         ResultSet set = SmileyPlayerTrader.getInstance().getDatabase().get("SELECT * FROM products WHERE merchant=?",

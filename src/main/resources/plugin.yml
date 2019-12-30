@@ -15,6 +15,7 @@ commands:
 permissions:
   "smileyplayertrader.*":
     description: "All Smiley Player Trader permissions."
+    default: false
     children:
       "smileyplayertrader.others": true
       "smileyplayertrader.trade": true
