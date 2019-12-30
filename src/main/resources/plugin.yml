@@ -1,0 +1,34 @@
+name: "SmileyPlayerTrader"
+description: "Allows you to trade with a player using the Villager GUI"
+version: 1.0.0
+api-version: "1.15"
+authors:
+  - Mrcomputer1
+  - sc15
+main: io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader
+commands:
+  smileyplayertrader:
+    description: "Smiley Player Trader Command"
+    permission: smileyplayertrader.command
+    aliases: [spt]
+    usage: "/spt"
+permissions:
+  "smileyplayertrader.*":
+    description: "All Smiley Player Trader permissions."
+    children:
+      "smileyplayertrader.others": true
+      "smileyplayertrader.trade": true
+      "smileyplayertrader.merchant": true
+      "smileyplayertrader.command": true
+  "smileyplayertrader.others":
+    description: "Change other players"
+    default: op
+  "smileyplayertrader.trade":
+    description: "Trade with players"
+    default: true
+  "smileyplayertrader.merchant":
+    description: "Be able to trade with"
+    default: true
+  "smileyplayertrader.command":
+    description: "Access to /spt"
+    default: true

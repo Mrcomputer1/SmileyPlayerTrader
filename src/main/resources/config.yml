@@ -1,0 +1,10 @@
+# A list of worlds where you cannot trade with players.
+disabledWorlds: []
+
+# A list of sources for products
+stockLocations:
+  - inventory
+  - enderchest
+
+# Automatically thank a player for a purchase
+autoThanks: true
