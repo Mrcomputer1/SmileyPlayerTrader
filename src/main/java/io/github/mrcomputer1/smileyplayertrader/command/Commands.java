@@ -66,20 +66,20 @@ public class Commands {
                 if(cost1b != null){
                     ItemStack cost1 = MerchantUtil.buildItem(cost1b);
                     if(cost1.getItemMeta().hasDisplayName()) {
-                        products = ", Cost 1: " + cost1.getAmount() + "x " + cost1.getItemMeta().getDisplayName();
+                        cost1s = ", Cost 1: " + cost1.getAmount() + "x " + cost1.getItemMeta().getDisplayName();
                     }else{
-                        products = ", Cost 1: " + cost1.getAmount() + "x " + cost1.getType();
+                        cost1s = ", Cost 1: " + cost1.getAmount() + "x " + cost1.getType();
                     }
                 }
 
                 byte[] cost2b = set.getBytes("cost2");
-                String cost2s = "Cost 2: UNSET";
+                String cost2s = ", Cost 2: UNSET";
                 if(cost2b != null) {
                     ItemStack cost2 = MerchantUtil.buildItem(cost2b);
                     if(cost2.getItemMeta().hasDisplayName()) {
-                        products = ", Cost 2: " + cost2.getAmount() + "x " + cost2.getItemMeta().getDisplayName();
+                        cost2s = ", Cost 2: " + cost2.getAmount() + "x " + cost2.getItemMeta().getDisplayName();
                     }else{
-                        products = ", Cost 2: " + cost2.getAmount() + "x " + cost2.getType();
+                        cost2s = ", Cost 2: " + cost2.getAmount() + "x " + cost2.getType();
                     }
                 }
                 sender.sendMessage(ChatColor.YELLOW + " - " + set.getLong("id") + products + cost1s + cost2s + ", Enabled: " +set.getBoolean("enabled"));
