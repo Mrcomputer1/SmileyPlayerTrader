@@ -55,6 +55,7 @@ public class EventListener implements Listener {
                     if(!ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult())){
                         store.sendMessage(ChatColor.RED + mi.getSelectedRecipe().getResult().getType().toString() + " is now out of stock!");
                         mi.getSelectedRecipe().setUses(Integer.MAX_VALUE);
+                        e.getWhoClicked().openMerchant(mi.getMerchant(), true);
                     }
                 }else{
                     e.getWhoClicked().sendMessage(ChatColor.RED + "This item is out of stock!");
