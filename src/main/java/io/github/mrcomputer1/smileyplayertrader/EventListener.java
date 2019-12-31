@@ -40,6 +40,9 @@ public class EventListener implements Listener {
             if(e.getView().getTitle().startsWith(ChatColor.DARK_GREEN + "Villager Store: ") && e.getSlot() == 2){
                 MerchantInventory mi = (MerchantInventory)e.getInventory();
                 Player store = Bukkit.getPlayer(e.getView().getTitle().replace(ChatColor.DARK_GREEN + "Villager Store: ", ""));
+                if(mi.getSelectedRecipe() == null){
+                    return;
+                }
                 if(ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult())){
                     ItemUtil.removeStock(store, mi.getSelectedRecipe().getResult());
                     ItemUtil.giveEarnings(store, mi.getSelectedRecipe());

@@ -120,13 +120,19 @@ public class Commands {
     }
 
     public static void setCost(Player sender, long id, Material material){
+        setCost(sender, id, material, 1);
+    }
+
+    public static void setCost(Player sender, long id, Material material, int count){
         if(isNotAuthorized(sender, id)){
             sender.sendMessage(ChatColor.RED + "Whoops! You are not authorized to edit others products!");
             return;
         }
 
         NBTTagCompound ntc = new NBTTagCompound();
-        CraftItemStack.asNMSCopy(new ItemStack(material)).save(ntc);
+        ItemStack is = new ItemStack(material);
+        is.setAmount(count);
+        CraftItemStack.asNMSCopy(is).save(ntc);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             NBTCompressedStreamTools.a(ntc, baos);
@@ -160,13 +166,19 @@ public class Commands {
     }
 
     public static void setCost2(Player sender, long id, Material material){
+        setCost2(sender, id, material, 1);
+    }
+
+    public static void setCost2(Player sender, long id, Material material, int count){
         if(isNotAuthorized(sender, id)){
             sender.sendMessage(ChatColor.RED + "Whoops! You are not authorized to edit others products!");
             return;
         }
 
         NBTTagCompound ntc = new NBTTagCompound();
-        CraftItemStack.asNMSCopy(new ItemStack(material)).save(ntc);
+        ItemStack is = new ItemStack(material);
+        is.setAmount(count);
+        CraftItemStack.asNMSCopy(is).save(ntc);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             NBTCompressedStreamTools.a(ntc, baos);
@@ -200,13 +212,19 @@ public class Commands {
     }
 
     public static void setResult(Player sender, long id, Material material){
+        setResult(sender, id, material, 1);
+    }
+
+    public static void setResult(Player sender, long id, Material material, int count){
         if(isNotAuthorized(sender, id)){
             sender.sendMessage(ChatColor.RED + "Whoops! You are not authorized to edit others products!");
             return;
         }
 
         NBTTagCompound ntc = new NBTTagCompound();
-        CraftItemStack.asNMSCopy(new ItemStack(material)).save(ntc);
+        ItemStack is = new ItemStack(material);
+        is.setAmount(count);
+        CraftItemStack.asNMSCopy(is).save(ntc);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             NBTCompressedStreamTools.a(ntc, baos);
