@@ -49,6 +49,9 @@ public class EventListener implements Listener {
                         e.getWhoClicked().sendMessage(ChatColor.GREEN + "You purchased an item from " + store.getName());
                     }
                     store.sendMessage(ChatColor.GREEN + e.getWhoClicked().getName() + " just purchased " + mi.getSelectedRecipe().getResult().getType() + "!");
+                    if(ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult())){
+                        store.sendMessage(ChatColor.RED + mi.getSelectedRecipe().getResult().getType().toString() + " is now out of stock!");
+                    }
                 }else{
                     e.getWhoClicked().sendMessage(ChatColor.RED + "This item is out of stock!");
                     e.setCancelled(true);

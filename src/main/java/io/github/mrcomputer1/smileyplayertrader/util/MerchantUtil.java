@@ -47,16 +47,32 @@ public class MerchantUtil {
             while (set.next()) {
                 if(!set.getBoolean("enabled"))
                     continue;
-                ItemStack is = buildItem(set.getBytes("product"));
-                if(is == null){
+                byte[] productb = set.getBytes("product");
+                ItemStack is = null;
+                if(productb != null) {
+                    is = buildItem(productb);
+                    if (is == null) {
+                        continue;
+                    }
+                }else{
                     continue;
                 }
                 MerchantRecipe mr = new MerchantRecipe(is, 0, Integer.MAX_VALUE, true);
 
-                mr.addIngredient(buildItem(set.getBytes("cost1")));
-                byte[] b = set.getBytes("cost2");
-                if(b != null){
-                    mr.addIngredient(buildItem(b));
+                byte[] cost1b = set.getBytes("cost1");
+                if(cost1b != null){
+                    mr.addIngredient(buildItem(cost1b));
+                }else{
+                    continue;
+                }
+
+                byte[] cost2b = set.getBytes("cost2");
+                if(cost2b != null){
+                    mr.addIngredient(buildItem(cost2b));
+                }
+
+                if(!ItemUtil.doesPlayerHaveItem(merchant, is)){
+                    mr.setUses(Integer.MAX_VALUE);
                 }
 
                 recipes.add(mr);
