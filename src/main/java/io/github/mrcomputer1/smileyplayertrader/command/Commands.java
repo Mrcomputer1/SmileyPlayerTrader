@@ -1,6 +1,7 @@
 package io.github.mrcomputer1.smileyplayertrader.command;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
+import io.github.mrcomputer1.smileyplayertrader.util.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.MerchantUtil;
 import net.minecraft.server.v1_15_R1.NBTCompressedStreamTools;
 import net.minecraft.server.v1_15_R1.NBTTagCompound;
@@ -50,10 +51,14 @@ public class Commands {
 
         try {
             while (set.next()) {
+                boolean isStocked = true;
                 byte[] productb = set.getBytes("product");
                 String products = ", Product: UNSET";
                 if(productb != null){
                     ItemStack product = MerchantUtil.buildItem(productb);
+                    if(target.isOnline() && !ItemUtil.doesPlayerHaveItem(target.getPlayer(), product)){
+                        isStocked = false;
+                    }
                     if(product.getItemMeta().hasDisplayName()) {
                         products = ", Product: " + product.getAmount() + "x " + product.getItemMeta().getDisplayName();
                     }else{
@@ -82,7 +87,11 @@ public class Commands {
                         cost2s = ", Cost 2: " + cost2.getAmount() + "x " + cost2.getType();
                     }
                 }
-                sender.sendMessage(ChatColor.YELLOW + " - " + set.getLong("id") + products + cost1s + cost2s + ", Enabled: " +set.getBoolean("enabled"));
+                if(isStocked) {
+                    sender.sendMessage(ChatColor.YELLOW + " - " + set.getLong("id") + products + cost1s + cost2s + ", Enabled: " + set.getBoolean("enabled"));
+                }else{
+                    sender.sendMessage(ChatColor.RED + " - [OUT OF STOCK] " + set.getLong("id") + products + cost1s + cost2s + ", Enabled: " + set.getBoolean("enabled"));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
