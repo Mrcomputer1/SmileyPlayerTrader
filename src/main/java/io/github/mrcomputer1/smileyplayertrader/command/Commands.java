@@ -34,7 +34,7 @@ public class Commands {
         SmileyPlayerTrader.getInstance().getDatabase().run("INSERT INTO products (merchant, product, cost1, cost2, enabled) VALUES (?, ?, ?, ?, ?)",
                 target.getUniqueId().toString(), null, null, null, false);
 
-        sender.sendMessage(I18N.translate("&aAdded product %0%. Use &f/spt setcost <id> &eand &f/spt setproduct <id> &ewhile holding items, both must be set before you can &f/spt enable <id> &ethis product!", SmileyPlayerTrader.getInstance().getDatabase().getInsertId()));
+        sender.sendMessage(I18N.translate("&aAdded product %0%. Use &f/spt setcost <id> &aand &f/spt setproduct <id> &awhile holding items, both must be set before you can &f/spt enable <id> &athis product!", SmileyPlayerTrader.getInstance().getDatabase().getInsertId()));
     }
 
     public static void list(Player sender, String username){
