@@ -1,3 +1,5 @@
+![Discord](https://img.shields.io/discord/661532592415440906?label=Support%20Discord&style=for-the-badge)
+
 Smiley Player Trader was created by Mrcomputer1 for [smileycreations15](https://github.com/smileycreations15)'s Minecraft server. Its purpose is to allow you to right click on a player and see a list of items they can trade.
 
 # Usage
