@@ -9,9 +9,12 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantInventory;
 
@@ -56,7 +59,16 @@ public class EventListener implements Listener {
                     if(!ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult())){
                         store.sendMessage(I18N.translate("&c%0% is now out of stock!", mi.getSelectedRecipe().getResult().getType()));
                         mi.getSelectedRecipe().setUses(Integer.MAX_VALUE);
-                        e.getWhoClicked().openMerchant(mi.getMerchant(), true);
+                        ItemStack cost1 = e.getInventory().getItem(0);
+                        ItemStack cost2 = e.getInventory().getItem(1);
+                        cost1.setAmount(cost1.getAmount() - mi.getSelectedRecipe().getIngredients().get(0).getAmount());
+                        if(mi.getSelectedRecipe().getIngredients().size() >= 2) {
+                            cost2.setAmount(cost2.getAmount() - mi.getSelectedRecipe().getIngredients().get(1).getAmount());
+                        }
+                        InventoryView iv = e.getWhoClicked().openMerchant(mi.getMerchant(), true);
+                        if(e.getClick() != ClickType.SHIFT_LEFT || e.getClick() != ClickType.SHIFT_RIGHT) {
+                            iv.setCursor(mi.getSelectedRecipe().getResult());
+                        }
                     }
                 }else{
                     e.getWhoClicked().sendMessage(I18N.translate("&cThis item is out of stock!"));
