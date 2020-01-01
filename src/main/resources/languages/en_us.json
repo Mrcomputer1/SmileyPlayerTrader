@@ -35,7 +35,7 @@
   ", Cost 2: %0%x %1%": ", Cost 2: %0%x %1%",
   "&e - %0% %1% %2% %3%, Enabled: YES": "&e - %0% %1% %2% %3%, Enabled: YES",
   "&c - [OUT OF STOCK] %0% %1% %2% %3%, Enabled: YES": "&c - [OUT OF STOCK] %0% %1% %2% %3%, Enabled: YES",
-  "&4 - %0% %1% %2% %3%, Enabled: NO": "&e - %0% %1% %2% %3%, Enabled: NO",
+  "&4 - %0% %1% %2% %3%, Enabled: NO": "&4 - %0% %1% %2% %3%, Enabled: NO",
   "&2Deleted product!": "&2Deleted product!",
   "&aCost set!": "&aCost set!",
   "&aSecondary cost set!": "&aSecondary cost set!",
