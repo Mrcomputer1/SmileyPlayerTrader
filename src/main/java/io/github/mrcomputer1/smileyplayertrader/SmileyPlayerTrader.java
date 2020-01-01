@@ -2,6 +2,7 @@ package io.github.mrcomputer1.smileyplayertrader;
 
 import io.github.mrcomputer1.smileyplayertrader.command.CommandSmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.DatabaseUtil;
+import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -9,19 +10,20 @@ import java.io.File;
 
 public class SmileyPlayerTrader extends JavaPlugin {
 
-    private static SmileyPlayerTrader INSTANCE;
-
     public static SmileyPlayerTrader getInstance(){
-        return INSTANCE;
+        return getPlugin(SmileyPlayerTrader.class);
     }
 
     private DatabaseUtil db;
+    private I18N i18n;
 
     @Override
     public void onEnable() {
-        SmileyPlayerTrader.INSTANCE = this;
-
         saveDefaultConfig();
+
+        this.i18n = new I18N();
+        this.i18n.createLanguages();
+        this.i18n.loadLanguages();
 
         this.db = new DatabaseUtil(new File(getDataFolder(), "database.db"));
         this.db.run("CREATE TABLE IF NOT EXISTS products (" +
@@ -44,5 +46,9 @@ public class SmileyPlayerTrader extends JavaPlugin {
 
     public DatabaseUtil getDatabase(){
         return this.db;
+    }
+
+    public I18N getI18N(){
+        return this.i18n;
     }
 }
