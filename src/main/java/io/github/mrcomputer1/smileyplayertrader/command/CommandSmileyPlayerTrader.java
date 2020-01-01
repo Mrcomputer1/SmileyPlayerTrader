@@ -1,6 +1,7 @@
 package io.github.mrcomputer1.smileyplayertrader.command;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
+import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -15,37 +16,41 @@ public class CommandSmileyPlayerTrader implements CommandExecutor {
             return false;
 
         if(args.length == 0){
-            sender.sendMessage(ChatColor.AQUA + "Smiley Player Trader by Mrcomputer1 and sc15. Version " +
-                    SmileyPlayerTrader.getInstance().getDescription().getVersion() + ".");
-            sender.sendMessage(ChatColor.YELLOW + "Type /spt help for help!");
+            sender.sendMessage(I18N.translate("&bSmiley Player Trader by Mrcomputer1 and sc15. Version %0%.",
+                    SmileyPlayerTrader.getInstance().getDescription().getVersion()));
+            sender.sendMessage(I18N.translate("&eType /spt help for help!"));
         }
 
         if(args.length == 1){
             if(args[0].equalsIgnoreCase("help")){
-                sender.sendMessage(ChatColor.YELLOW + ChatColor.BOLD.toString() + "Smiley Player Trader - Help");
-                sender.sendMessage(ChatColor.YELLOW + "/spt add [username] - Add a new prudct");
-                sender.sendMessage(ChatColor.YELLOW + "/spt list [username] - List all products");
-                sender.sendMessage(ChatColor.YELLOW + "/spt remove <id> - Remove a product");
-                sender.sendMessage(ChatColor.YELLOW + "/spt setcost <id> [material] [count] - Set cost of a product");
-                sender.sendMessage(ChatColor.YELLOW + "/spt setcost2 <id> [material] [count] - Set second cost of a product");
-                sender.sendMessage(ChatColor.YELLOW + "/spt setproduct <id> [material] [count] - Set the product itself");
-                sender.sendMessage(ChatColor.YELLOW + "/spt enable <id> - Enable the product");
-                sender.sendMessage(ChatColor.YELLOW + "/spt disable <id> - Disable the product");
-                sender.sendMessage(ChatColor.YELLOW + ChatColor.BOLD.toString() + "Smiley Player Trader - Help");
+                sender.sendMessage(I18N.translate("&e&lSmiley Player Trader - Help"));
+                sender.sendMessage(I18N.translate("&f/spt add [username] &e- Add a new product"));
+                sender.sendMessage(I18N.translate("&f/spt list [username] &e- List all products"));
+                sender.sendMessage(I18N.translate("&f/spt remove <id> &e- Remove a product"));
+                sender.sendMessage(I18N.translate("&f/spt setcost <id> [material] [count] &e- Set cost of a product"));
+                sender.sendMessage(I18N.translate("&f/spt setcost2 <id> [material] [count] &e- Set second cost of a product"));
+                sender.sendMessage(I18N.translate("&f/spt setproduct <id> [material] [count] &e- Set the product itself"));
+                sender.sendMessage(I18N.translate("&f/spt enable <id> &e- Enable the product"));
+                sender.sendMessage(I18N.translate("&f/spt disable <id> &e- Disable the product"));
+                sender.sendMessage(I18N.translate("&e&lSmiley Player Trader - Help"));
             }else if(args[0].equalsIgnoreCase("add")){
                 Commands.add((Player)sender, null);
             }else if(args[0].equalsIgnoreCase("list")){
                 Commands.list((Player)sender, null);
             }else if(args[0].equalsIgnoreCase("remove")){
-                sender.sendMessage(ChatColor.RED + "Bad Syntax! /spt remove <id>");
+                sender.sendMessage(I18N.translate("&cBad Syntax! &f/spt remove <id>"));
             }else if(args[0].equalsIgnoreCase("setcost")){
-                sender.sendMessage(ChatColor.RED + "Bad Syntax! /spt setcost <id> [material]");
+                sender.sendMessage(I18N.translate("&cBad Syntax! &f/spt setcost <id> [material] [count]"));
             }else if(args[0].equalsIgnoreCase("setcost2")){
-                sender.sendMessage(ChatColor.RED + "Bad Syntax! /spt setcost <id> [material]");
+                sender.sendMessage(I18N.translate("&cBad Syntax! &f/spt setcost2 <id> [material] [count]"));
             }else if(args[0].equalsIgnoreCase("setproduct")){
-                sender.sendMessage(ChatColor.RED + "Bad Syntax! /spt setcost <id> [material]");
+                sender.sendMessage(I18N.translate("&cBad Syntax! &f/spt setproduct <id> [material] [count]"));
+            }else if(args[0].equalsIgnoreCase("enable")){
+                sender.sendMessage(I18N.translate("&cBad Syntax! &f/spt enable <id>"));
+            }else if(args[0].equalsIgnoreCase("disable")){
+                sender.sendMessage(I18N.translate("&cBad Syntax! &f/spt disable <id>"));
             }else{
-                sender.sendMessage(ChatColor.RED + "Unknown sub-command! Use /spt for a list of valid commands!");
+                sender.sendMessage(I18N.translate("&cUnknown sub-command! Use &f/spt help &cfor a list of valid commands!"));
             }
         }else if(args.length == 2){
             if(args[0].equalsIgnoreCase("add")){
@@ -56,84 +61,84 @@ public class CommandSmileyPlayerTrader implements CommandExecutor {
                 try {
                     Commands.remove((Player) sender, Long.parseLong(args[1]));
                 }catch(NumberFormatException e){
-                    sender.sendMessage(ChatColor.RED + "Invalid Number!");
+                    sender.sendMessage(I18N.translate("&cInvalid Number!"));
                 }
             }else if(args[0].equalsIgnoreCase("setcost")){
                 try {
                     Commands.setCost((Player) sender, Long.parseLong(args[1]));
                 }catch(NumberFormatException e){
-                    sender.sendMessage(ChatColor.RED + "Invalid Number!");
+                    sender.sendMessage(I18N.translate("&cInvalid Number!"));
                 }
             }else if(args[0].equalsIgnoreCase("setcost2")){
                 try {
                     Commands.setCost2((Player) sender, Long.parseLong(args[1]));
                 }catch(NumberFormatException e){
-                    sender.sendMessage(ChatColor.RED + "Invalid Number!");
+                    sender.sendMessage(I18N.translate("&cInvalid Number!"));
                 }
             }else if(args[0].equalsIgnoreCase("setproduct")){
                 try {
                     Commands.setResult((Player) sender, Long.parseLong(args[1]));
                 }catch(NumberFormatException e){
-                    sender.sendMessage(ChatColor.RED + "Invalid Number!");
+                    sender.sendMessage(I18N.translate("&cInvalid Number!"));
                 }
             }else if(args[0].equalsIgnoreCase("enable")){
                 try {
                     Commands.enable((Player) sender, Long.parseLong(args[1]));
                 }catch(NumberFormatException e){
-                    sender.sendMessage(ChatColor.RED + "Invalid Number!");
+                    sender.sendMessage(I18N.translate("&cInvalid Number!"));
                 }
             }else if(args[0].equalsIgnoreCase("disable")){
                 try {
                     Commands.disable((Player) sender, Long.parseLong(args[1]));
                 }catch(NumberFormatException e){
-                    sender.sendMessage(ChatColor.RED + "Invalid Number!");
+                    sender.sendMessage(I18N.translate("&cInvalid Number!"));
                 }
             }else{
-                sender.sendMessage(ChatColor.RED + "Unknown sub-command! Use /spt for a list of valid commands!");
+                sender.sendMessage(I18N.translate("&cUnknown sub-command! Use &f/spt help &cfor a list of valid commands!"));
             }
         }else if(args.length == 3){
             if(args[0].equalsIgnoreCase("setcost")){
                 try {
                     Commands.setCost((Player) sender, Long.parseLong(args[1]), Material.matchMaterial(args[2]));
                 }catch(NumberFormatException e){
-                    sender.sendMessage(ChatColor.RED + "Invalid Number!");
+                    sender.sendMessage(I18N.translate("&cInvalid Number!"));
                 }
             }else if(args[0].equalsIgnoreCase("setcost2")){
                 try {
                     Commands.setCost2((Player) sender, Long.parseLong(args[1]), Material.matchMaterial(args[2]));
                 }catch(NumberFormatException e){
-                    sender.sendMessage(ChatColor.RED + "Invalid Number!");
+                    sender.sendMessage(I18N.translate("&cInvalid Number!"));
                 }
             }else if(args[0].equalsIgnoreCase("setproduct")){
                 try {
                     Commands.setResult((Player) sender, Long.parseLong(args[1]), Material.matchMaterial(args[2]));
                 }catch(NumberFormatException e){
-                    sender.sendMessage(ChatColor.RED + "Invalid Number!");
+                    sender.sendMessage(I18N.translate("&cInvalid Number!"));
                 }
             }else{
-                sender.sendMessage(ChatColor.RED + "Unknown sub-command! Use /spt for a list of valid commands!");
+                sender.sendMessage(I18N.translate("&cUnknown sub-command! Use &f/spt help &cfor a list of valid commands!"));
             }
         }else if(args.length >= 4){
             if(args[0].equalsIgnoreCase("setcost")){
                 try {
                     Commands.setCost((Player) sender, Long.parseLong(args[1]), Material.matchMaterial(args[2]), Integer.parseInt(args[3]));
                 }catch(NumberFormatException e){
-                    sender.sendMessage(ChatColor.RED + "Invalid Number!");
+                    sender.sendMessage(I18N.translate("&cInvalid Number!"));
                 }
             }else if(args[0].equalsIgnoreCase("setcost2")){
                 try {
                     Commands.setCost2((Player) sender, Long.parseLong(args[1]), Material.matchMaterial(args[2]), Integer.parseInt(args[3]));
                 }catch(NumberFormatException e){
-                    sender.sendMessage(ChatColor.RED + "Invalid Number!");
+                    sender.sendMessage(I18N.translate("&cInvalid Number!"));
                 }
             }else if(args[0].equalsIgnoreCase("setproduct")){
                 try {
                     Commands.setResult((Player) sender, Long.parseLong(args[1]), Material.matchMaterial(args[2]), Integer.parseInt(args[3]));
                 }catch(NumberFormatException e){
-                    sender.sendMessage(ChatColor.RED + "Invalid Number!");
+                    sender.sendMessage(I18N.translate("&cInvalid Number!"));
                 }
             }else{
-                sender.sendMessage(ChatColor.RED + "Unknown sub-command! Use /spt for a list of valid commands!");
+                sender.sendMessage(I18N.translate("&cUnknown sub-command! Use &f/spt help &cfor a list of valid commands!"));
             }
         }
 

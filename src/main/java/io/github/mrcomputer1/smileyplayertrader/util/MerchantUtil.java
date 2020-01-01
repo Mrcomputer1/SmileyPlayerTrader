@@ -20,7 +20,7 @@ import java.util.List;
 public class MerchantUtil {
 
     public static Merchant buildMerchant(Player merchant){
-        Merchant m = Bukkit.createMerchant(ChatColor.DARK_GREEN + "Villager Store: " + merchant.getName());
+        Merchant m = Bukkit.createMerchant(I18N.translate("&2Villager Store: ") + merchant.getName());
 
         m.setRecipes(getAndBuildRecipes(merchant));
 
