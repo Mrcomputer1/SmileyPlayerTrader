@@ -88,10 +88,14 @@ public class Commands {
                         cost2s = I18N.translate(", Cost 2: %0%x %1%", cost2.getAmount(), cost2.getType());
                     }
                 }
-                if(isStocked) {
-                    sender.sendMessage(I18N.translate("&e - %0% %1% %2% %3%, Enabled: %4%", set.getLong("id"), products, cost1s, cost2s, set.getBoolean("enabled")));
+                if(set.getBoolean("enabled")) {
+                    if (isStocked) {
+                        sender.sendMessage(I18N.translate("&e - %0% %1% %2% %3%, Enabled: YES", set.getLong("id"), products, cost1s, cost2s));
+                    } else {
+                        sender.sendMessage(I18N.translate("&c - [OUT OF STOCK] %0% %1% %2% %3%, Enabled: YES", set.getLong("id"), products, cost1s, cost2s));
+                    }
                 }else{
-                    sender.sendMessage(I18N.translate("&c - [OUT OF STOCK] %0% %1% %2% %3%, Enabled: %4%", set.getLong("id"), products, cost1s, cost2s, set.getBoolean("enabled")));
+                    sender.sendMessage(I18N.translate("&4 - %0% %1% %2% %3%, Enabled: NO", set.getLong("id"), products, cost1s, cost2s));
                 }
             }
         } catch (SQLException e) {
