@@ -21,6 +21,7 @@ permissions:
       "smileyplayertrader.trade": true
       "smileyplayertrader.merchant": true
       "smileyplayertrader.command": true
+      "smileyplayertrader.admin": true
   "smileyplayertrader.others":
     description: "Change other players"
     default: op
@@ -33,3 +34,6 @@ permissions:
   "smileyplayertrader.command":
     description: "Access to /spt"
     default: true
+  "smileyplayertrader.admin":
+    description: "Update checker permission"
+    default: op
