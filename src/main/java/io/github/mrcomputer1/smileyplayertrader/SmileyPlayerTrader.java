@@ -3,6 +3,7 @@ package io.github.mrcomputer1.smileyplayertrader;
 import io.github.mrcomputer1.smileyplayertrader.command.CommandSmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.DatabaseUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,8 +19,12 @@ public class SmileyPlayerTrader extends JavaPlugin {
     private I18N i18n;
     private UpdateChecker updateChecker = null;
 
+    private Metrics metrics;
+
     @Override
     public void onEnable() {
+        this.metrics = new Metrics(this);
+
         saveDefaultConfig();
 
         this.i18n = new I18N();
