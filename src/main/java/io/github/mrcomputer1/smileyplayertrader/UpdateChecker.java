@@ -1,19 +1,14 @@
 package io.github.mrcomputer1.smileyplayertrader;
 
-import com.google.common.io.CharStreams;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import org.bukkit.Bukkit;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 public class UpdateChecker {

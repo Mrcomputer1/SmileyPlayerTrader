@@ -3,8 +3,6 @@ package io.github.mrcomputer1.smileyplayertrader.util;
 import com.google.gson.*;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.yaml.snakeyaml.reader.StreamReader;
 
 import java.io.*;
 

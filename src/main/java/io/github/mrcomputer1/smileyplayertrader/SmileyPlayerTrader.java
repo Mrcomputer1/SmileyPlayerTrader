@@ -1,8 +1,10 @@
 package io.github.mrcomputer1.smileyplayertrader;
 
 import io.github.mrcomputer1.smileyplayertrader.command.CommandSmileyPlayerTrader;
+import io.github.mrcomputer1.smileyplayertrader.versions.IMCVersion;
 import io.github.mrcomputer1.smileyplayertrader.util.DatabaseUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import io.github.mrcomputer1.smileyplayertrader.util.ReflectionUtil;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +20,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
     private DatabaseUtil db;
     private I18N i18n;
     private UpdateChecker updateChecker = null;
+    private IMCVersion nms = null;
 
     private Metrics metrics;
 
@@ -33,8 +36,15 @@ public class SmileyPlayerTrader extends JavaPlugin {
         this.i18n.updateLanguage();
 
         if(getConfig().getBoolean("checkForUpdates", true)){
-            updateChecker = new UpdateChecker();
-            updateChecker.checkForUpdates();
+            this.updateChecker = new UpdateChecker();
+            this.updateChecker.checkForUpdates();
+        }
+
+        this.nms = ReflectionUtil.getVersion();
+        if(this.nms == null){
+            SmileyPlayerTrader.getInstance().getLogger().severe("MINECRAFT VERSION IS NOT SUPPORTED! DISABLING!");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }
 
         this.db = new DatabaseUtil(new File(getDataFolder(), "database.db"));
@@ -57,7 +67,9 @@ public class SmileyPlayerTrader extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.db.close();
+        if(this.db != null) {
+            this.db.close();
+        }
     }
 
     public DatabaseUtil getDatabase(){
@@ -70,5 +82,9 @@ public class SmileyPlayerTrader extends JavaPlugin {
 
     public UpdateChecker getUpdateChecker(){
         return this.updateChecker;
+    }
+
+    public IMCVersion getNMS(){
+        return this.nms;
     }
 }

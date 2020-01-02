@@ -4,18 +4,14 @@ import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.MerchantUtil;
-import net.minecraft.server.v1_15_R1.NBTCompressedStreamTools;
-import net.minecraft.server.v1_15_R1.NBTTagCompound;
+import io.github.mrcomputer1.smileyplayertrader.util.ReflectionUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -119,16 +115,17 @@ public class Commands {
             return;
         }
 
-        NBTTagCompound ntc = new NBTTagCompound();
-        CraftItemStack.asNMSCopy(sender.getInventory().getItemInMainHand()).save(ntc);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
-            NBTCompressedStreamTools.a(ntc, baos);
+            if(sender.getInventory().getItemInMainHand().getType().isAir()){
+               sender.sendMessage(I18N.translate("&cYou must be holding an item in your main hand!"));
+               return;
+            }
+            byte[] item = ReflectionUtil.itemStackToByteArray(sender.getInventory().getItemInMainHand());
 
-            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET cost1=? WHERE id=?", baos.toByteArray(), id);
+            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET cost1=? WHERE id=?", item, id);
 
             sender.sendMessage(I18N.translate("&aCost set!"));
-        }catch(IOException e){
+        }catch(InvocationTargetException e){
             e.printStackTrace();
         }
     }
@@ -143,18 +140,15 @@ public class Commands {
             return;
         }
 
-        NBTTagCompound ntc = new NBTTagCompound();
         ItemStack is = new ItemStack(material);
         is.setAmount(count);
-        CraftItemStack.asNMSCopy(is).save(ntc);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
-            NBTCompressedStreamTools.a(ntc, baos);
+            byte[] item = ReflectionUtil.itemStackToByteArray(is);
 
-            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET cost1=? WHERE id=?", baos.toByteArray(), id);
+            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET cost1=? WHERE id=?", item, id);
 
             sender.sendMessage(I18N.translate("&aCost set!"));
-        }catch(IOException e){
+        }catch(InvocationTargetException e){
             e.printStackTrace();
         }
     }
@@ -165,16 +159,17 @@ public class Commands {
             return;
         }
 
-        NBTTagCompound ntc = new NBTTagCompound();
-        CraftItemStack.asNMSCopy(sender.getInventory().getItemInMainHand()).save(ntc);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
-            NBTCompressedStreamTools.a(ntc, baos);
+            if(sender.getInventory().getItemInMainHand().getType().isAir()){
+                sender.sendMessage(I18N.translate("&cYou must be holding an item in your main hand!"));
+                return;
+            }
+            byte[] item = ReflectionUtil.itemStackToByteArray(sender.getInventory().getItemInMainHand());
 
-            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET cost2=? WHERE id=?", baos.toByteArray(), id);
+            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET cost2=? WHERE id=?", item, id);
 
             sender.sendMessage(I18N.translate("&aSecondary cost set!"));
-        }catch(IOException e){
+        }catch(InvocationTargetException e){
             e.printStackTrace();
         }
     }
@@ -189,18 +184,15 @@ public class Commands {
             return;
         }
 
-        NBTTagCompound ntc = new NBTTagCompound();
         ItemStack is = new ItemStack(material);
         is.setAmount(count);
-        CraftItemStack.asNMSCopy(is).save(ntc);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
-            NBTCompressedStreamTools.a(ntc, baos);
+            byte[] item = ReflectionUtil.itemStackToByteArray(is);
 
-            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET cost2=? WHERE id=?", baos.toByteArray(), id);
+            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET cost2=? WHERE id=?", item, id);
 
             sender.sendMessage(I18N.translate("&aSecondary cost set!"));
-        }catch(IOException e){
+        }catch(InvocationTargetException e){
             e.printStackTrace();
         }
     }
@@ -211,16 +203,17 @@ public class Commands {
             return;
         }
 
-        NBTTagCompound ntc = new NBTTagCompound();
-        CraftItemStack.asNMSCopy(sender.getInventory().getItemInMainHand()).save(ntc);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
-            NBTCompressedStreamTools.a(ntc, baos);
+            if(sender.getInventory().getItemInMainHand().getType().isAir()){
+                sender.sendMessage(I18N.translate("&cYou must be holding an item in your main hand!"));
+                return;
+            }
+            byte[] item = ReflectionUtil.itemStackToByteArray(sender.getInventory().getItemInMainHand());
 
-            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET product=? WHERE id=?", baos.toByteArray(), id);
+            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET product=? WHERE id=?", item, id);
 
             sender.sendMessage(I18N.translate("&aProduct set!"));
-        }catch(IOException e){
+        }catch(InvocationTargetException e){
             e.printStackTrace();
         }
     }
@@ -235,18 +228,15 @@ public class Commands {
             return;
         }
 
-        NBTTagCompound ntc = new NBTTagCompound();
         ItemStack is = new ItemStack(material);
         is.setAmount(count);
-        CraftItemStack.asNMSCopy(is).save(ntc);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
-            NBTCompressedStreamTools.a(ntc, baos);
+            byte[] item = ReflectionUtil.itemStackToByteArray(is);
 
-            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET product=? WHERE id=?", baos.toByteArray(), id);
+            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET product=? WHERE id=?", item, id);
 
             sender.sendMessage(I18N.translate("&aProduct set!"));
-        }catch(IOException e){
+        }catch(InvocationTargetException e){
             e.printStackTrace();
         }
     }

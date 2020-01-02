@@ -1,17 +1,13 @@
 package io.github.mrcomputer1.smileyplayertrader.util;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
-import net.minecraft.server.v1_15_R1.NBTCompressedStreamTools;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,11 +24,9 @@ public class MerchantUtil {
     }
 
     public static ItemStack buildItem(byte[] data){
-        ByteArrayInputStream bais = new ByteArrayInputStream(data);
         try {
-            net.minecraft.server.v1_15_R1.ItemStack nmsIS = net.minecraft.server.v1_15_R1.ItemStack.a(NBTCompressedStreamTools.a(bais));
-            return CraftItemStack.asCraftMirror(nmsIS);
-        } catch (IOException e) {
+            return ReflectionUtil.byteArrayToItemStack(data);
+        } catch (InvocationTargetException e) {
             SmileyPlayerTrader.getInstance().getLogger().severe("Failed to build item for merchant recipe, skipping...");
             e.printStackTrace();
             return null;

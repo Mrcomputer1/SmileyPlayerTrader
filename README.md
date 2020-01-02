@@ -11,8 +11,8 @@ Smiley Player Trader was created by Mrcomputer1 for [smileycreations15](https://
 6. To trade with someone, right click them.
 
 # Building
-1. You require Spigot 1.15 to be built on your computer before you can build this.
-2. Type `mvn package` to build.
+1. Type `mvn clean package` to build.
+2. The `SmileyPlayerTrader-VERSION.jar` is the plugin (ignore any with `-shaded` or `original-` in the name)
 
 # License
 [MIT License](LICENSE.md)
