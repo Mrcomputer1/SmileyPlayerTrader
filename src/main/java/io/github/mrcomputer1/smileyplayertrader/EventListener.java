@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
@@ -50,7 +51,7 @@ public class EventListener implements Listener {
                 if(ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult())){
                     ItemUtil.removeStock(store, mi.getSelectedRecipe().getResult());
                     ItemUtil.giveEarnings(store, mi.getSelectedRecipe());
-                    if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("autoThanks")) {
+                    if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("autoThanks", true)) {
                         store.chat(I18N.translate("&aThanks for your purchase, %0%", e.getWhoClicked().getName()));
                     }else{
                         e.getWhoClicked().sendMessage(I18N.translate("&aYou purchased an item from %0%", store.getName()));
@@ -74,6 +75,21 @@ public class EventListener implements Listener {
                     e.getWhoClicked().sendMessage(I18N.translate("&cThis item is out of stock!"));
                     e.setCancelled(true);
                 }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e){
+        if(e.getPlayer().hasPermission("smileyplayertrader.admin")){
+            if(SmileyPlayerTrader.getInstance().getUpdateChecker().unsupported){
+                e.getPlayer().sendMessage(I18N.translate("&c[Smiley Player Trader] This Minecraft version is no longer supported and therefore no support will be given for this version."));
+            }
+            if(SmileyPlayerTrader.getInstance().getUpdateChecker().failed){
+                e.getPlayer().sendMessage(I18N.translate("&e[Smiley Player Trader] Failed to check plugin version!"));
+            }
+            if(SmileyPlayerTrader.getInstance().getUpdateChecker().isOutdated){
+                e.getPlayer().sendMessage(I18N.translate("&e[Smiley Player Trader] Plugin is outdated! Latest version is %0%. It is recommended to download the update.", SmileyPlayerTrader.getInstance().getUpdateChecker().upToDateVersion));
             }
         }
     }

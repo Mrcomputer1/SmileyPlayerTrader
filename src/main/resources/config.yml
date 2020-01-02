@@ -11,3 +11,6 @@ autoThanks: true
 
 # Selected language (see the languages folder for a list of languages (or make your own inside that folder)
 currentLanguage: en_us
+
+# Check for updates
+checkForUpdates: true

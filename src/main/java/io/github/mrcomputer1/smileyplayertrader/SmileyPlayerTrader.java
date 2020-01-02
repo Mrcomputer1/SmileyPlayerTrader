@@ -16,6 +16,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
 
     private DatabaseUtil db;
     private I18N i18n;
+    private UpdateChecker updateChecker = null;
 
     @Override
     public void onEnable() {
@@ -24,6 +25,11 @@ public class SmileyPlayerTrader extends JavaPlugin {
         this.i18n = new I18N();
         this.i18n.createLanguages();
         this.i18n.loadLanguages();
+
+        if(getConfig().getBoolean("checkForUpdates", true)){
+            updateChecker = new UpdateChecker();
+            updateChecker.checkForUpdates();
+        }
 
         this.db = new DatabaseUtil(new File(getDataFolder(), "database.db"));
         this.db.run("CREATE TABLE IF NOT EXISTS products (" +
@@ -50,5 +56,9 @@ public class SmileyPlayerTrader extends JavaPlugin {
 
     public I18N getI18N(){
         return this.i18n;
+    }
+
+    public UpdateChecker getUpdateChecker(){
+        return this.updateChecker;
     }
 }

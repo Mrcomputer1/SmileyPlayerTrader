@@ -42,5 +42,8 @@
   "&aProduct set!": "&aProduct set!",
   "&aEnabled product!": "&aEnabled product!",
   "&aDisabled product!": "&aDisabled product!",
-  "&cRejecting permission due to invalid ID!": "&cRejecting permission due to invalid ID!"
+  "&cRejecting permission due to invalid ID!": "&cRejecting permission due to invalid ID!",
+  "&c[Smiley Player Trader] This Minecraft version is no longer supported and therefore no support will be given for this version.": "&c[Smiley Player Trader] This Minecraft version is no longer supported and therefore no support will be given for this version.",
+  "&e[Smiley Player Trader] Plugin is outdated! Latest version is %0%. It is recommended to download the update.": "&e[Smiley Player Trader] Plugin is outdated! Latest version is %0%. It is recommended to download the update.",
+  "&e[Smiley Player Trader] Failed to check plugin version!": "&e[Smiley Player Trader] Failed to check plugin version!"
 }
