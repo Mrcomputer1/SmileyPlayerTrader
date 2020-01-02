@@ -30,6 +30,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
         this.i18n = new I18N();
         this.i18n.createLanguages();
         this.i18n.loadLanguages();
+        this.i18n.updateLanguage();
 
         if(getConfig().getBoolean("checkForUpdates", true)){
             updateChecker = new UpdateChecker();
@@ -44,6 +45,10 @@ public class SmileyPlayerTrader extends JavaPlugin {
                 "cost2 BLOB," +
                 "product BLOB," +
                 "enabled BOOLEAN DEFAULT 0 NOT NULL)");
+        this.db.run("CREATE TABLE IF NOT EXISTS sptmeta (" +
+                "sptversion INTEGER NOT NULL" +
+                ")");
+        this.db.upgrade();
 
         getCommand("smileyplayertrader").setExecutor(new CommandSmileyPlayerTrader());
 

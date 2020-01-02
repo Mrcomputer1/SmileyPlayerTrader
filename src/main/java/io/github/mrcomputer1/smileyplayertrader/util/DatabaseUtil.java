@@ -10,6 +10,7 @@ public class DatabaseUtil {
 
     private Connection conn = null;
     private long insertId = -1;
+    private static int dbVersion = 1;
 
     public DatabaseUtil(File name){
         try {
@@ -93,6 +94,36 @@ public class DatabaseUtil {
             SmileyPlayerTrader.getInstance().getLogger().severe("Failed to close connection.");
             e.printStackTrace();
         }
+    }
+
+    public void upgrade(){
+        ResultSet set = get("SELECT * FROM sptmeta");
+        try {
+            if (set.next()) {
+                int ver = set.getInt("sptversion");
+                if(ver < dbVersion){ // if the db version is older than the supported db version
+                    SmileyPlayerTrader.getInstance().getLogger().warning("Upgrading to database version " + dbVersion);
+
+                    while(ver <= dbVersion){
+                        upgrade(ver);
+                        ver++;
+                    }
+
+                    SmileyPlayerTrader.getInstance().getLogger().warning("Upgraded to database version " + dbVersion);
+                    run("UPDATE sptmeta SET sptversion=?", dbVersion);
+                }else if(ver > dbVersion){ // if the db version is newer than the supported db version
+                    SmileyPlayerTrader.getInstance().getLogger().warning("You are loading a database meant for a newer plugin version!");
+                }
+            }else{
+                run("INSERT INTO sptmeta (sptversion) VALUES (?)", 1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void upgrade(int version){ // version is old version
+        // do upgrades for version
     }
 
 }

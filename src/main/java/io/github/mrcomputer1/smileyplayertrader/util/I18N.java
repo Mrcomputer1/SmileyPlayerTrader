@@ -6,10 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.yaml.snakeyaml.reader.StreamReader;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class I18N {
 
@@ -39,6 +36,19 @@ public class I18N {
                     SmileyPlayerTrader.getInstance().getLogger().severe("Failed to load language!");
                 }
             }
+        }
+    }
+
+    public void updateLanguage(){
+        String lang = SmileyPlayerTrader.getInstance().getConfig().getString("currentLanguage", "en_us");
+        InputStream resource = SmileyPlayerTrader.getInstance().getResource("languages/" + lang + ".json");
+        if(resource == null){
+            return;
+        }
+        JsonObject obj = new JsonParser().parse(new InputStreamReader(resource)).getAsJsonObject();
+        if(obj.get("$$version$$").getAsInt() != language.get("$$version$$").getAsInt()){
+            SmileyPlayerTrader.getInstance().saveResource("languages/" + lang + ".json", true);
+            this.loadLanguages();
         }
     }
 
