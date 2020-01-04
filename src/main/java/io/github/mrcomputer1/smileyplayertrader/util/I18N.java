@@ -38,15 +38,18 @@ public class I18N {
     }
 
     public void updateLanguage(){
-        String lang = SmileyPlayerTrader.getInstance().getConfig().getString("currentLanguage", "en_us");
-        InputStream resource = SmileyPlayerTrader.getInstance().getResource("languages/" + lang + ".json");
-        if(resource == null){
-            return;
-        }
-        JsonObject obj = new JsonParser().parse(new InputStreamReader(resource)).getAsJsonObject();
-        if(obj.get("$$version$$").getAsInt() != language.get("$$version$$").getAsInt()){
-            SmileyPlayerTrader.getInstance().saveResource("languages/" + lang + ".json", true);
-            this.loadLanguages();
+        try {
+            String lang = SmileyPlayerTrader.getInstance().getConfig().getString("currentLanguage", "en_us");
+            InputStream resource = SmileyPlayerTrader.getInstance().getResource("languages/" + lang + ".json");
+            if (resource == null) {
+                return;
+            }
+            JsonObject obj = new JsonParser().parse(new InputStreamReader(resource)).getAsJsonObject();
+            if (obj.get("$$version$$").getAsInt() != language.get("$$version$$").getAsInt()) {
+                SmileyPlayerTrader.getInstance().saveResource("languages/" + lang + ".json", true);
+                this.loadLanguages();
+            }
+        }catch(NullPointerException e){
         }
     }
 
