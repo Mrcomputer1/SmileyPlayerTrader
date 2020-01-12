@@ -81,14 +81,16 @@ public class EventListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
         if(e.getPlayer().hasPermission("smileyplayertrader.admin")){
-            if(SmileyPlayerTrader.getInstance().getUpdateChecker().unsupported){
-                e.getPlayer().sendMessage(I18N.translate("&c[Smiley Player Trader] This Minecraft version is no longer supported and therefore no support will be given for this version."));
-            }
-            if(SmileyPlayerTrader.getInstance().getUpdateChecker().failed){
-                e.getPlayer().sendMessage(I18N.translate("&e[Smiley Player Trader] Failed to check plugin version!"));
-            }
-            if(SmileyPlayerTrader.getInstance().getUpdateChecker().isOutdated){
-                e.getPlayer().sendMessage(I18N.translate("&e[Smiley Player Trader] Plugin is outdated! Latest version is %0%. It is recommended to download the update.", SmileyPlayerTrader.getInstance().getUpdateChecker().upToDateVersion));
+            if(SmileyPlayerTrader.getInstance().getUpdateChecker() != null) {
+                if (SmileyPlayerTrader.getInstance().getUpdateChecker().unsupported) {
+                    e.getPlayer().sendMessage(I18N.translate("&c[Smiley Player Trader] This Minecraft version is no longer supported and therefore no support will be given for this version."));
+                }
+                if (SmileyPlayerTrader.getInstance().getUpdateChecker().failed) {
+                    e.getPlayer().sendMessage(I18N.translate("&e[Smiley Player Trader] Failed to check plugin version!"));
+                }
+                if (SmileyPlayerTrader.getInstance().getUpdateChecker().isOutdated) {
+                    e.getPlayer().sendMessage(I18N.translate("&e[Smiley Player Trader] Plugin is outdated! Latest version is %0%. It is recommended to download the update.", SmileyPlayerTrader.getInstance().getUpdateChecker().upToDateVersion));
+                }
             }
         }
     }
