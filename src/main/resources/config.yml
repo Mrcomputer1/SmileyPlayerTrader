@@ -12,5 +12,16 @@ autoThanks: true
 # Selected language (see the languages folder for a list of languages (or make your own inside that folder)
 currentLanguage: en_us
 
+# Database
+database:
+  type: sqlite # Database Type (supported values are "sqlite" and "mysql")
+  file: database.db # Name of database file (sqlite only)
+  prefix: spt # _ is not added by default (sqlite and mysql) - do not change once set
+#  host: localhost # Host of database (mysql only)
+#  port: 3306 # Port number of database (mysql only)
+#  name: sptdatabase # Name of database (mysql only)
+#  username: root # Username of database user (mysql only)
+#  password: "" # Password of database user (mysql only)
+
 # Check for updates
 checkForUpdates: true

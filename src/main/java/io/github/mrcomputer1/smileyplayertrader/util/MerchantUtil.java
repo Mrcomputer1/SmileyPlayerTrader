@@ -1,6 +1,7 @@
 package io.github.mrcomputer1.smileyplayertrader.util;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
+import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -36,7 +37,7 @@ public class MerchantUtil {
     private static List<MerchantRecipe> getAndBuildRecipes(Player merchant){
         List<MerchantRecipe> recipes = new ArrayList<>();
 
-        ResultSet set = SmileyPlayerTrader.getInstance().getDatabase().get("SELECT * FROM products WHERE merchant=?", merchant.getUniqueId().toString());
+        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.FIND_PRODUCTS, merchant.getUniqueId().toString());
         try {
             while (set.next()) {
                 if(!set.getBoolean("enabled"))

@@ -1,8 +1,11 @@
 package io.github.mrcomputer1.smileyplayertrader;
 
 import io.github.mrcomputer1.smileyplayertrader.command.CommandSmileyPlayerTrader;
+import io.github.mrcomputer1.smileyplayertrader.util.database.AbstractDatabase;
+import io.github.mrcomputer1.smileyplayertrader.util.database.DatabaseUtil;
+import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import io.github.mrcomputer1.smileyplayertrader.versions.IMCVersion;
-import io.github.mrcomputer1.smileyplayertrader.util.DatabaseUtil;
+import io.github.mrcomputer1.smileyplayertrader.util.database.SQLiteDatabase;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.ReflectionUtil;
 import org.bstats.bukkit.Metrics;
@@ -17,7 +20,8 @@ public class SmileyPlayerTrader extends JavaPlugin {
         return getPlugin(SmileyPlayerTrader.class);
     }
 
-    private DatabaseUtil db;
+    private AbstractDatabase db;
+    private StatementHandler statementHandler;
     private I18N i18n;
     private UpdateChecker updateChecker = null;
     private IMCVersion nms = null;
@@ -26,7 +30,9 @@ public class SmileyPlayerTrader extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.metrics = new Metrics(this);
+        if(!getDescription().getVersion().contains("-SNAPSHOT")) { // Disable bStats on development versions.
+            this.metrics = new Metrics(this);
+        }
 
         saveDefaultConfig();
 
@@ -47,17 +53,12 @@ public class SmileyPlayerTrader extends JavaPlugin {
             return;
         }
 
-        this.db = new DatabaseUtil(new File(getDataFolder(), "database.db"));
-        this.db.run("CREATE TABLE IF NOT EXISTS products (" +
-                "id INTEGER PRIMARY KEY," +
-                "merchant TEXT NOT NULL," +
-                "cost1 BLOB," +
-                "cost2 BLOB," +
-                "product BLOB," +
-                "enabled BOOLEAN DEFAULT 0 NOT NULL)");
-        this.db.run("CREATE TABLE IF NOT EXISTS sptmeta (" +
-                "sptversion INTEGER NOT NULL" +
-                ")");
+        this.db = DatabaseUtil.loadDatabase();
+        this.statementHandler = this.db.getNewStatementHandler();
+        if(!(this.db instanceof SQLiteDatabase) || !new File(getDataFolder(), getConfig().getString("database.file", "database.db")).exists()) {
+            this.statementHandler.run(StatementHandler.StatementType.CREATE_PRODUCT_TABLE);
+            this.statementHandler.run(StatementHandler.StatementType.CREATE_META_TABLE);
+        }
         this.db.upgrade();
 
         getCommand("smileyplayertrader").setExecutor(new CommandSmileyPlayerTrader());
@@ -72,8 +73,12 @@ public class SmileyPlayerTrader extends JavaPlugin {
         }
     }
 
-    public DatabaseUtil getDatabase(){
+    public AbstractDatabase getDatabase(){
         return this.db;
+    }
+
+    public StatementHandler getStatementHandler(){
+        return this.statementHandler;
     }
 
     public I18N getI18N(){

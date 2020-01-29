@@ -1,4 +1,4 @@
-package io.github.mrcomputer1.smileyplayertrader.util;
+package io.github.mrcomputer1.smileyplayertrader.util.database;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import org.bukkit.Bukkit;
@@ -6,22 +6,22 @@ import org.bukkit.Bukkit;
 import java.io.File;
 import java.sql.*;
 
-public class DatabaseUtil {
+public class MySQLDatabase extends AbstractDatabase {
 
     private Connection conn = null;
     private long insertId = -1;
-    private static int dbVersion = 1;
 
-    public DatabaseUtil(File name){
+    public MySQLDatabase(String host, int port, String name, String username, String password){
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:" + name.getAbsolutePath());
+            conn = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + name, username, password);
         } catch (SQLException e) {
-            SmileyPlayerTrader.getInstance().getLogger().severe("Failed to open/create SQLite3 database. Disabling...");
+            SmileyPlayerTrader.getInstance().getLogger().severe("Failed to open MySQL database. Disabling...");
             Bukkit.getPluginManager().disablePlugin(SmileyPlayerTrader.getInstance());
             e.printStackTrace();
         }
     }
 
+    @Override
     public long getInsertId(){
         return this.insertId;
     }
@@ -31,12 +31,13 @@ public class DatabaseUtil {
             try {
                 stmt.setObject(i + 1, objs[i]);
             } catch (SQLException e) {
-                SmileyPlayerTrader.getInstance().getLogger().severe("Failed to set a value in an SQLite3 statement.");
+                SmileyPlayerTrader.getInstance().getLogger().severe("Failed to set a value in an MySQL statement.");
                 e.printStackTrace();
             }
         }
     }
 
+    @Override
     public void run(String sql, Object... objs){
         try {
             if (!isConnected()) {
@@ -51,11 +52,12 @@ public class DatabaseUtil {
                 this.insertId = s.getLong(1);
             }
         }catch(SQLException e){
-            SmileyPlayerTrader.getInstance().getLogger().severe("Failed to execute SQLite3 statement.");
+            SmileyPlayerTrader.getInstance().getLogger().severe("Failed to execute MySQL statement.");
             e.printStackTrace();
         }
     }
 
+    @Override
     public ResultSet get(String sql, Object... objs){
         try{
             if(!isConnected()){
@@ -66,12 +68,13 @@ public class DatabaseUtil {
             setValues(stmt, objs);
             return stmt.executeQuery();
         } catch (SQLException e) {
-            SmileyPlayerTrader.getInstance().getLogger().severe("Failed to execute SQLite3 query statement.");
+            SmileyPlayerTrader.getInstance().getLogger().severe("Failed to execute MySQL query statement.");
             e.printStackTrace();
             return null;
         }
     }
 
+    @Override
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isConnected(){
         try {
@@ -83,6 +86,7 @@ public class DatabaseUtil {
         }
     }
 
+    @Override
     public void close(){
         if(!isConnected()){
             SmileyPlayerTrader.getInstance().getLogger().severe("Failed to close connection as not connected!");
@@ -94,36 +98,6 @@ public class DatabaseUtil {
             SmileyPlayerTrader.getInstance().getLogger().severe("Failed to close connection.");
             e.printStackTrace();
         }
-    }
-
-    public void upgrade(){
-        ResultSet set = get("SELECT * FROM sptmeta");
-        try {
-            if (set.next()) {
-                int ver = set.getInt("sptversion");
-                if(ver < dbVersion){ // if the db version is older than the supported db version
-                    SmileyPlayerTrader.getInstance().getLogger().warning("Upgrading to database version " + dbVersion);
-
-                    while(ver <= dbVersion){
-                        upgrade(ver);
-                        ver++;
-                    }
-
-                    SmileyPlayerTrader.getInstance().getLogger().warning("Upgraded to database version " + dbVersion);
-                    run("UPDATE sptmeta SET sptversion=?", dbVersion);
-                }else if(ver > dbVersion){ // if the db version is newer than the supported db version
-                    SmileyPlayerTrader.getInstance().getLogger().warning("You are loading a database meant for a newer plugin version!");
-                }
-            }else{
-                run("INSERT INTO sptmeta (sptversion) VALUES (?)", 1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void upgrade(int version){ // version is old version
-        // do upgrades for version
     }
 
 }

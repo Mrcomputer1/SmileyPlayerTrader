@@ -5,6 +5,7 @@ import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.MerchantUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.ReflectionUtil;
+import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -27,7 +28,7 @@ public class Commands {
             }
         }
 
-        SmileyPlayerTrader.getInstance().getDatabase().run("INSERT INTO products (merchant, product, cost1, cost2, enabled) VALUES (?, ?, ?, ?, ?)",
+        SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.ADD_PRODUCT,
                 target.getUniqueId().toString(), null, null, null, false);
 
         sender.sendMessage(I18N.translate("&aAdded product %0%. Use &f/spt setcost <id> &aand &f/spt setproduct <id> &awhile holding items, both must be set before you can &f/spt enable <id> &athis product!", SmileyPlayerTrader.getInstance().getDatabase().getInsertId()));
@@ -43,7 +44,7 @@ public class Commands {
             }
         }
 
-        ResultSet set = SmileyPlayerTrader.getInstance().getDatabase().get("SELECT * FROM products WHERE merchant=?",
+        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.FIND_PRODUCTS,
                 target.getUniqueId().toString());
 
         try {
@@ -105,7 +106,7 @@ public class Commands {
             return;
         }
 
-        SmileyPlayerTrader.getInstance().getDatabase().run("DELETE FROM products WHERE id=?", id);
+        SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.DELETE_PRODUCT, id);
         sender.sendMessage(I18N.translate("&2Deleted product!"));
     }
 
@@ -122,7 +123,7 @@ public class Commands {
             }
             byte[] item = ReflectionUtil.itemStackToByteArray(sender.getInventory().getItemInMainHand());
 
-            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET cost1=? WHERE id=?", item, id);
+            SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_COST, item, id);
 
             sender.sendMessage(I18N.translate("&aCost set!"));
         }catch(InvocationTargetException e){
@@ -145,7 +146,7 @@ public class Commands {
         try {
             byte[] item = ReflectionUtil.itemStackToByteArray(is);
 
-            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET cost1=? WHERE id=?", item, id);
+            SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_COST, item, id);
 
             sender.sendMessage(I18N.translate("&aCost set!"));
         }catch(InvocationTargetException e){
@@ -166,7 +167,7 @@ public class Commands {
             }
             byte[] item = ReflectionUtil.itemStackToByteArray(sender.getInventory().getItemInMainHand());
 
-            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET cost2=? WHERE id=?", item, id);
+            SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_SECONDARY_COST, item, id);
 
             sender.sendMessage(I18N.translate("&aSecondary cost set!"));
         }catch(InvocationTargetException e){
@@ -189,7 +190,7 @@ public class Commands {
         try {
             byte[] item = ReflectionUtil.itemStackToByteArray(is);
 
-            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET cost2=? WHERE id=?", item, id);
+            SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_SECONDARY_COST, item, id);
 
             sender.sendMessage(I18N.translate("&aSecondary cost set!"));
         }catch(InvocationTargetException e){
@@ -210,7 +211,7 @@ public class Commands {
             }
             byte[] item = ReflectionUtil.itemStackToByteArray(sender.getInventory().getItemInMainHand());
 
-            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET product=? WHERE id=?", item, id);
+            SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_PRODUCT, item, id);
 
             sender.sendMessage(I18N.translate("&aProduct set!"));
         }catch(InvocationTargetException e){
@@ -233,7 +234,7 @@ public class Commands {
         try {
             byte[] item = ReflectionUtil.itemStackToByteArray(is);
 
-            SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET product=? WHERE id=?", item, id);
+            SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_PRODUCT, item, id);
 
             sender.sendMessage(I18N.translate("&aProduct set!"));
         }catch(InvocationTargetException e){
@@ -247,7 +248,7 @@ public class Commands {
             return;
         }
 
-        SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET enabled=1 WHERE id=?", id);
+        SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.ENABLE_PRODUCT, id);
 
         sender.sendMessage(I18N.translate("&aEnabled product!"));
     }
@@ -258,13 +259,13 @@ public class Commands {
             return;
         }
 
-        SmileyPlayerTrader.getInstance().getDatabase().run("UPDATE products SET enabled=0 WHERE id=?", id);
+        SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.DISABLE_PRODUCT, id);
 
         sender.sendMessage(I18N.translate("&aDisabled product!"));
     }
 
     private static boolean isNotAuthorized(Player sender, long id){
-        ResultSet set = SmileyPlayerTrader.getInstance().getDatabase().get("SELECT * FROM products WHERE id=?", id);
+        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id);
         try {
             if (set.next()) {
                 if(sender.getUniqueId().toString().equalsIgnoreCase(set.getString("merchant"))){
