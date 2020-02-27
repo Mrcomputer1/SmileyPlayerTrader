@@ -14,7 +14,7 @@ public class ReflectionUtil {
         String version = Bukkit.getBukkitVersion().split("-")[0];
         SmileyPlayerTrader.getInstance().getLogger().info("Bukkit version is '" + Bukkit.getBukkitVersion() + "', detected Minecraft version is '" + version + "'.");
         String[] versionParts = version.split("\\.");
-        if(versionParts[1].equalsIgnoreCase("15")){ // 1.15, 1.15.1
+        if(versionParts[1].equalsIgnoreCase("15")){ // 1.15, 1.15.1, 1.15.2
             return new MCVersion1_15();
         }
         return null;

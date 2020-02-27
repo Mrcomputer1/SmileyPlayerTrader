@@ -1,6 +1,8 @@
 package io.github.mrcomputer1.smileyplayertrader.command;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
+import io.github.mrcomputer1.smileyplayertrader.gui.GUIListItems;
+import io.github.mrcomputer1.smileyplayertrader.gui.GUIManager;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -15,13 +17,20 @@ public class CommandSmileyPlayerTrader implements CommandExecutor {
             return false;
 
         if(args.length == 0){
-            sender.sendMessage(I18N.translate("&bSmiley Player Trader by Mrcomputer1 and sc15. Version %0%.",
-                    SmileyPlayerTrader.getInstance().getDescription().getVersion()));
-            sender.sendMessage(I18N.translate("&eType /spt help for help!"));
+            if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("useGuiManager", true)) {
+                GUIManager.getInstance().openGUI((Player)sender, new GUIListItems(0));
+            }else {
+                sender.sendMessage(I18N.translate("&bSmiley Player Trader by Mrcomputer1 and sc15. Version %0%.",
+                        SmileyPlayerTrader.getInstance().getDescription().getVersion()));
+                sender.sendMessage(I18N.translate("&eType /spt help for help!"));
+            }
         }
 
-        if(args.length == 1){
-            if(args[0].equalsIgnoreCase("help")){
+        if(args.length == 1) {
+            if(args[0].equalsIgnoreCase("version")){
+                sender.sendMessage(I18N.translate("&bSmiley Player Trader by Mrcomputer1 and sc15. Version %0%.",
+                        SmileyPlayerTrader.getInstance().getDescription().getVersion()));
+            }else if(args[0].equalsIgnoreCase("help")){
                 sender.sendMessage(I18N.translate("&e&lSmiley Player Trader - Help"));
                 sender.sendMessage(I18N.translate("&f/spt add [username] &e- Add a new product"));
                 sender.sendMessage(I18N.translate("&f/spt list [username] &e- List all products"));
@@ -31,6 +40,7 @@ public class CommandSmileyPlayerTrader implements CommandExecutor {
                 sender.sendMessage(I18N.translate("&f/spt setproduct <id> [material] [count] &e- Set the product itself"));
                 sender.sendMessage(I18N.translate("&f/spt enable <id> &e- Enable the product"));
                 sender.sendMessage(I18N.translate("&f/spt disable <id> &e- Disable the product"));
+                sender.sendMessage(I18N.translate("&f/spt version &e- Get version"));
                 sender.sendMessage(I18N.translate("&e&lSmiley Player Trader - Help"));
             }else if(args[0].equalsIgnoreCase("add")){
                 Commands.add((Player)sender, null);

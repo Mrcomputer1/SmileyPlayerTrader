@@ -25,3 +25,6 @@ database:
 
 # Check for updates
 checkForUpdates: true
+
+# Enables/Disables the GUI Manager
+useGuiManager: true

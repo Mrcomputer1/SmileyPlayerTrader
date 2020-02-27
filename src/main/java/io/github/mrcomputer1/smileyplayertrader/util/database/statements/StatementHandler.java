@@ -60,7 +60,26 @@ public interface StatementHandler {
         /**
          * id (int)
          */
-        GET_PRODUCT_BY_ID
+        GET_PRODUCT_BY_ID,
+
+        /**
+         * merchant (uuid)
+         * LIMIT, OFFSET
+         */
+        FIND_PRODUCTS_IN_PAGES,
+
+        /**
+         * product (nbt blob)
+         * cost (nbt blob)
+         * cost2 (nbt blob)
+         * id (int)
+         */
+        SET_PRODUCT_COST_COST2,
+
+        /**
+         * id (int)
+         */
+        GET_ENABLED
     }
 
     void run(StatementType type, Object... objs);

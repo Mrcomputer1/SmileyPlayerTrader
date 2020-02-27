@@ -27,6 +27,9 @@ public class GenericStatementHandler implements StatementHandler {
         statements.put(StatementType.ENABLE_PRODUCT, "UPDATE $prefix$products SET enabled=1 WHERE id=?");
         statements.put(StatementType.DISABLE_PRODUCT, "UPDATE $prefix$products SET enabled=0 WHERE id=?");
         statements.put(StatementType.GET_PRODUCT_BY_ID, "SELECT * FROM $prefix$products WHERE id=?");
+        statements.put(StatementType.FIND_PRODUCTS_IN_PAGES, "SELECT id, product, enabled FROM $prefix$products WHERE merchant=? LIMIT ? OFFSET ?");
+        statements.put(StatementType.SET_PRODUCT_COST_COST2, "UPDATE $prefix$products SET product=?, cost1=?, cost2=? WHERE id=?");
+        statements.put(StatementType.GET_ENABLED, "SELECT enabled FROM $prefix$products WHERE id=?");
     }
 
     @Override
