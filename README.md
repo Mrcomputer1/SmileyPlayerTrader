@@ -3,6 +3,16 @@
 Smiley Player Trader was created by Mrcomputer1 for [smileycreations15](https://github.com/smileycreations15)'s Minecraft server. Its purpose is to allow you to right click on a player and see a list of items they can trade.
 
 # Usage
+## GUI
+1. Type /spt to open the GUI.
+2. Press the "Create Product" button (the emerald).
+3. Insert the product in the inventory slot.
+4. Press the "Set Primary Cost" button (the single gold ingot).
+5. Insert the cost in the slot or use the quick items.
+6. Press the Set Primary Cost button (the emerald block).
+7. Press the "Create Product" button (the emerald block).
+
+## Commands
 1. Type `/spt add` to add a product to your list
 2. Hold the item you want to sell in your hand and type `/spt setproduct <id>` (it will tell you the ID when adding the product).
 3. Hold the item you want to get for it in your hand and type `/spt setcost <id>`
