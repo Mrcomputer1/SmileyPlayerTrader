@@ -1,14 +1,10 @@
 package io.github.mrcomputer1.smileyplayertrader.gui;
 
-import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -40,8 +36,7 @@ public abstract class AbstractGUI {
         ItemStack is = new ItemStack(material, count);
         ItemMeta im = is.getItemMeta();
         im.setDisplayName(name);
-        List<String> data = new ArrayList<>();
-        data.addAll(Arrays.asList(lore));
+        List<String> data = new ArrayList<>(Arrays.asList(lore));
         im.setLore(data);
         is.setItemMeta(im);
         return is;

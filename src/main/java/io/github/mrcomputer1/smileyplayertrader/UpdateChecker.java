@@ -13,7 +13,7 @@ import java.net.URL;
 
 public class UpdateChecker {
 
-    private static String UPDATE_URL = "https://mrcomputer1.github.io/SmileyPlayerTrader/versions.json";
+    private static final String UPDATE_URL = "https://mrcomputer1.github.io/SmileyPlayerTrader/versions.json";
     public boolean isOutdated = false;
     public String upToDateVersion = null;
     public boolean unsupported = false;

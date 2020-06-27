@@ -1,6 +1,5 @@
 package io.github.mrcomputer1.smileyplayertrader.command;
 
-import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.MerchantUtil;
 import org.bukkit.Bukkit;

@@ -3,7 +3,6 @@ package io.github.mrcomputer1.smileyplayertrader.util.database;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import org.bukkit.Bukkit;
 
-import java.io.File;
 import java.sql.*;
 
 public class MySQLDatabase extends AbstractDatabase {

@@ -1,6 +1,5 @@
 package io.github.mrcomputer1.smileyplayertrader.gui;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

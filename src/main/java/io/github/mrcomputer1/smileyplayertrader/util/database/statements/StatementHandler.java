@@ -1,7 +1,5 @@
 package io.github.mrcomputer1.smileyplayertrader.util.database.statements;
 
-import io.github.mrcomputer1.smileyplayertrader.util.database.AbstractDatabase;
-
 import java.sql.ResultSet;
 
 public interface StatementHandler {

@@ -6,7 +6,6 @@ import io.github.mrcomputer1.smileyplayertrader.util.database.AbstractDatabase;
 import io.github.mrcomputer1.smileyplayertrader.util.database.DatabaseUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import io.github.mrcomputer1.smileyplayertrader.versions.IMCVersion;
-import io.github.mrcomputer1.smileyplayertrader.util.database.SQLiteDatabase;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.ReflectionUtil;
 import org.bstats.bukkit.Metrics;
@@ -14,7 +13,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 public class SmileyPlayerTrader extends JavaPlugin {
@@ -43,7 +41,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
 
             this.metrics.addCustomChart(new Metrics.SimplePie("database_system", new Callable<String>() {
                 @Override
-                public String call() throws Exception {
+                public String call() {
                     switch(getConfig().getString("database.type", "sqlite")){
                         case "sqlite":
                             return "SQLite";
