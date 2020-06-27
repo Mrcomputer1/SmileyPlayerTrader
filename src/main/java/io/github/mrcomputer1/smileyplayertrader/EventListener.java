@@ -27,6 +27,8 @@ public class EventListener implements Listener {
         if(SmileyPlayerTrader.getInstance().getConfig().getStringList("disabledWorlds").contains(e.getPlayer().getWorld().getName())){
             return;
         }
+        if(e.getRightClicked().hasMetadata("NPC")) // Citizens NPCs seem like players but they have different UUIDs and can't work.
+            return;
         if(!e.getPlayer().hasPermission("smileyplayertrader.trade"))
             return;
         if(!SmileyPlayerTrader.getInstance().getPlayerConfig().getPlayer(e.getPlayer()).tradeToggle || SmileyPlayerTrader.getInstance().getPlayerConfig().isLocked(e.getPlayer()))
