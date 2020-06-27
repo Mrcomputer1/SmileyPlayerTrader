@@ -19,6 +19,8 @@ import java.util.concurrent.Callable;
 
 public class SmileyPlayerTrader extends JavaPlugin {
 
+    private static final int BSTATS_PLUGIN_ID = 6187;
+
     public static SmileyPlayerTrader getInstance(){
         return getPlugin(SmileyPlayerTrader.class);
     }
@@ -37,7 +39,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
         saveDefaultConfig();
 
         if(!getDescription().getVersion().contains("-SNAPSHOT")) { // Disable bStats on development versions.
-            this.metrics = new Metrics(this);
+            this.metrics = new Metrics(this, BSTATS_PLUGIN_ID);
 
             this.metrics.addCustomChart(new Metrics.SimplePie("database_system", new Callable<String>() {
                 @Override
