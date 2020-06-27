@@ -87,7 +87,11 @@ public class PlayerConfig {
     public void lockPlayer(Player player){
         if(!SmileyPlayerTrader.getInstance().getConfig().getBoolean("autoCombatLock.neverShowNotice", false)
                 && !isLocked(player) && getPlayer(player).combatNoticeToggle){
-            player.sendMessage(I18N.translate("&7Player trading has been temporarily disabled while you are in combat. Use &f/spt combatwarn &7to disable this notice. Use &f/spt releasecombatlock &7to re-enable trading early."));
+            player.sendMessage(I18N.translate("&7Player trading has been temporarily disabled while you are in combat. Use &f/spt releasecombatlock &7to re-enable trading early."));
+
+            Config c = getMutablePlayer(player);
+            c.combatNoticeToggle = false;
+            updatePlayer(player, c);
         }
         this.playerCombatLock.put(player.getName(), System.currentTimeMillis());
     }
