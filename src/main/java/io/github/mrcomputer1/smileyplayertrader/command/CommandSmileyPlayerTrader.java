@@ -31,6 +31,7 @@ public class CommandSmileyPlayerTrader implements TabExecutor {
         this.commands.put("toggle", new ToggleCommand());
         this.commands.put("combatwarn", new CombatWarnCommand());
         this.commands.put("releasecombatlock", new ReleaseCombatLockCommand());
+        this.commands.put("trade", new TradeCommand());
     }
 
     @Override

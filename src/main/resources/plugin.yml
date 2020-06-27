@@ -22,11 +22,15 @@ permissions:
       "smileyplayertrader.merchant": true
       "smileyplayertrader.command": true
       "smileyplayertrader.admin": true
+      "smileyplayertrader.trade.remote": true
   "smileyplayertrader.others":
     description: "Change other players"
     default: op
   "smileyplayertrader.trade":
     description: "Trade with players"
+    default: true
+  "smileyplayertrader.trade.remote":
+    description: "Trade with players via a command"
     default: true
   "smileyplayertrader.merchant":
     description: "Be able to trade with"
