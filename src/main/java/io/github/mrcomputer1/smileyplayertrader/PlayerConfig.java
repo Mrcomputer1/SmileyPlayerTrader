@@ -73,6 +73,7 @@ public class PlayerConfig {
 
     public void unloadPlayer(Player player){
         this.playerConfigs.remove(player.getName());
+        this.playerCombatLock.remove(player.getName());
     }
 
     public void updatePlayer(Player player, Config config){
