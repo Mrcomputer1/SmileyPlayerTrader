@@ -3,6 +3,7 @@ package io.github.mrcomputer1.smileyplayertrader.util;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.versions.IMCVersion;
 import io.github.mrcomputer1.smileyplayertrader.versions.MCVersion1_15;
+import io.github.mrcomputer1.smileyplayertrader.versions.MCVersion1_16;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,6 +17,8 @@ public class ReflectionUtil {
         String[] versionParts = version.split("\\.");
         if(versionParts[1].equalsIgnoreCase("15")){ // 1.15, 1.15.1, 1.15.2
             return new MCVersion1_15();
+        }else if(versionParts[1].equalsIgnoreCase("16")){ // 1.16.1
+            return new MCVersion1_16();
         }
         return null;
     }
