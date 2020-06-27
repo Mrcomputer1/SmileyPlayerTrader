@@ -9,6 +9,7 @@ public interface StatementHandler {
     enum StatementType{
         CREATE_PRODUCT_TABLE,
         CREATE_META_TABLE,
+        CREATE_SETTINGS_TABLE,
 
         /**
          * merchant (uuid),
@@ -79,7 +80,24 @@ public interface StatementHandler {
         /**
          * id (int)
          */
-        GET_ENABLED
+        GET_ENABLED,
+
+        /**
+         * player (uuid)
+         */
+        LOAD_PLAYER_CONFIG,
+
+        /**
+         * player (uuid)
+         */
+        CREATE_DEFAULT_PLAYER_CONFIG,
+
+        /**
+         * trade_toggle (boolean)
+         * combat_notice_toggle (boolean)
+         * player (uuid)
+         */
+        UPDATE_PLAYER_CONFIG
     }
 
     void run(StatementType type, Object... objs);

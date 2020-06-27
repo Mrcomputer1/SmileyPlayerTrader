@@ -9,7 +9,7 @@ stockLocations:
 # Automatically thank a player for a purchase
 autoThanks: true
 
-# Selected language (see the languages folder for a list of languages (or make your own inside that folder)
+# Selected language (see the languages folder for a list of languages (or make your own inside that folder))
 currentLanguage: en_us
 
 # Database
@@ -28,3 +28,9 @@ checkForUpdates: true
 
 # Enables/Disables the GUI Manager
 useGuiManager: true
+
+# Automatically toggle off while in combat
+autoCombatLock:
+  enabled: true # Enables/Disables auto combat toggling
+  combatLockLength: 30 # Combat lock length (in seconds)
+  neverShowNotice: false # Enables/Disables the toggle notice (if this is false, the players can choose for themselves)

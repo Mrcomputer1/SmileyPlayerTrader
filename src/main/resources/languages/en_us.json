@@ -92,5 +92,13 @@
   "&aDon't Delete Product": "&aDon't Delete Product",
   "&2Delete Product %0%": "&2Delete Product %0%",
   "&f/spt version &e- Get version": "&f/spt version &e- Get version",
-  "&cYou must be running this command from a player.": "&cYou must be running this command from a player."
+  "&cYou must be running this command from a player.": "&cYou must be running this command from a player.",
+  "&c[Smiley Player Trader] We were unable to load your settings. This error has been logged to the server console for server administrator to review.": "&c[Smiley Player Trader] We were unable to load your settings. This error has been logged to the server console for server administrator to review.",
+  "&aToggled trading on.": "&aToggled trading on.",
+  "&aToggled trading &coff.": "&aToggled trading &coff.",
+  "&aToggled combat warning on.": "&aToggled combat warning on.",
+  "&aToggled combat warning &coff.": "&aToggled combat warning &coff.",
+  "&aReleased combat lock. Trading is re-enabled.": "&aReleased combat lock. Trading is re-enabled.",
+  "&cYou are not currently combat locked.": "&cYou are not currently combat locked.",
+  "&7Player trading has been temporarily disabled while you are in combat. Use &f/spt combatwarn &7to disable this notice. Use &f/spt releasecombatlock &7to re-enable trading early.": "&7Player trading has been temporarily disabled while you are in combat. Use &f/spt combatwarn &7to disable this notice. Use &f/spt releasecombatlock &7to re-enable trading early."
 }

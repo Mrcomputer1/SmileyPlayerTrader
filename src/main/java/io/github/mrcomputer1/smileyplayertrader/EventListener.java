@@ -8,11 +8,13 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
@@ -26,6 +28,8 @@ public class EventListener implements Listener {
             return;
         }
         if(!e.getPlayer().hasPermission("smileyplayertrader.trade"))
+            return;
+        if(!SmileyPlayerTrader.getInstance().getPlayerConfig().getPlayer(e.getPlayer()).tradeToggle || SmileyPlayerTrader.getInstance().getPlayerConfig().isLocked(e.getPlayer()))
             return;
 
         if(e.getRightClicked().getType() == EntityType.PLAYER){
@@ -91,6 +95,29 @@ public class EventListener implements Listener {
                 if (SmileyPlayerTrader.getInstance().getUpdateChecker().isOutdated) {
                     e.getPlayer().sendMessage(I18N.translate("&e[Smiley Player Trader] Plugin is outdated! Latest version is %0%. It is recommended to download the update.", SmileyPlayerTrader.getInstance().getUpdateChecker().upToDateVersion));
                 }
+            }
+        }
+
+        SmileyPlayerTrader.getInstance().getPlayerConfig().loadPlayer(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent e){
+        SmileyPlayerTrader.getInstance().getPlayerConfig().unloadPlayer(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onEntityTakeDamageByEntity(EntityDamageByEntityEvent e) {
+        if(SmileyPlayerTrader.getInstance().getConfig().getStringList("disabledWorlds").contains(e.getEntity().getWorld().getName())){
+            return;
+        }
+
+        if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("autoCombatLock.enabled", true)) {
+            if (e.getDamager() instanceof Player) {
+                SmileyPlayerTrader.getInstance().getPlayerConfig().lockPlayer((Player) e.getDamager());
+            }
+            if (e.getEntity() instanceof Player){
+                SmileyPlayerTrader.getInstance().getPlayerConfig().lockPlayer((Player) e.getEntity());
             }
         }
     }

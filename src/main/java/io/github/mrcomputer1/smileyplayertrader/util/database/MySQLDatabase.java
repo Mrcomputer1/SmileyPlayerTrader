@@ -100,4 +100,16 @@ public class MySQLDatabase extends AbstractDatabase {
         }
     }
 
+    @Override
+    protected void upgrade(int version) {
+        if(version == 1){
+            run("ALTER TABLE products RENAME TO " + this.getDatabasePrefix() + "products");
+        }else if(version == 2){
+            run("CREATE TABLE IF NOT EXISTS " + this.getDatabasePrefix() + "settings (" +
+                    "player VARCHAR(36) PRIMARY KEY NOT NULL," +
+                    "trade_toggle BOOLEAN DEFAULT 1 NOT NULL," +
+                    "combat_notice_toggle BOOLEAN DEFAULT 1 NOT NULL)");
+        }
+    }
+
 }

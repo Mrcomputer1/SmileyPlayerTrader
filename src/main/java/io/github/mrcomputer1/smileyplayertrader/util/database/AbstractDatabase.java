@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 public abstract class AbstractDatabase {
 
-    protected static int dbVersion = 2;
+    protected static int dbVersion = 3;
 
     public abstract long getInsertId();
     public abstract void run(String sql, Object... objs);
@@ -60,11 +60,6 @@ public abstract class AbstractDatabase {
         }
     }
 
-    private void upgrade(int version){ // version is old version
-        // do upgrades for version
-        if(version == 1){
-            run("ALTER TABLE products RENAME TO " + this.getDatabasePrefix() + "products");
-        }
-    }
+    protected abstract void upgrade(int version); // version is old version
 
 }

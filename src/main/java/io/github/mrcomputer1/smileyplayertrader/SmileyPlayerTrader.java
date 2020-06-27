@@ -25,6 +25,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
 
     private AbstractDatabase db;
     private StatementHandler statementHandler;
+    private PlayerConfig playerConfig;
     private I18N i18n;
     private UpdateChecker updateChecker = null;
     private IMCVersion nms = null;
@@ -82,8 +83,13 @@ public class SmileyPlayerTrader extends JavaPlugin {
         if(shouldCreateTables) {
             this.statementHandler.run(StatementHandler.StatementType.CREATE_PRODUCT_TABLE);
             this.statementHandler.run(StatementHandler.StatementType.CREATE_META_TABLE);
+            this.statementHandler.run(StatementHandler.StatementType.CREATE_SETTINGS_TABLE);
         }
         this.db.upgrade();
+
+        this.playerConfig = new PlayerConfig();
+        if(Bukkit.getOnlinePlayers().size() != 0)
+            this.playerConfig.reloadPlayers();
 
         CommandSmileyPlayerTrader cspt = new CommandSmileyPlayerTrader();
         getCommand("smileyplayertrader").setExecutor(cspt);
@@ -120,5 +126,9 @@ public class SmileyPlayerTrader extends JavaPlugin {
 
     public IMCVersion getNMS(){
         return this.nms;
+    }
+
+    public PlayerConfig getPlayerConfig(){
+        return this.playerConfig;
     }
 }

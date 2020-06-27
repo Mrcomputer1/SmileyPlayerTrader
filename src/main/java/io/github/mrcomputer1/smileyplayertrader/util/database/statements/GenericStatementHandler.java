@@ -30,6 +30,9 @@ public class GenericStatementHandler implements StatementHandler {
         statements.put(StatementType.FIND_PRODUCTS_IN_PAGES, "SELECT id, product, enabled FROM $prefix$products WHERE merchant=? LIMIT ? OFFSET ?");
         statements.put(StatementType.SET_PRODUCT_COST_COST2, "UPDATE $prefix$products SET product=?, cost1=?, cost2=? WHERE id=?");
         statements.put(StatementType.GET_ENABLED, "SELECT enabled FROM $prefix$products WHERE id=?");
+        statements.put(StatementType.LOAD_PLAYER_CONFIG, "SELECT * FROM $prefix$settings WHERE player=?");
+        statements.put(StatementType.CREATE_DEFAULT_PLAYER_CONFIG, "INSERT INTO $prefix$settings (player) VALUES (?)");
+        statements.put(StatementType.UPDATE_PLAYER_CONFIG, "UPDATE $prefix$settings SET trade_toggle=?, combat_notice_toggle=? WHERE player=?");
     }
 
     @Override
