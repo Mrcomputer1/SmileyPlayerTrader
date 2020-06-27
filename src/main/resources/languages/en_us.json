@@ -103,5 +103,6 @@
   "&7Player trading has been temporarily disabled while you are in combat. Use &f/spt combatwarn &7to disable this notice. Use &f/spt releasecombatlock &7to re-enable trading early.": "&7Player trading has been temporarily disabled while you are in combat. Use &f/spt combatwarn &7to disable this notice. Use &f/spt releasecombatlock &7to re-enable trading early.",
   "&cBad Syntax! &f/spt trade <name>": "&cBad Syntax! &f/spt trade <name>",
   "&cYou don't have permission to remote trade.": "&cYou don't have permission to remote trade.",
-  "&cYou cannot trade with offline players.": "&cYou cannot trade with offline players."
+  "&cYou cannot trade with offline players.": "&cYou cannot trade with offline players.",
+  "&c%0% isn't a valid item.": "&c%0% isn't a valid item."
 }

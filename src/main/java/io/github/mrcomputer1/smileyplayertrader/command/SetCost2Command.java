@@ -52,6 +52,11 @@ public class SetCost2Command implements ICommand{
                 sender.sendMessage(I18N.translate("&aSecondary cost set!"));
             }else if(args.length >= 2){
                 Material material = Material.matchMaterial(args[1]);
+                if(material == null || !material.isItem() || material.isAir()) {
+                    sender.sendMessage(I18N.translate("&c%0% isn't a valid item.", args[1]));
+                    return;
+                }
+
                 int count = 1;
                 try {
                     count = args.length > 2 ? Integer.parseInt(args[2]) : 1;

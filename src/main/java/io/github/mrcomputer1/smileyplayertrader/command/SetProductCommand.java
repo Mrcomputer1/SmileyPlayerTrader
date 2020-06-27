@@ -16,7 +16,7 @@ public class SetProductCommand implements ICommand{
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         if(args.length < 1){
-            sender.sendMessage(I18N.translate("&cBad Syntax! &f/spt setcost2 <id> [material] [count]"));
+            sender.sendMessage(I18N.translate("&cBad Syntax! &f/spt setproduct <id> [material] [count]"));
             return;
         }
 
@@ -52,6 +52,11 @@ public class SetProductCommand implements ICommand{
                 sender.sendMessage(I18N.translate("&aProduct set!"));
             }else if(args.length >= 2){
                 Material material = Material.matchMaterial(args[1]);
+                if(material == null || !material.isItem() || material.isAir()) {
+                    sender.sendMessage(I18N.translate("&c%0% isn't a valid item.", args[1]));
+                    return;
+                }
+
                 int count = 1;
                 try {
                     count = args.length > 2 ? Integer.parseInt(args[2]) : 1;
