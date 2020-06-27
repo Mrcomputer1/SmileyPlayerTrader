@@ -50,6 +50,10 @@ public class EventListener implements Listener {
             if(e.getView().getTitle().startsWith(I18N.translate("&2Villager Store: ")) && e.getSlot() == 2){
                 MerchantInventory mi = (MerchantInventory)e.getInventory();
                 Player store = Bukkit.getPlayer(e.getView().getTitle().replace(I18N.translate("&2Villager Store: "), ""));
+                if(store == null || !store.isOnline()){
+                    e.getWhoClicked().sendMessage(I18N.translate("&cYou cannot trade with offline players."));
+                    return;
+                }
                 if(mi.getSelectedRecipe() == null){
                     return;
                 }
