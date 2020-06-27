@@ -1,5 +1,5 @@
 {
-  "$$version$$": 2,
+  "$$version$$": 3,
   "&e%0% is now trading with you.": "&e%0% is now trading with you.",
   "&2Villager Store: ": "&2Villager Store: ",
   "&aThanks for your purchase, %0%": "&aThanks for your purchase, %0%",
@@ -91,5 +91,6 @@
   "&cDelete Product": "&cDelete Product",
   "&aDon't Delete Product": "&aDon't Delete Product",
   "&2Delete Product %0%": "&2Delete Product %0%",
-  "&f/spt version &e- Get version": "&f/spt version &e- Get version"
+  "&f/spt version &e- Get version": "&f/spt version &e- Get version",
+  "&cYou must be running this command from a player.": "&cYou must be running this command from a player."
 }

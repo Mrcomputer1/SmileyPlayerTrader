@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 public class SmileyPlayerTrader extends JavaPlugin {
@@ -84,7 +85,9 @@ public class SmileyPlayerTrader extends JavaPlugin {
         }
         this.db.upgrade();
 
-        getCommand("smileyplayertrader").setExecutor(new CommandSmileyPlayerTrader());
+        CommandSmileyPlayerTrader cspt = new CommandSmileyPlayerTrader();
+        getCommand("smileyplayertrader").setExecutor(cspt);
+        getCommand("smileyplayertrader").setTabCompleter(cspt);
 
         Bukkit.getPluginManager().registerEvents(new EventListener(), this);
         if(getConfig().getBoolean("useGuiManager", true)){
