@@ -28,11 +28,6 @@
                             <shadedPattern>io.github.mrcomputer1.smileyplayertrader.shades.org.bstats</shadedPattern>
                         </relocation>
                     </relocations>
-                    <!--<artifactSet>
-                        <includes>
-                            <include>org.bstats:bstats-bukkit</include>
-                        </includes>
-                    </artifactSet>-->
                 </configuration>
                 <executions>
                     <execution>
