@@ -30,6 +30,18 @@
             "bugs": [
                 "rMhRD9kK7nVmwHIf"
             ]
+        },
+        "1.2.1": {
+            "supports": [
+                "1.15",
+                "1.15.1",
+                "1.15.2",
+                "1.16.1",
+                "1.16.3"
+            ],
+            "bugs": [
+                "xezfad8tnoqs09N4"
+            ]
         }
     },
     "bugs": {
@@ -38,7 +50,14 @@
             "disable": false,
             "fixedVersion": null,
             "forced": false,
-            "notes": null
+            "notes": "Dupe Glitch / Critical"
+        },
+        "xezfad8tnoqs09N4": {
+            "link": "https://github.com/Mrcomputer1/SmileyPlayerTrader/issues/2",
+            "disable": true,
+            "fixedVersion": "1.2.1",
+            "forced": false,
+            "notes": "Test"
         }
     }
 }
