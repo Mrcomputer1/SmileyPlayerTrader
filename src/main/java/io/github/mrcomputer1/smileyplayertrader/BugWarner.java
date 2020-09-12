@@ -62,7 +62,7 @@ public class BugWarner {
                 }
             }
 
-            if (SmileyPlayerTrader.getInstance().getConfig().getBoolean("checkForBugs.disable", false)) {
+            if (SmileyPlayerTrader.getInstance().getConfig().getBoolean("checkForBugs.disable", false) && disable) {
                 SmileyPlayerTrader.getInstance().getLogger().severe("Disabling due to bugs...");
                 Bukkit.getPluginManager().disablePlugin(SmileyPlayerTrader.getInstance());
                 return true;
