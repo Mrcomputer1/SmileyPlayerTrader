@@ -48,6 +48,10 @@ public class EventListener implements Listener {
     public void onInventoryClick(InventoryClickEvent e){
         if(e.getView().getType() == InventoryType.MERCHANT){
             if(e.getView().getTitle().startsWith(I18N.translate("&2Villager Store: ")) && e.getSlot() == 2){
+                if(e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT){
+                    e.setCancelled(true);
+                    return;
+                }
                 MerchantInventory mi = (MerchantInventory)e.getInventory();
                 Player store = Bukkit.getPlayer(e.getView().getTitle().replace(I18N.translate("&2Villager Store: "), ""));
                 if(store == null || !store.isOnline()){
@@ -76,9 +80,7 @@ public class EventListener implements Listener {
                             cost2.setAmount(cost2.getAmount() - mi.getSelectedRecipe().getIngredients().get(1).getAmount());
                         }
                         InventoryView iv = e.getWhoClicked().openMerchant(mi.getMerchant(), true);
-                        if(e.getClick() != ClickType.SHIFT_LEFT || e.getClick() != ClickType.SHIFT_RIGHT) {
-                            iv.setCursor(mi.getSelectedRecipe().getResult());
-                        }
+                        iv.setCursor(mi.getSelectedRecipe().getResult());
                     }
                 }else{
                     e.getWhoClicked().sendMessage(I18N.translate("&cThis item is out of stock!"));

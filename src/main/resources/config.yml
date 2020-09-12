@@ -26,6 +26,11 @@ database:
 # Check for updates
 checkForUpdates: true
 
+# Check for known bugs and warn you about them
+checkForBugs:
+  check: false # Checks for known bugs, and warns you about them
+  disable: false # Disables the plugin automatically if a possibly bad bug (such as a duplication bug) is found
+
 # Enables/Disables the GUI Manager
 useGuiManager: true
 

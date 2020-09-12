@@ -2,6 +2,7 @@ package io.github.mrcomputer1.smileyplayertrader.gui;
 
 import io.github.mrcomputer1.smileyplayertrader.util.GUIUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -83,11 +84,13 @@ public class GUISetCost extends AbstractGUI {
                 if (!this.cost1.getType().isAir() && this.cost1.equals(e.getCurrentItem())) {
                     this.getInventory().setItem(22, null);
                     this.cost1 = new ItemStack(Material.AIR);
+                    return true;
                 }
-            }else{
+            }else {
                 if (!this.cost2.getType().isAir() && this.cost2.equals(e.getCurrentItem())) {
                     this.getInventory().setItem(22, null);
                     this.cost2 = new ItemStack(Material.AIR);
+                    return true;
                 }
             }
             return false;

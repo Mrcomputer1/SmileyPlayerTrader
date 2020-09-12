@@ -28,6 +28,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
     private PlayerConfig playerConfig;
     private I18N i18n;
     private UpdateChecker updateChecker = null;
+    private BugWarner bugWarner = null;
     private IMCVersion nms = null;
 
     private Metrics metrics = null;
@@ -62,6 +63,13 @@ public class SmileyPlayerTrader extends JavaPlugin {
         if(getConfig().getBoolean("checkForUpdates", true)){
             this.updateChecker = new UpdateChecker();
             this.updateChecker.checkForUpdates();
+        }
+
+        if(getConfig().getBoolean("checkForBugs.check", false)){
+            this.bugWarner = new BugWarner();
+            boolean b = this.bugWarner.checkForBugs();
+            if(b)
+                return;
         }
 
         this.nms = ReflectionUtil.getVersion();
@@ -122,6 +130,10 @@ public class SmileyPlayerTrader extends JavaPlugin {
 
     public UpdateChecker getUpdateChecker(){
         return this.updateChecker;
+    }
+
+    public BugWarner getBugWarner(){
+        return this.bugWarner;
     }
 
     public IMCVersion getNMS(){

@@ -90,6 +90,7 @@ public class GUIProduct extends AbstractGUI {
             if(!this.stack.getType().isAir() && this.stack.equals(e.getCurrentItem())){
                 this.getInventory().setItem(22 , null);
                 this.stack = new ItemStack(Material.AIR);
+                return true;
             }
             return false;
 
