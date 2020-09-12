@@ -15,29 +15,5 @@
     "1.16.2": {
       "latest": "1.2.0"
     }
-  },
-    "warning":null,
-  "releases":{
-    "1.0.0":{
-      "supports":["1.15","1.15.1"],
-      "bugs":["rMhRD9kK7nVmwHIf"]
-    },
-    "1.1.0":{
-      "supports":["1.15","1.15.1","1.15.2"],
-      "bugs":["rMhRD9kK7nVmwHIf"]
-    },
-    "1.2.0":{
-      "supports":["1.15","1.15.1","1.15.2","1.16.1"],
-      "bugs":["rMhRD9kK7nVmwHIf"]
-    }
-  },
-  "bugs":{
-    "rMhRD9kK7nVmwHIf":{
-      "link":"https://github.com/Mrcomputer1/SmileyPlayerTrader/issues/2",
-      "disable":false,
-      "fixedVersion":null,
-      "forced":false,
-      "notes":null
-    }
   }
 }
