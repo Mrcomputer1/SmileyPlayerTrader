@@ -33,7 +33,7 @@ public class BugWarner {
 
             String pluginVersion = SmileyPlayerTrader.getInstance().getDescription().getVersion();
             if (versions.has(pluginVersion)) {
-                versions.getAsJsonArray(pluginVersion).forEach(e -> {
+                versions.getAsJsonObject(pluginVersion).getAsJsonArray("bugs").forEach(e -> {
                     bugsFound.add(e.getAsString());
                 });
             }
