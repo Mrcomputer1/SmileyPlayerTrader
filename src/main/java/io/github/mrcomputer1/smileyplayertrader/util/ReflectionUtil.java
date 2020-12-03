@@ -1,10 +1,7 @@
 package io.github.mrcomputer1.smileyplayertrader.util;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
-import io.github.mrcomputer1.smileyplayertrader.versions.IMCVersion;
-import io.github.mrcomputer1.smileyplayertrader.versions.MCVersion1_15;
-import io.github.mrcomputer1.smileyplayertrader.versions.MCVersion1_16;
-import io.github.mrcomputer1.smileyplayertrader.versions.MCVersion1_16_R2;
+import io.github.mrcomputer1.smileyplayertrader.versions.*;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,8 +17,10 @@ public class ReflectionUtil {
             return new MCVersion1_15();
         }else if(versionParts[1].equalsIgnoreCase("16") && (versionParts.length < 3 || versionParts[2].equalsIgnoreCase("1"))){ // 1.16.1
             return new MCVersion1_16();
-        }else if(versionParts[1].equalsIgnoreCase("16") && versionParts.length >= 3){ // 1.16.2, 1.16.3
+        }else if(versionParts[1].equalsIgnoreCase("16") && (versionParts[2].equalsIgnoreCase("2") || versionParts[2].equalsIgnoreCase("3"))){ // 1.16.2, 1.16.3
             return new MCVersion1_16_R2();
+        }else if(versionParts[1].equalsIgnoreCase("16") && (versionParts[2].equalsIgnoreCase("4"))){ // 1.16.4
+            return new MCVersion1_16_R3();
         }
         return null;
     }
