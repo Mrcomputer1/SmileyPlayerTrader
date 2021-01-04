@@ -16,7 +16,8 @@
                 "1.15.2"
             ],
             "bugs": [
-                "rMhRD9kK7nVmwHIf"
+                "rMhRD9kK7nVmwHIf",
+                "gY1NbdMMOGaMVCdF"
             ]
         },
         "1.2.0": {
@@ -27,7 +28,8 @@
                 "1.16.1"
             ],
             "bugs": [
-                "rMhRD9kK7nVmwHIf"
+                "rMhRD9kK7nVmwHIf",
+                "gY1NbdMMOGaMVCdF"
             ]
         },
         "1.2.1": {
@@ -40,6 +42,7 @@
                 "1.16.3"
             ],
             "bugs": [
+                "gY1NbdMMOGaMVCdF"
             ]
         },
         "1.2.2": {
@@ -53,6 +56,7 @@
                 "1.16.4"
             ],
             "bugs": [
+                "gY1NbdMMOGaMVCdF"
             ]
         }
     },
@@ -61,6 +65,11 @@
             "link": "https://github.com/Mrcomputer1/SmileyPlayerTrader/issues/2",
             "disable": true,
             "fixedVersion": "1.2.1",
+            "notes": "Dupe Glitch / Critical"
+        },
+        "gY1NbdMMOGaMVCdF": {
+            "link": "https://github.com/Mrcomputer1/SmileyPlayerTrader/issues/6",
+            "disable": true,
             "notes": "Dupe Glitch / Critical"
         }
     }
