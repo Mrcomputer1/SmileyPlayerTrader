@@ -1,5 +1,6 @@
 package io.github.mrcomputer1.smileyplayertrader.gui;
 
+import com.google.common.primitives.Ints;
 import io.github.mrcomputer1.smileyplayertrader.util.GUIUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import org.bukkit.Bukkit;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 public class GUISetCost extends AbstractGUI {
@@ -23,7 +25,7 @@ public class GUISetCost extends AbstractGUI {
     private int page;
 
     private static ItemStack BORDER = AbstractGUI.createItem(Material.BLACK_STAINED_GLASS_PANE, 1, ChatColor.RESET.toString());
-    private static ItemStack INSERT_LBL = AbstractGUI.createItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 1, I18N.translate("&eInsert price"));
+    private static ItemStack INSERT_LBL = AbstractGUI.createItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 1, I18N.translate("&eInsert Price"));
     private static ItemStack IRON_BTN = AbstractGUI.createItemWithLore(Material.IRON_INGOT, 1, I18N.translate("&7Iron"), I18N.translate("&eClick to increase value"), I18N.translate("&eRight Click to decrease value"));
     private static ItemStack GOLD_BTN = AbstractGUI.createItemWithLore(Material.GOLD_INGOT, 1, I18N.translate("&6Gold"), I18N.translate("&eClick to increase value"), I18N.translate("&eRight Click to decrease value"));
     private static ItemStack EMERALD_BTN = AbstractGUI.createItemWithLore(Material.EMERALD, 1, I18N.translate("&aEmerald"), I18N.translate("&eClick to increase value"), I18N.translate("&eRight Click to decrease value"));
@@ -77,6 +79,13 @@ public class GUISetCost extends AbstractGUI {
 
     @Override
     public boolean click(InventoryClickEvent e) {
+        if(e.getClick() == ClickType.DOUBLE_CLICK || e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT){ // Cancel double clicks and shift clicks
+            return true;
+        }
+        if(e.getRawSlot() == InventoryView.OUTSIDE){ // Disallow dropping items out of inventory
+            return true;
+        }
+
         if(e.getRawSlot() == 22){
 
             // Input Slot
@@ -116,9 +125,13 @@ public class GUISetCost extends AbstractGUI {
             }
             if (this.getInventory().getItem(22) != null && this.getInventory().getItem(22).getType() == Material.IRON_INGOT) {
                 if(e.getClick() == ClickType.LEFT) {
-                    this.getInventory().getItem(22).setAmount(this.getInventory().getItem(22).getAmount() + 1);
+                    this.getInventory().getItem(22).setAmount(
+                            Ints.constrainToRange(this.getInventory().getItem(22).getAmount() + 1, 0,
+                                    this.getInventory().getItem(22).getMaxStackSize()));
                 }else if(e.getClick() == ClickType.RIGHT){
-                    this.getInventory().getItem(22).setAmount(this.getInventory().getItem(22).getAmount() - 1);
+                    this.getInventory().getItem(22).setAmount(
+                            Ints.constrainToRange(this.getInventory().getItem(22).getAmount() - 1, 0,
+                                    this.getInventory().getItem(22).getMaxStackSize()));
                 }
             }else{
                 this.getInventory().setItem(22, new ItemStack(Material.IRON_INGOT));
@@ -143,9 +156,13 @@ public class GUISetCost extends AbstractGUI {
             }
             if (this.getInventory().getItem(22) != null && this.getInventory().getItem(22).getType() == Material.GOLD_INGOT) {
                 if(e.getClick() == ClickType.LEFT) {
-                    this.getInventory().getItem(22).setAmount(this.getInventory().getItem(22).getAmount() + 1);
+                    this.getInventory().getItem(22).setAmount(
+                            Ints.constrainToRange(this.getInventory().getItem(22).getAmount() + 1, 0,
+                                    this.getInventory().getItem(22).getMaxStackSize()));
                 }else if(e.getClick() == ClickType.RIGHT){
-                    this.getInventory().getItem(22).setAmount(this.getInventory().getItem(22).getAmount() - 1);
+                    this.getInventory().getItem(22).setAmount(
+                            Ints.constrainToRange(this.getInventory().getItem(22).getAmount() - 1, 0,
+                                    this.getInventory().getItem(22).getMaxStackSize()));
                 }
             }else{
                 this.getInventory().setItem(22, new ItemStack(Material.GOLD_INGOT));
@@ -170,9 +187,13 @@ public class GUISetCost extends AbstractGUI {
             }
             if (this.getInventory().getItem(22) != null && this.getInventory().getItem(22).getType() == Material.EMERALD) {
                 if(e.getClick() == ClickType.LEFT) {
-                    this.getInventory().getItem(22).setAmount(this.getInventory().getItem(22).getAmount() + 1);
+                    this.getInventory().getItem(22).setAmount(
+                            Ints.constrainToRange(this.getInventory().getItem(22).getAmount() + 1, 0,
+                                    this.getInventory().getItem(22).getMaxStackSize()));
                 }else if(e.getClick() == ClickType.RIGHT){
-                    this.getInventory().getItem(22).setAmount(this.getInventory().getItem(22).getAmount() - 1);
+                    this.getInventory().getItem(22).setAmount(
+                            Ints.constrainToRange(this.getInventory().getItem(22).getAmount() - 1, 0,
+                                    this.getInventory().getItem(22).getMaxStackSize()));
                 }
             }else{
                 this.getInventory().setItem(22, new ItemStack(Material.EMERALD));
@@ -197,9 +218,13 @@ public class GUISetCost extends AbstractGUI {
             }
             if (this.getInventory().getItem(22) != null && this.getInventory().getItem(22).getType() == Material.DIAMOND) {
                 if(e.getClick() == ClickType.LEFT) {
-                    this.getInventory().getItem(22).setAmount(this.getInventory().getItem(22).getAmount() + 1);
+                    this.getInventory().getItem(22).setAmount(
+                            Ints.constrainToRange(this.getInventory().getItem(22).getAmount() + 1, 0,
+                                    this.getInventory().getItem(22).getMaxStackSize()));
                 }else if(e.getClick() == ClickType.RIGHT){
-                    this.getInventory().getItem(22).setAmount(this.getInventory().getItem(22).getAmount() - 1);
+                    this.getInventory().getItem(22).setAmount(
+                            Ints.constrainToRange(this.getInventory().getItem(22).getAmount() - 1, 0,
+                                    this.getInventory().getItem(22).getMaxStackSize()));
                 }
             }else{
                 this.getInventory().setItem(22, new ItemStack(Material.DIAMOND));
