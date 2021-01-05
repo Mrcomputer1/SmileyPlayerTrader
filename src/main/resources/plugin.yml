@@ -4,7 +4,7 @@ version: "${project.version}"
 api-version: "1.15"
 authors:
   - Mrcomputer1
-  - sc15
+  - Semisol
 main: io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader
 commands:
   smileyplayertrader:
