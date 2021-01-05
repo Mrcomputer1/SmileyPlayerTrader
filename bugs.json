@@ -70,7 +70,8 @@
         "gY1NbdMMOGaMVCdF": {
             "link": "https://github.com/Mrcomputer1/SmileyPlayerTrader/issues/6",
             "disable": true,
-            "notes": "Dupe Glitch / Critical"
+            "notes": "Dupe Glitch / Critical",
+            "fixedVersion": "1.2.3"
         }
     }
 }
