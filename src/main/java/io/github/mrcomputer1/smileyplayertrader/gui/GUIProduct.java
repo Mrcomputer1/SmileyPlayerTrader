@@ -131,7 +131,7 @@ public class GUIProduct extends AbstractGUI {
                             stackBytes, costBytes, cost2Bytes, this.productId);
                 } else {
                     SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.ADD_PRODUCT,
-                            this.player.getUniqueId().toString(), stackBytes, costBytes, cost2Bytes, true);
+                            this.player.getUniqueId().toString(), stackBytes, costBytes, cost2Bytes, true, true);
                 }
 
                 GUIManager.getInstance().openGUI(this.player, new GUIListItems(this.page));

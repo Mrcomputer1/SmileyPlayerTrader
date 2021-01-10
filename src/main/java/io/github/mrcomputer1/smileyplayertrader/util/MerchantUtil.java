@@ -70,6 +70,10 @@ public class MerchantUtil {
                     mr.setUses(Integer.MAX_VALUE);
                 }
 
+                if(!set.getBoolean("available")){
+                    mr.setUses(Integer.MAX_VALUE);
+                }
+
                 recipes.add(mr);
             }
         } catch (SQLException e) {

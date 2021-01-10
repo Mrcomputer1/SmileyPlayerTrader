@@ -23,7 +23,8 @@ public class SQLiteStatementHandler implements StatementHandler {
                 "cost1 BLOB," +
                 "cost2 BLOB," +
                 "product BLOB," +
-                "enabled BOOLEAN DEFAULT 0 NOT NULL)");
+                "enabled BOOLEAN DEFAULT 0 NOT NULL," +
+                "available BOOLEAN DEFAULT 0 NOT NULL)");
         statements.put(StatementType.CREATE_SETTINGS_TABLE, "CREATE TABLE IF NOT EXISTS $prefix$settings (" +
                 "player TEXT NOT NULL," +
                 "trade_toggle BOOLEAN DEFAULT 1 NOT NULL," +

@@ -15,6 +15,7 @@ public interface StatementHandler {
          * cost1 (nbt blob),
          * cost2 (nbt blob),
          * enabled (boolean)
+         * available (boolean)
          */
         ADD_PRODUCT,
 
@@ -95,7 +96,12 @@ public interface StatementHandler {
          * combat_notice_toggle (boolean)
          * player (uuid)
          */
-        UPDATE_PLAYER_CONFIG
+        UPDATE_PLAYER_CONFIG,
+
+        /**
+         * id (int)
+         */
+        HIDE_PRODUCT
     }
 
     void run(StatementType type, Object... objs);

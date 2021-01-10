@@ -108,6 +108,8 @@ public class MySQLDatabase extends AbstractDatabase {
                     "player VARCHAR(36) PRIMARY KEY NOT NULL," +
                     "trade_toggle BOOLEAN DEFAULT 1 NOT NULL," +
                     "combat_notice_toggle BOOLEAN DEFAULT 1 NOT NULL)");
+        }else if(version == 3){
+            run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN available BOOLEAN DEFAULT 1 NOT NULL");
         }
     }
 

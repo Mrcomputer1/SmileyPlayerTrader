@@ -73,14 +73,29 @@ public class ListCommand implements ICommand{
                         cost2s = I18N.translate(", Cost 2: %0%x %1%", cost2.getAmount(), cost2.getType());
                     }
                 }
-                if(set.getBoolean("enabled")) {
+
+                String enabled;
+                if(set.getBoolean("enabled")){
+                    enabled = I18N.translate(", Enabled: YES");
+                }else{
+                    enabled = I18N.translate(", Enabled: NO");
+                }
+
+                String available;
+                if(set.getBoolean("available")){
+                    available = I18N.translate(", Available: YES");
+                }else{
+                    available = I18N.translate(", Available: NO");
+                }
+
+                if(set.getBoolean("enabled") && set.getBoolean("available")) {
                     if (isStocked) {
-                        sender.sendMessage(I18N.translate("&e - %0% %1% %2% %3%, Enabled: YES", set.getLong("id"), products, cost1s, cost2s));
+                        sender.sendMessage(I18N.translate("&e - %0% %1% %2% %3% %4% %5%", set.getLong("id"), products, cost1s, cost2s, enabled, available));
                     } else {
-                        sender.sendMessage(I18N.translate("&c - [OUT OF STOCK] %0% %1% %2% %3%, Enabled: YES", set.getLong("id"), products, cost1s, cost2s));
+                        sender.sendMessage(I18N.translate("&c - [OUT OF STOCK] %0% %1% %2% %3% %4% %5%", set.getLong("id"), products, cost1s, cost2s, enabled, available));
                     }
                 }else{
-                    sender.sendMessage(I18N.translate("&4 - %0% %1% %2% %3%, Enabled: NO", set.getLong("id"), products, cost1s, cost2s));
+                    sender.sendMessage(I18N.translate("&4 - %0% %1% %2% %3% %4% %5%", set.getLong("id"), products, cost1s, cost2s, enabled, available));
                 }
             }
         } catch (SQLException e) {

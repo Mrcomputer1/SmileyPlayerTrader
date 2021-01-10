@@ -15,6 +15,9 @@ public class HelpCommand implements ICommand {
         sender.sendMessage(I18N.translate("&f/spt setproduct <id> [material] [count] &e- Set the product itself"));
         sender.sendMessage(I18N.translate("&f/spt enable <id> &e- Enable the product"));
         sender.sendMessage(I18N.translate("&f/spt disable <id> &e- Disable the product"));
+        sender.sendMessage(I18N.translate("&f/spt show <id> &e- Show a product"));
+        sender.sendMessage(I18N.translate("&f/spt hide <id> &e- Hide a product"));
+        sender.sendMessage(I18N.translate("&f/spt trade <player> &e- Remote or offline trade with a player"));
         sender.sendMessage(I18N.translate("&f/spt version &e- Get version"));
         sender.sendMessage(I18N.translate("&e&lSmiley Player Trader - Help"));
     }

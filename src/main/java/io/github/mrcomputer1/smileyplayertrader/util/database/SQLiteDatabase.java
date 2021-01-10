@@ -109,6 +109,8 @@ public class SQLiteDatabase extends AbstractDatabase {
                     "player TEXT NOT NULL," +
                     "trade_toggle BOOLEAN DEFAULT 1 NOT NULL," +
                     "combat_notice_toggle BOOLEAN DEFAULT 1 NOT NULL)");
+        }else if(version == 3){
+            run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN available BOOLEAN DEFAULT 1 NOT NULL");
         }
     }
 

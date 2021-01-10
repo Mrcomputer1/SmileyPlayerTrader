@@ -106,7 +106,7 @@ public class GUIListItems extends AbstractGUI {
 
                 }else if(e.getClick() == ClickType.RIGHT){
 
-                    // Right Click - Enable/Disable
+                    // Right Click - Enable/Disable/Show/Hide
                     GUIManager.getInstance().openGUI(this.player, new GUIEnableDisableProduct(this.page, id));
 
                 }else if(e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT){
@@ -152,11 +152,12 @@ public class GUIListItems extends AbstractGUI {
                 lore.add(I18N.translate("&eProduct ID: ") + set.getInt("id"));
                 lore.add(I18N.translate("&bClick to &lEdit"));
 
-                if(set.getBoolean("enabled")) {
-                    lore.add(I18N.translate("&bRight Click to &lDisable"));
+                if(set.getBoolean("enabled") && set.getBoolean("available")) {
+                    lore.add(I18N.translate("&bRight Click to &lDisable/Hide"));
                 }else{
-                    lore.add(I18N.translate("&bRight Click to &lEnable"));
+                    lore.add(I18N.translate("&bRight Click to &lEnable/Show"));
                 }
+
                 lore.add(I18N.translate("&bShift Click to &lDelete"));
 
                 im.setLore(lore);
