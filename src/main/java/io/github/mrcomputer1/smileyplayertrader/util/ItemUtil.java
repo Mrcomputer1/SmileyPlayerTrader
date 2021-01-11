@@ -10,8 +10,10 @@ import java.util.HashMap;
 public class ItemUtil {
 
     public static void giveEarnings(Player player, MerchantRecipe recipe){
+        ItemStack first = recipe.getIngredients().get(0);
+        first.setAmount(first.getAmount() + recipe.getSpecialPrice());
         if(recipe.getIngredients().size() == 1){
-            HashMap<Integer, ItemStack> errs = player.getInventory().addItem(recipe.getIngredients().get(0));
+            HashMap<Integer, ItemStack> errs = player.getInventory().addItem(first);
             for(ItemStack v : errs.values()){
                 HashMap<Integer, ItemStack> errs2 = player.getEnderChest().addItem(v);
                 for(ItemStack v2 : errs2.values()){
@@ -19,7 +21,7 @@ public class ItemUtil {
                 }
             }
         }else{
-            HashMap<Integer, ItemStack> errs = player.getInventory().addItem(recipe.getIngredients().get(0), recipe.getIngredients().get(1));
+            HashMap<Integer, ItemStack> errs = player.getInventory().addItem(first, recipe.getIngredients().get(1));
             for(ItemStack v : errs.values()){
                 HashMap<Integer, ItemStack> errs2 = player.getEnderChest().addItem(v);
                 for(ItemStack v2 : errs2.values()){
