@@ -111,6 +111,7 @@ public class SQLiteDatabase extends AbstractDatabase {
                     "combat_notice_toggle BOOLEAN DEFAULT 1 NOT NULL)");
         }else if(version == 3){
             run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN available BOOLEAN DEFAULT 1 NOT NULL");
+            run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN special_price INTEGER DEFAULT 0 NOT NULL");
         }
     }
 

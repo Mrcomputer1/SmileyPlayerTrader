@@ -1,11 +1,14 @@
 package io.github.mrcomputer1.smileyplayertrader.util;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
+import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantRecipe;
 import io.github.mrcomputer1.smileyplayertrader.versions.*;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Merchant;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 public class ReflectionUtil {
 
@@ -31,6 +34,10 @@ public class ReflectionUtil {
 
     public static byte[] itemStackToByteArray(ItemStack itemStack) throws InvocationTargetException {
         return SmileyPlayerTrader.getInstance().getNMS().itemStackToByteArray(itemStack);
+    }
+
+    public static void setRecipesOnMerchant(Merchant merchant, List<MerchantRecipe> recipes) throws InvocationTargetException {
+        SmileyPlayerTrader.getInstance().getNMS().setRecipesOnMerchant(merchant, recipes);
     }
 
 }

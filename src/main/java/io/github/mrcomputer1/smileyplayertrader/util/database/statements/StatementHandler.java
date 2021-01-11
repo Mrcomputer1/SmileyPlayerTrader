@@ -16,6 +16,7 @@ public interface StatementHandler {
          * cost2 (nbt blob),
          * enabled (boolean)
          * available (boolean)
+         * special_price (int)
          */
         ADD_PRODUCT,
 
@@ -72,9 +73,10 @@ public interface StatementHandler {
          * product (nbt blob)
          * cost (nbt blob)
          * cost2 (nbt blob)
+         * special_price (int)
          * id (int)
          */
-        SET_PRODUCT_COST_COST2,
+        SET_PRODUCT_COST_COST2_SPECIALPRICE,
 
         /**
          * id (int)
@@ -101,7 +103,13 @@ public interface StatementHandler {
         /**
          * id (int)
          */
-        HIDE_PRODUCT
+        HIDE_PRODUCT,
+
+        /**
+         * discount (int)
+         * id (int)
+         */
+        SET_DISCOUNT
     }
 
     void run(StatementType type, Object... objs);

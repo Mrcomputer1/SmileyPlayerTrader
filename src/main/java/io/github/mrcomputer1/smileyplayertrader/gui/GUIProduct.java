@@ -23,6 +23,7 @@ public class GUIProduct extends AbstractGUI {
     private ItemStack stack = null;
     private ItemStack costStack = null;
     private ItemStack costStack2 = null;
+    private int discount;
     private Player player;
 
     private int page;
@@ -31,18 +32,20 @@ public class GUIProduct extends AbstractGUI {
     private static ItemStack INSERT_PRODUCT_LBL = AbstractGUI.createItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 1, I18N.translate("&bInsert Product"));
     private static ItemStack COST_PRIMARY_BTN = AbstractGUI.createItem(Material.GOLD_INGOT, 1, I18N.translate("&eSet Primary Cost"));
     private static ItemStack COST_SECONDARY_BTN = AbstractGUI.createItem(Material.GOLD_INGOT, 2, I18N.translate("&eSet Secondary Cost (Not Required)"));
+    private static ItemStack DISCOUNT_BTN = AbstractGUI.createItem(Material.IRON_INGOT, 1, I18N.translate("&eSet Optional Discount"));
 
     private static ItemStack CREATE_PRODUCT = AbstractGUI.createItem(Material.EMERALD_BLOCK, 1, I18N.translate("&aCreate Product"));
     private static ItemStack CANCEL_CREATE_PRODUCT = AbstractGUI.createItem(Material.REDSTONE_BLOCK, 1, I18N.translate("&cCancel Product Creation"));
     private static ItemStack UPDATE_PRODUCT = AbstractGUI.createItem(Material.EMERALD_BLOCK, 1, I18N.translate("&aUpdate Product"));
     private static ItemStack CANCEL_UPDATE_PRODUCT = AbstractGUI.createItem(Material.REDSTONE_BLOCK, 1, I18N.translate("&cCancel Product Update"));
 
-    public GUIProduct(int page, boolean isEditing, ItemStack stack, long productId, ItemStack costStack, ItemStack costStack2){
+    public GUIProduct(int page, boolean isEditing, ItemStack stack, long productId, ItemStack costStack, ItemStack costStack2, int discount){
         this.isEditing = isEditing;
         this.productId = productId;
         this.stack = stack;
         this.costStack = costStack;
         this.costStack2 = costStack2;
+        this.discount = discount;
         if(this.stack == null){
             this.stack = new ItemStack(Material.AIR);
         }
@@ -64,7 +67,8 @@ public class GUIProduct extends AbstractGUI {
             this.getInventory().setItem((5 * 9) + 8, CANCEL_CREATE_PRODUCT.clone());
         }
 
-        GUIUtil.fillRow(this.getInventory(), 0, BORDER);
+        GUIUtil.drawLine(this.getInventory(), (0 * 9), 8, BORDER);
+        this.getInventory().setItem((0 * 9) + 8, DISCOUNT_BTN.clone());
 
         GUIUtil.drawLine(this.getInventory(), 1 * 9, 4, BORDER);
         this.getInventory().setItem((1 * 9) + 4, INSERT_PRODUCT_LBL.clone());
@@ -127,11 +131,11 @@ public class GUIProduct extends AbstractGUI {
                 byte[] cost2Bytes = (this.costStack2 == null || this.costStack2.getType().isAir()) ? null : ReflectionUtil.itemStackToByteArray(this.costStack2);
 
                 if (isEditing) {
-                    SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_PRODUCT_COST_COST2,
-                            stackBytes, costBytes, cost2Bytes, this.productId);
+                    SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_PRODUCT_COST_COST2_SPECIALPRICE,
+                            stackBytes, costBytes, cost2Bytes, this.discount, this.productId);
                 } else {
                     SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.ADD_PRODUCT,
-                            this.player.getUniqueId().toString(), stackBytes, costBytes, cost2Bytes, true, true);
+                            this.player.getUniqueId().toString(), stackBytes, costBytes, cost2Bytes, true, true, 0);
                 }
 
                 GUIManager.getInstance().openGUI(this.player, new GUIListItems(this.page));
@@ -155,7 +159,7 @@ public class GUIProduct extends AbstractGUI {
                 this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
             }
             this.stack = this.getInventory().getItem(22);
-            GUIManager.getInstance().openGUI(this.player, new GUISetCost(this.page, true, isEditing, productId, stack, costStack, costStack2));
+            GUIManager.getInstance().openGUI(this.player, new GUISetCost(this.page, true, isEditing, productId, stack, costStack, costStack2, discount));
 
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eSet Secondary Cost (Not Required)"))){
 
@@ -164,7 +168,16 @@ public class GUIProduct extends AbstractGUI {
                 this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
             }
             this.stack = this.getInventory().getItem(22);
-            GUIManager.getInstance().openGUI(this.player, new GUISetCost(this.page, false, isEditing, productId, stack, costStack, costStack2));
+            GUIManager.getInstance().openGUI(this.player, new GUISetCost(this.page, false, isEditing, productId, stack, costStack, costStack2, discount));
+
+        }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eSet Optional Discount"))){
+
+            // Set Discount
+            if(this.getInventory().getItem(22) != null && !this.stack.equals(this.getInventory().getItem(22))){
+                this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
+            }
+            this.stack = this.getInventory().getItem(22);
+            GUIManager.getInstance().openGUI(this.player, new GUIDiscount(this.productId, this.page, this.discount, this.isEditing, this.stack, this.costStack, this.costStack2));
 
         }
         return true;

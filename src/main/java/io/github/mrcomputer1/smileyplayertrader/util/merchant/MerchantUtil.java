@@ -1,12 +1,14 @@
-package io.github.mrcomputer1.smileyplayertrader.util;
+package io.github.mrcomputer1.smileyplayertrader.util.merchant;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
+import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import io.github.mrcomputer1.smileyplayertrader.util.ItemUtil;
+import io.github.mrcomputer1.smileyplayertrader.util.ReflectionUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
-import org.bukkit.inventory.MerchantRecipe;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
@@ -19,7 +21,12 @@ public class MerchantUtil {
     public static Merchant buildMerchant(Player merchant){
         Merchant m = Bukkit.createMerchant(I18N.translate("&2Villager Store: ") + merchant.getName());
 
-        m.setRecipes(getAndBuildRecipes(merchant));
+        try {
+            ReflectionUtil.setRecipesOnMerchant(m, getAndBuildRecipes(merchant));
+        } catch (InvocationTargetException e) {
+            SmileyPlayerTrader.getInstance().getLogger().severe("Failed to build item list for merchant.");
+            e.printStackTrace();
+        }
 
         return m;
     }
@@ -73,6 +80,8 @@ public class MerchantUtil {
                 if(!set.getBoolean("available")){
                     mr.setUses(Integer.MAX_VALUE);
                 }
+
+                mr.setSpecialPrice(-set.getInt("special_price"));
 
                 recipes.add(mr);
             }

@@ -1,7 +1,7 @@
 package io.github.mrcomputer1.smileyplayertrader.command;
 
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
-import io.github.mrcomputer1.smileyplayertrader.util.MerchantUtil;
+import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

@@ -21,6 +21,7 @@ public class GUISetCost extends AbstractGUI {
     private ItemStack product;
     private ItemStack cost1;
     private ItemStack cost2;
+    private int discount;
 
     private int page;
 
@@ -32,7 +33,7 @@ public class GUISetCost extends AbstractGUI {
     private static ItemStack DIAMOND_BTN = AbstractGUI.createItemWithLore(Material.DIAMOND, 1, I18N.translate("&bDiamond"), I18N.translate("&eClick to increase value"), I18N.translate("&eRight Click to decrease value"));
     private static ItemStack OK_BTN = AbstractGUI.createItem(Material.EMERALD_BLOCK, 1, I18N.translate("&aOK"));
 
-    public GUISetCost(int page, boolean primary, boolean editing, long productId, ItemStack product, ItemStack cost1, ItemStack cost2){
+    public GUISetCost(int page, boolean primary, boolean editing, long productId, ItemStack product, ItemStack cost1, ItemStack cost2, int discount){
         this.primary = primary;
         this.editing = editing;
         this.productId = productId;
@@ -40,6 +41,7 @@ public class GUISetCost extends AbstractGUI {
         this.cost1 = cost1;
         this.cost2 = cost2;
         this.page = page;
+        this.discount = discount;
 
         if(primary) {
             this.createInventory(I18N.translate("&2Set Primary Cost"), 6);
@@ -243,13 +245,14 @@ public class GUISetCost extends AbstractGUI {
                     this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
                 }
                 this.cost1 = this.getInventory().getItem(22);
+                this.discount = 0;
             }else{
                 if(this.getInventory().getItem(22) != null && !this.cost2.equals(this.getInventory().getItem(22))){
                     this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
                 }
                 this.cost2 = this.getInventory().getItem(22);
             }
-            GUIManager.getInstance().openGUI(this.player, new GUIProduct(this.page, editing, product, productId, cost1, cost2));
+            GUIManager.getInstance().openGUI(this.player, new GUIProduct(this.page, editing, product, productId, cost1, cost2, discount));
 
         }
         return true;

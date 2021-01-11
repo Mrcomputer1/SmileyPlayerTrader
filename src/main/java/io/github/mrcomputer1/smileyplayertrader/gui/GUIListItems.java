@@ -3,7 +3,7 @@ package io.github.mrcomputer1.smileyplayertrader.gui;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.GUIUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
-import io.github.mrcomputer1.smileyplayertrader.util.MerchantUtil;
+import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -76,7 +76,7 @@ public class GUIListItems extends AbstractGUI {
             } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(I18N.translate("&aPrevious Page"))) {
                 GUIManager.getInstance().openGUI(player, new GUIListItems(this.page - 1));
             } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(I18N.translate("&aCreate New Product"))) {
-                GUIManager.getInstance().openGUI(player, new GUIProduct(this.page, false, null, -1, null, null));
+                GUIManager.getInstance().openGUI(player, new GUIProduct(this.page, false, null, -1, null, null, 0));
             }
         }else{
             if(e.getCurrentItem().getItemMeta().getLore() != null &&
@@ -98,7 +98,9 @@ public class GUIListItems extends AbstractGUI {
                             byte[] cost2Bytes = set.getBytes("cost2");
                             ItemStack cost2 = cost2Bytes == null ? null : MerchantUtil.buildItem(cost2Bytes);
 
-                            GUIManager.getInstance().openGUI(player, new GUIProduct(this.page, true, stack, id, cost1, cost2));
+                            int discount = set.getInt("special_price");
+
+                            GUIManager.getInstance().openGUI(player, new GUIProduct(this.page, true, stack, id, cost1, cost2, discount));
                         }
                     } catch (SQLException ex) {
                         ex.printStackTrace();

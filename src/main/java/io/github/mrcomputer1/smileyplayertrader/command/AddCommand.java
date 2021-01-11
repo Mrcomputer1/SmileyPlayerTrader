@@ -27,7 +27,7 @@ public class AddCommand implements ICommand {
         }
 
         SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.ADD_PRODUCT,
-                target.getUniqueId().toString(), null, null, null, false, true);
+                target.getUniqueId().toString(), null, null, null, false, true, 0);
 
         sender.sendMessage(I18N.translate("&aAdded product %0%. Use &f/spt setcost <id> &aand &f/spt setproduct <id> &awhile holding items, both must be set before you can &f/spt enable <id> &athis product!", SmileyPlayerTrader.getInstance().getDatabase().getInsertId()));
     }

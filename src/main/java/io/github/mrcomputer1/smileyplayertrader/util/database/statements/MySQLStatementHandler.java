@@ -24,7 +24,8 @@ public class MySQLStatementHandler implements StatementHandler {
                 "cost2 BLOB," +
                 "product BLOB," +
                 "enabled BOOLEAN DEFAULT 0 NOT NULL," +
-                "available BOOLEAN DEFAULT 0 NOT NULL)");
+                "available BOOLEAN DEFAULT 0 NOT NULL," +
+                "special_price INTEGER DEFAULT 0 NOT NULL)");
         statements.put(StatementType.CREATE_SETTINGS_TABLE, "CREATE TABLE IF NOT EXISTS $prefix$settings (" +
                 "player VARCHAR(36) PRIMARY KEY NOT NULL," +
                 "trade_toggle BOOLEAN DEFAULT 1 NOT NULL," +

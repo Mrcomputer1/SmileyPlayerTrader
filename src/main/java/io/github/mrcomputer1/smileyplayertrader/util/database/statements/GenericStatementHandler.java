@@ -17,22 +17,23 @@ public class GenericStatementHandler implements StatementHandler {
         statements.put(StatementType.CREATE_META_TABLE, "CREATE TABLE IF NOT EXISTS $prefix$meta (" +
                 "sptversion INTEGER NOT NULL" +
                 ")");
-        statements.put(StatementType.ADD_PRODUCT, "INSERT INTO $prefix$products (merchant, product, cost1, cost2, enabled, available) VALUES (?, ?, ?, ?, ?, ?)");
+        statements.put(StatementType.ADD_PRODUCT, "INSERT INTO $prefix$products (merchant, product, cost1, cost2, enabled, available, special_price) VALUES (?, ?, ?, ?, ?, ?, ?)");
         statements.put(StatementType.FIND_PRODUCTS, "SELECT * FROM $prefix$products WHERE merchant=?");
         statements.put(StatementType.DELETE_PRODUCT, "DELETE FROM $prefix$products WHERE id=?");
-        statements.put(StatementType.SET_COST, "UPDATE $prefix$products SET cost1=? WHERE id=?");
+        statements.put(StatementType.SET_COST, "UPDATE $prefix$products SET cost1=?, special_price=0 WHERE id=?");
         statements.put(StatementType.SET_SECONDARY_COST, "UPDATE $prefix$products SET cost2=? WHERE id=?");
         statements.put(StatementType.SET_PRODUCT, "UPDATE $prefix$products SET product=? WHERE id=?");
         statements.put(StatementType.ENABLE_PRODUCT, "UPDATE $prefix$products SET enabled=1, available=1 WHERE id=?");
-        statements.put(StatementType.DISABLE_PRODUCT, "UPDATE $prefix$products SET enabled=0 WHERE id=?");
+        statements.put(StatementType.DISABLE_PRODUCT, "UPDATE $prefix$products SET available=0 WHERE id=?");
         statements.put(StatementType.GET_PRODUCT_BY_ID, "SELECT * FROM $prefix$products WHERE id=?");
         statements.put(StatementType.FIND_PRODUCTS_IN_PAGES, "SELECT id, product, enabled, available FROM $prefix$products WHERE merchant=? LIMIT ? OFFSET ?");
-        statements.put(StatementType.SET_PRODUCT_COST_COST2, "UPDATE $prefix$products SET product=?, cost1=?, cost2=? WHERE id=?");
+        statements.put(StatementType.SET_PRODUCT_COST_COST2_SPECIALPRICE, "UPDATE $prefix$products SET product=?, cost1=?, cost2=?, special_price=? WHERE id=?");
         statements.put(StatementType.GET_ENABLED, "SELECT enabled, available FROM $prefix$products WHERE id=?");
         statements.put(StatementType.LOAD_PLAYER_CONFIG, "SELECT * FROM $prefix$settings WHERE player=?");
         statements.put(StatementType.CREATE_DEFAULT_PLAYER_CONFIG, "INSERT INTO $prefix$settings (player) VALUES (?)");
         statements.put(StatementType.UPDATE_PLAYER_CONFIG, "UPDATE $prefix$settings SET trade_toggle=?, combat_notice_toggle=? WHERE player=?");
-        statements.put(StatementType.HIDE_PRODUCT, "UPDATE $prefix$products SET available=0 WHERE id=?");
+        statements.put(StatementType.HIDE_PRODUCT, "UPDATE $prefix$products SET enabled=0 WHERE id=?");
+        statements.put(StatementType.SET_DISCOUNT, "UPDATE $prefix$products SET special_price=? WHERE id=?");
     }
 
     @Override
