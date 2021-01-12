@@ -20,6 +20,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantInventory;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class EventListener implements Listener {
 
     @EventHandler
@@ -63,7 +65,12 @@ public class EventListener implements Listener {
                 }
                 if(ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult())){
                     ItemUtil.removeStock(store, mi.getSelectedRecipe().getResult());
-                    ItemUtil.giveEarnings(store, mi.getSelectedRecipe());
+                    try {
+                        ItemUtil.giveEarnings(store, mi.getSelectedRecipe(), SmileyPlayerTrader.getInstance().getNMS().getSpecialCountForRecipe(mi));
+                    } catch (InvocationTargetException ex) {
+                        ex.printStackTrace();
+                        SmileyPlayerTrader.getInstance().getLogger().severe("Something went wrong while attempting to give earnings to " + store.getName());
+                    }
                     if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("autoThanks", true)) {
                         store.chat(I18N.translate("&aThanks for your purchase, %0%", e.getWhoClicked().getName()));
                     }else{

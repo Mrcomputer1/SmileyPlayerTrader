@@ -3,6 +3,7 @@ package io.github.mrcomputer1.smileyplayertrader.versions;
 import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
+import org.bukkit.inventory.MerchantInventory;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -27,10 +28,13 @@ public class MCVersion1_16 implements IMCVersion {
     private Method OBC_CraftMerchant_Instance_getMerchant_;
     private Method NMS_IMerchant_Instance_getOffers_;
     private Method NMS_MerchantRecipe_Instance_setSpecialPrice_int;
+    private Method NMS_MerchantRecipe_Instance_getSpecialPrice_;
     private Method NMS_MerchantRecipeList_Instance_clear_;
     private Method NMS_MerchantRecipeList_Instance_add_MerchantRecipe;
     private Method OBC_CraftMerchantRecipe_Static_fromBukkit_MerchantRecipe;
     private Method OBC_CraftMerchantRecipe_Instance_toMinecraft_;
+    private Method OBC_CraftInventoryMerchant_Instance_getInventory_;
+    private Method NMS_InventoryMerchant_Instance_getRecipe_;
 
     public MCVersion1_16(){
         try {
@@ -60,6 +64,7 @@ public class MCVersion1_16 implements IMCVersion {
 
             Class NMS_MerchantRecipe = Class.forName("net.minecraft.server.v1_16_R2.MerchantRecipe");
             this.NMS_MerchantRecipe_Instance_setSpecialPrice_int = NMS_MerchantRecipe.getMethod("setSpecialPrice", int.class);
+            this.NMS_MerchantRecipe_Instance_getSpecialPrice_ = NMS_MerchantRecipe.getMethod("getSpecialPrice");
 
             Class NMS_MerchantRecipeList = Class.forName("net.minecraft.server.v1_16_R2.MerchantRecipeList");
             this.NMS_MerchantRecipeList_Instance_clear_ = NMS_MerchantRecipeList.getMethod("clear");
@@ -68,6 +73,12 @@ public class MCVersion1_16 implements IMCVersion {
             Class OBC_CraftMerchantRecipe = Class.forName("org.bukkit.craftbukkit.v1_16_R2.inventory.CraftMerchantRecipe");
             this.OBC_CraftMerchantRecipe_Static_fromBukkit_MerchantRecipe = OBC_CraftMerchantRecipe.getMethod("fromBukkit", org.bukkit.inventory.MerchantRecipe.class);
             this.OBC_CraftMerchantRecipe_Instance_toMinecraft_ = OBC_CraftMerchantRecipe.getMethod("toMinecraft");
+
+            Class OBC_CraftInventoryMerchant = Class.forName("org.bukkit.craftbukkit.v1_16_R3.inventory.CraftInventoryMerchant");
+            this.OBC_CraftInventoryMerchant_Instance_getInventory_ = OBC_CraftInventoryMerchant.getMethod("getInventory");
+
+            Class NMS_InventoryMerchant = Class.forName("net.minecraft.server.v1_16_R3.InventoryMerchant");
+            this.NMS_InventoryMerchant_Instance_getRecipe_ = NMS_InventoryMerchant.getMethod("getRecipe");
         } catch (ClassNotFoundException | NoSuchMethodException e) {
             e.printStackTrace();
         }
@@ -122,4 +133,17 @@ public class MCVersion1_16 implements IMCVersion {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public int getSpecialCountForRecipe(MerchantInventory inventory) throws InvocationTargetException{
+        try {
+            Object im = OBC_CraftInventoryMerchant_Instance_getInventory_.invoke(inventory);
+            Object mr = NMS_InventoryMerchant_Instance_getRecipe_.invoke(im);
+            return (int) NMS_MerchantRecipe_Instance_getSpecialPrice_.invoke(mr);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
 }
