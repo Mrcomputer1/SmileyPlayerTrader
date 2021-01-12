@@ -9,9 +9,10 @@ import java.util.HashMap;
 
 public class ItemUtil {
 
-    public static void giveEarnings(Player player, MerchantRecipe recipe){
-        ItemStack first = recipe.getIngredients().get(0);
-        first.setAmount(first.getAmount() + recipe.getSpecialPrice());
+    public static void giveEarnings(Player player, MerchantRecipe recipe, int specialPrice){
+        ItemStack first = recipe.getIngredients().get(0).clone();
+        first.setAmount(first.getAmount() + specialPrice);
+
         if(recipe.getIngredients().size() == 1){
             HashMap<Integer, ItemStack> errs = player.getInventory().addItem(first);
             for(ItemStack v : errs.values()){
