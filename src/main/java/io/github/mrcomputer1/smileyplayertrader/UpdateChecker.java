@@ -38,7 +38,7 @@ public class UpdateChecker {
                         Bukkit.broadcast(I18N.translate("&c[Smiley Player Trader] This Minecraft version is no longer supported and therefore no support will be given for this version."), "smileyplayertrader.admin");
                         unsupported = true;
                     }
-                    if(!pluginVersion.contains("SNAPSHOT")){ // Ignore development versions
+                    if(!pluginVersion.contains("SNAPSHOT") || !pluginVersion.contains("-pre")){ // Ignore development versions
                         String latest = version.getAsJsonPrimitive("latest").getAsString();
                         if(!pluginVersion.equalsIgnoreCase(latest)){
                             SmileyPlayerTrader.getInstance().getLogger().warning("Outdated Plugin! Latest version is " + latest + ".");
