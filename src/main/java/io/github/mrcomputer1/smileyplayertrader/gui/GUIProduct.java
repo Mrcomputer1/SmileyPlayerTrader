@@ -145,11 +145,6 @@ public class GUIProduct extends AbstractGUI {
 
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&cCancel Product Creation")) ||
                 e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&cCancel Product Update"))){
-
-            // Cancel Product Create/Update
-            if(this.getInventory().getItem(22) != null && !this.stack.equals(this.getInventory().getItem(22))){
-                this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
-            }
             GUIManager.getInstance().openGUI(this.player, new GUIListItems(this.page));
 
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eSet Primary Cost"))){
