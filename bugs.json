@@ -6,7 +6,8 @@
                 "1.15.1"
             ],
             "bugs": [
-                "rMhRD9kK7nVmwHIf"
+                "rMhRD9kK7nVmwHIf",
+                "SCLTMQLEKr_jHWxAisQlst$NotTested"
             ]
         },
         "1.1.0": {
@@ -17,7 +18,8 @@
             ],
             "bugs": [
                 "rMhRD9kK7nVmwHIf",
-                "gY1NbdMMOGaMVCdF"
+                "gY1NbdMMOGaMVCdF",
+                "SCLTMQLEKr_jHWxAisQlst$NotTested"
             ]
         },
         "1.2.0": {
@@ -29,7 +31,8 @@
             ],
             "bugs": [
                 "rMhRD9kK7nVmwHIf",
-                "gY1NbdMMOGaMVCdF"
+                "gY1NbdMMOGaMVCdF",
+                "SCLTMQLEKr_jHWxAisQlst$NotTested"
             ]
         },
         "1.2.1": {
@@ -42,7 +45,8 @@
                 "1.16.3"
             ],
             "bugs": [
-                "gY1NbdMMOGaMVCdF"
+                "gY1NbdMMOGaMVCdF",
+                "SCLTMQLEKr_jHWxAisQlst$NotTested"
             ]
         },
         "1.2.2": {
@@ -56,7 +60,8 @@
                 "1.16.4"
             ],
             "bugs": [
-                "gY1NbdMMOGaMVCdF"
+                "gY1NbdMMOGaMVCdF",
+                "SCLTMQLEKr_jHWxAisQlst$NotTested"
             ]
         },
         "1.2.3": {
@@ -70,6 +75,21 @@
                 "1.16.4"
             ],
             "bugs": [
+                "SCLTMQLEKr_jHWxAisQlst$NotTested"
+            ]
+        },
+        "1.3.0": {
+            "supports": [
+                "1.15",
+                "1.15.1",
+                "1.15.2",
+                "1.16.1",
+                "1.16.2",
+                "1.16.3",
+                "1.16.4"
+            ],
+            "bugs": [
+                "SCLTMQLEKr_jHWxAisQlst"
             ]
         }
     },
@@ -85,6 +105,18 @@
             "disable": true,
             "notes": "Dupe Glitch / Critical",
             "fixedVersion": "1.2.3"
+        },
+        "SCLTMQLEKr_jHWxAisQlst": {
+            "link": "https://github.com/Mrcomputer1/SmileyPlayerTrader/issues/11",
+            "disable": true,
+            "notes": "Dupe Glitch / Critical",
+            "fixedVersion": null
+        },
+        "SCLTMQLEKr_jHWxAisQlst$NotTested": {
+            "link": "https://github.com/Mrcomputer1/SmileyPlayerTrader/issues/11",
+            "disable": false,
+            "notes": "Dupe Glitch (This version has not been tested but might be vulnerable! You are recommended to update when the fix comes out.)",
+            "fixedVersion": null
         }
     }
 }
