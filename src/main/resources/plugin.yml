@@ -23,6 +23,7 @@ permissions:
       "smileyplayertrader.command": true
       "smileyplayertrader.admin": true
       "smileyplayertrader.trade.remote": true
+      "smileyplayertrader.guiothers": true
   "smileyplayertrader.others":
     description: "Change other players"
     default: op
@@ -40,4 +41,7 @@ permissions:
     default: true
   "smileyplayertrader.admin":
     description: "Update checker permission"
+    default: op
+  "smileyplayertrader.guiothers":
+    description: "Open the GUI for other players"
     default: op

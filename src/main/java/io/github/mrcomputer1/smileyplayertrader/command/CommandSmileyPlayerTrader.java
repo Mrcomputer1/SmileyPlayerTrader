@@ -32,6 +32,7 @@ public class CommandSmileyPlayerTrader implements TabExecutor {
         this.commands.put("trade", new TradeCommand());
         this.commands.put("hide", new HideCommand());
         this.commands.put("discount", new DiscountCommand());
+        this.commands.put("openguifor", new OpenGUIForCommand());
     }
 
     @Override
@@ -41,7 +42,7 @@ public class CommandSmileyPlayerTrader implements TabExecutor {
 
         if(args.length == 0){
             if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("useGuiManager", true)) {
-                if(!(sender instanceof CommandSender)){
+                if(!(sender instanceof Player)){
                     sender.sendMessage(I18N.translate("&cYou must be running this command from a player."));
                     return true;
                 }

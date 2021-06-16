@@ -1,5 +1,5 @@
 {
-  "$$version$$": 4,
+  "$$version$$": 5,
   "&e%0% is now trading with you.": "&e%0% is now trading with you.",
   "&2Villager Store: ": "&2Villager Store: ",
   "&aThanks for your purchase, %0%": "&aThanks for your purchase, %0%",
@@ -127,5 +127,9 @@
   "&cReset Discount": "&cReset Discount",
   "&bRight click for &l10": "&bRight click for &l10",
   "&bLeft click for &l1": "&bLeft click for &l1",
-  "&eNegative numbers will increase the price.": "&eNegative numbers will increase the price."
+  "&eNegative numbers will increase the price.": "&eNegative numbers will increase the price.",
+  "&cWhoops! You are not authorised to open the GUI for others.": "&cWhoops! You are not authorised to open the GUI for others.",
+  "&cGUI functionality is disabled, this command has no effect.": "&cGUI functionality is disabled, this command has no effect.",
+  "&cBad Syntax! &f/spt openguifor <player>": "&cBad Syntax! &f/spt openguifor <player>",
+  "&cThat player is not online.": "&cThat player is not online."
 }
