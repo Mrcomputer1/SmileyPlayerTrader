@@ -27,7 +27,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: 16
-          distributon: adopt
+          distribution: adopt
       
       - name: Build Smiley Player Trader
         run: mvn --batch-mode --update-snapshots package
