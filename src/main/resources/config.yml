@@ -1,3 +1,6 @@
+# Smiley Player Trader Configuration
+# Configuration Documentation: https://github.com/Mrcomputer1/SmileyPlayerTrader/wiki/Configuration
+
 # A list of worlds where you cannot trade with players.
 disabledWorlds: []
 
@@ -39,3 +42,38 @@ autoCombatLock:
   enabled: true # Enables/Disables auto combat toggling
   combatLockLength: 30 # Combat lock length (in seconds)
   neverShowNotice: false # Enables/Disables the toggle notice (if this is false, the players can choose for themselves)
+
+# Configure items in the quick selection on the Set Cost screen. You can have up to 6 items.
+priceQuickSelection:
+  - type: EMERALD
+  - type: IRON_INGOT
+  - type: COPPER_INGOT
+  - type: GOLD_INGOT
+  - type: DIAMOND
+  - type: NETHERITE_INGOT
+
+# Configure items in the extended price selector menu on the Set Cost screen.
+priceSelectorMenu:
+  # Configures items, which should automatically be added to the item list.
+  automaticAdd:
+    vanilla: true # Automatically add vanilla items
+  # Automatically added vanilla items that should not be shown, defaults to /give-only items.
+  hiddenItems:
+    - BARRIER
+    - COMMAND_BLOCK
+    - REPEATING_COMMAND_BLOCK
+    - CHAIN_COMMAND_BLOCK
+    - DEBUG_STICK
+    - COMMAND_BLOCK_MINECART
+    - SPAWNER
+    - STRUCTURE_BLOCK
+    - STRUCTURE_VOID
+    - DRAGON_EGG
+    - KNOWLEDGE_BOOK
+    - JIGSAW
+    - LIGHT_BLOCK
+    - SUSPICIOUS_STEW
+  # Additionally items that should be added to the main list
+  extraItems: []
+  # Items that should be in the featured list
+  featuredItems: []

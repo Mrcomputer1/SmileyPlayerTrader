@@ -1,11 +1,16 @@
 package io.github.mrcomputer1.smileyplayertrader.util;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class ItemUtil {
 
@@ -101,6 +106,56 @@ public class ItemUtil {
 
         return false;
 
+    }
+
+    public static ItemStack buildConfigurationItem(LinkedHashMap<String, Object> item){
+        if(!item.containsKey("type") || !(item.get("type") instanceof String)){
+            SmileyPlayerTrader.getInstance().getLogger().severe("type is not String");
+            return null;
+        }
+
+        // Get material
+        Material mat = Material.getMaterial((String) item.get("type"));
+        if(mat == null){
+            if(SmileyPlayerTrader.getInstance().getDescription().getVersion().contains("SNAPSHOT")){
+                SmileyPlayerTrader.getInstance().getLogger().warning(item.get("type") + " does not exist (is it spelled right or from a version this server doesn't support?)");
+            }
+            return null;
+        }
+
+        if(!mat.isItem() || mat.isAir()){
+            SmileyPlayerTrader.getInstance().getLogger().severe("Material is not an item/block or is air.");
+            return null;
+        }
+
+        // Create stack
+        ItemStack is = new ItemStack(mat);
+
+        // Get meta
+        if(item.containsKey("meta")){
+            Object obj = item.get("meta");
+            if(!(obj instanceof ItemMeta)){
+                SmileyPlayerTrader.getInstance().getLogger().severe("meta is not ItemMeta");
+            }
+            ItemMeta im = (ItemMeta) obj;
+
+            // Process display name
+            if(im.hasDisplayName())
+                im.setDisplayName(ChatColor.translateAlternateColorCodes('&', im.getDisplayName()));
+
+            // Process lore
+            if(im.hasLore()){
+                List<String> lore = im.getLore();
+                for(int i = 0; i < lore.size(); i++){
+                    lore.set(i, ChatColor.translateAlternateColorCodes('&', lore.get(i)));
+                }
+                im.setLore(lore);
+            }
+
+            is.setItemMeta(im);
+        }
+
+        return is;
     }
 
 }

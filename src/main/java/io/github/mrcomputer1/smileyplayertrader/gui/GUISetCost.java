@@ -1,17 +1,28 @@
 package io.github.mrcomputer1.smileyplayertrader.gui;
 
 import com.google.common.primitives.Ints;
+import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.GUIUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import io.github.mrcomputer1.smileyplayertrader.util.ItemUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class GUISetCost extends AbstractGUI {
     private Player player;
@@ -27,11 +38,17 @@ public class GUISetCost extends AbstractGUI {
 
     private static ItemStack BORDER = AbstractGUI.createItem(Material.BLACK_STAINED_GLASS_PANE, 1, ChatColor.RESET.toString());
     private static ItemStack INSERT_LBL = AbstractGUI.createItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 1, I18N.translate("&eInsert Price"));
-    private static ItemStack IRON_BTN = AbstractGUI.createItemWithLore(Material.IRON_INGOT, 1, I18N.translate("&7Iron"), I18N.translate("&eClick to increase value"), I18N.translate("&eRight Click to decrease value"));
-    private static ItemStack GOLD_BTN = AbstractGUI.createItemWithLore(Material.GOLD_INGOT, 1, I18N.translate("&6Gold"), I18N.translate("&eClick to increase value"), I18N.translate("&eRight Click to decrease value"));
-    private static ItemStack EMERALD_BTN = AbstractGUI.createItemWithLore(Material.EMERALD, 1, I18N.translate("&aEmerald"), I18N.translate("&eClick to increase value"), I18N.translate("&eRight Click to decrease value"));
-    private static ItemStack DIAMOND_BTN = AbstractGUI.createItemWithLore(Material.DIAMOND, 1, I18N.translate("&bDiamond"), I18N.translate("&eClick to increase value"), I18N.translate("&eRight Click to decrease value"));
     private static ItemStack OK_BTN = AbstractGUI.createItem(Material.EMERALD_BLOCK, 1, I18N.translate("&aOK"));
+    private static ItemStack MORE_ITEMS_BTN = AbstractGUI.createItem(Material.BEACON, 1, I18N.translate("&bMore Items..."));
+
+    static{
+        ItemMeta im = MORE_ITEMS_BTN.getItemMeta();
+        im.addEnchant(Enchantment.DURABILITY, 1, true);
+        im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        MORE_ITEMS_BTN.setItemMeta(im);
+    }
+
+    private static NamespacedKey IS_QUICK_SELECT = new NamespacedKey(SmileyPlayerTrader.getInstance(), "is_quick_select");
 
     public GUISetCost(int page, boolean primary, boolean editing, long productId, ItemStack product, ItemStack cost1, ItemStack cost2, int discount){
         this.primary = primary;
@@ -65,19 +82,119 @@ public class GUISetCost extends AbstractGUI {
 
         GUIUtil.fillRow(this.getInventory(), 3, BORDER);
 
-        this.getInventory().setItem((4 * 9), BORDER.clone());
-        this.getInventory().setItem((4 * 9) + 1, IRON_BTN.clone());
-        this.getInventory().setItem((4 * 9) + 2, BORDER.clone());
-        this.getInventory().setItem((4 * 9) + 3, GOLD_BTN.clone());
-        this.getInventory().setItem((4 * 9) + 4, BORDER.clone());
-        this.getInventory().setItem((4 * 9) + 5, EMERALD_BTN.clone());
-        this.getInventory().setItem((4 * 9) + 6, BORDER.clone());
-        this.getInventory().setItem((4 * 9) + 7, DIAMOND_BTN.clone());
-        this.getInventory().setItem((4 * 9) + 8, BORDER.clone());
+        // Quick Selection Row
+        List<LinkedHashMap<String, Object>> priceQuickSelection = (List<LinkedHashMap<String, Object>>) SmileyPlayerTrader.getInstance().getConfig().getList("priceQuickSelection", new ArrayList<>());
+        List<ItemStack> stacks = new ArrayList<>();
+        for(LinkedHashMap<String, Object> item : priceQuickSelection){
+            stacks.add(createQuickSelectionRowItem(item));
+        }
+        stacks.add(MORE_ITEMS_BTN.clone());
+        createQuickSelectionRow(stacks);
+        // End Quick Selection Row
 
         this.getInventory().setItem(5 * 9, OK_BTN.clone());
         GUIUtil.drawLine(this.getInventory(), (5 * 9) + 1, 8, BORDER);
     }
+
+    // Quick Selection Row
+    private void createQuickSelectionRow(List<ItemStack> stacks) {
+        // probably a better way to write this, but this works.
+        switch(stacks.size()){
+            case 1:
+                this.getInventory().setItem((4 * 9) + 4, stacks.get(0));
+                break;
+            case 2:
+                this.getInventory().setItem((4 * 9) + 3, stacks.get(0));
+                this.getInventory().setItem((4 * 9) + 5, stacks.get(1));
+                break;
+            case 3:
+                this.getInventory().setItem((4 * 9) + 2, stacks.get(0));
+                this.getInventory().setItem((4 * 9) + 4, stacks.get(1));
+                this.getInventory().setItem((4 * 9) + 6, stacks.get(2));
+                break;
+            case 4:
+                this.getInventory().setItem((4 * 9) + 1, stacks.get(0));
+                this.getInventory().setItem((4 * 9) + 3, stacks.get(1));
+                this.getInventory().setItem((4 * 9) + 5, stacks.get(2));
+                this.getInventory().setItem((4 * 9) + 7, stacks.get(3));
+                break;
+            case 5:
+                this.getInventory().setItem((4 * 9) + 2, stacks.get(0));
+                this.getInventory().setItem((4 * 9) + 3, stacks.get(1));
+                this.getInventory().setItem((4 * 9) + 4, stacks.get(2));
+                this.getInventory().setItem((4 * 9) + 5, stacks.get(3));
+                this.getInventory().setItem((4 * 9) + 6, stacks.get(4));
+                break;
+            case 6:
+                this.getInventory().setItem((4 * 9) + 1, stacks.get(0));
+                this.getInventory().setItem((4 * 9) + 2, stacks.get(1));
+                this.getInventory().setItem((4 * 9) + 3, stacks.get(2));
+                this.getInventory().setItem((4 * 9) + 4, stacks.get(3));
+                this.getInventory().setItem((4 * 9) + 5, stacks.get(4));
+                this.getInventory().setItem((4 * 9) + 7, stacks.get(5));
+                break;
+            case 7:
+                this.getInventory().setItem((4 * 9) + 1, stacks.get(0));
+                this.getInventory().setItem((4 * 9) + 2, stacks.get(1));
+                this.getInventory().setItem((4 * 9) + 3, stacks.get(2));
+                this.getInventory().setItem((4 * 9) + 4, stacks.get(3));
+                this.getInventory().setItem((4 * 9) + 5, stacks.get(4));
+                this.getInventory().setItem((4 * 9) + 6, stacks.get(5));
+                this.getInventory().setItem((4 * 9) + 7, stacks.get(6));
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported amount of items");
+        }
+
+        for(int i = (4 * 9); i < (5 * 9); i++){
+            if(this.getInventory().getItem(i) == null){
+                this.getInventory().setItem(i, BORDER.clone());
+            }
+        }
+    }
+
+    private ItemStack createQuickSelectionRowItem(LinkedHashMap<String, Object> item){
+        ItemStack is = ItemUtil.buildConfigurationItem(item);
+
+        ItemMeta im = is.getItemMeta();
+        im.getPersistentDataContainer().set(IS_QUICK_SELECT, PersistentDataType.BYTE, (byte) 1);
+        if(im.hasLore()) {
+            List<String> lore = im.getLore();
+            lore.add("");
+            lore.add(I18N.translate("&eClick to increase value"));
+            lore.add(I18N.translate("&eRight Click to decrease value"));
+            im.setLore(lore);
+        }else{
+            im.setLore(Arrays.asList(
+                    I18N.translate("&eClick to increase value"),
+                    I18N.translate("&eRight Click to decrease value")
+            ));
+        }
+        is.setItemMeta(im);
+
+        return is;
+    }
+
+    private ItemStack getTrueItemStack(ItemStack itemStack){
+        ItemMeta im = itemStack.getItemMeta();
+
+        im.getPersistentDataContainer().remove(IS_QUICK_SELECT);
+        List<String> lore = im.getLore();
+        if(lore.size() == 2){
+            im.setLore(new ArrayList<>());
+        }else{
+            // Remove three items from the end of "lore"
+            lore.remove(lore.size() - 1);
+            lore.remove(lore.size() - 1);
+            lore.remove(lore.size() - 1);
+            im.setLore(lore);
+        }
+
+        ItemStack is = itemStack.clone();
+        is.setItemMeta(im);
+        return is;
+    }
+    // End Quick Selection Row
 
     @Override
     public boolean click(InventoryClickEvent e) {
@@ -113,124 +230,42 @@ public class GUISetCost extends AbstractGUI {
 
         }else if(e.getCurrentItem() == null) {
             return true;
-        }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&7Iron"))){
+        }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&bMore Items..."))){
+            GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(this.page, primary, editing, productId, product, cost1, cost2, discount, 1, GUIItemSelector.EnumItemSelectorFilter.ALL, null));
+            return true;
+        }else if(
+                e.getView().getInventory(e.getRawSlot()).getType() != InventoryType.PLAYER &&
+                e.getSlot() >= 4 * 9 && e.getSlot() <= (4 * 9) + 8
+        ){
 
-            // IRON
-            if(primary) {
-                if (this.getInventory().getItem(22) != null && !this.cost1.equals(this.getInventory().getItem(22))) {
-                    this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
-                }
-            }else{
-                if (this.getInventory().getItem(22) != null && !this.cost2.equals(this.getInventory().getItem(22))) {
-                    this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
-                }
+            // PRICE QUICK SELECTION
+            if(!e.getCurrentItem().getItemMeta().getPersistentDataContainer().has(IS_QUICK_SELECT, PersistentDataType.BYTE)){
+                return true;
             }
-            if (this.getInventory().getItem(22) != null && this.getInventory().getItem(22).getType() == Material.IRON_INGOT) {
-                if(e.getClick() == ClickType.LEFT) {
+
+            ItemStack item = this.primary ? this.cost1 : this.cost2;
+
+            if(this.getInventory().getItem(22) != null && !item.equals(this.getInventory().getItem(22))){
+                this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
+            }
+
+            ItemStack trueItemStack = getTrueItemStack(e.getCurrentItem());
+            if(this.getInventory().getItem(22) != null && this.getInventory().getItem(22).isSimilar(trueItemStack)){
+                if(e.getClick() == ClickType.LEFT){
                     this.getInventory().getItem(22).setAmount(
                             Ints.constrainToRange(this.getInventory().getItem(22).getAmount() + 1, 0,
-                                    this.getInventory().getItem(22).getMaxStackSize()));
+                                    this.getInventory().getItem(22).getMaxStackSize())
+                    );
                 }else if(e.getClick() == ClickType.RIGHT){
                     this.getInventory().getItem(22).setAmount(
                             Ints.constrainToRange(this.getInventory().getItem(22).getAmount() - 1, 0,
-                                    this.getInventory().getItem(22).getMaxStackSize()));
+                                    this.getInventory().getItem(22).getMaxStackSize())
+                    );
                 }
             }else{
-                this.getInventory().setItem(22, new ItemStack(Material.IRON_INGOT));
-            }
-            if(primary){
-                this.cost1 = this.getInventory().getItem(22);
-            }else{
-                this.cost2 = this.getInventory().getItem(22);
+                this.getInventory().setItem(22, trueItemStack);
             }
 
-        }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&6Gold"))){
-
-            // GOLD
-            if(primary) {
-                if (this.getInventory().getItem(22) != null && !this.cost1.equals(this.getInventory().getItem(22))) {
-                    this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
-                }
-            }else{
-                if (this.getInventory().getItem(22) != null && !this.cost2.equals(this.getInventory().getItem(22))) {
-                    this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
-                }
-            }
-            if (this.getInventory().getItem(22) != null && this.getInventory().getItem(22).getType() == Material.GOLD_INGOT) {
-                if(e.getClick() == ClickType.LEFT) {
-                    this.getInventory().getItem(22).setAmount(
-                            Ints.constrainToRange(this.getInventory().getItem(22).getAmount() + 1, 0,
-                                    this.getInventory().getItem(22).getMaxStackSize()));
-                }else if(e.getClick() == ClickType.RIGHT){
-                    this.getInventory().getItem(22).setAmount(
-                            Ints.constrainToRange(this.getInventory().getItem(22).getAmount() - 1, 0,
-                                    this.getInventory().getItem(22).getMaxStackSize()));
-                }
-            }else{
-                this.getInventory().setItem(22, new ItemStack(Material.GOLD_INGOT));
-            }
-            if(primary){
-                this.cost1 = this.getInventory().getItem(22);
-            }else{
-                this.cost2 = this.getInventory().getItem(22);
-            }
-
-        }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&aEmerald"))){
-
-            // EMERALD
-            if(primary) {
-                if (this.getInventory().getItem(22) != null && !this.cost1.equals(this.getInventory().getItem(22))) {
-                    this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
-                }
-            }else{
-                if (this.getInventory().getItem(22) != null && !this.cost2.equals(this.getInventory().getItem(22))) {
-                    this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
-                }
-            }
-            if (this.getInventory().getItem(22) != null && this.getInventory().getItem(22).getType() == Material.EMERALD) {
-                if(e.getClick() == ClickType.LEFT) {
-                    this.getInventory().getItem(22).setAmount(
-                            Ints.constrainToRange(this.getInventory().getItem(22).getAmount() + 1, 0,
-                                    this.getInventory().getItem(22).getMaxStackSize()));
-                }else if(e.getClick() == ClickType.RIGHT){
-                    this.getInventory().getItem(22).setAmount(
-                            Ints.constrainToRange(this.getInventory().getItem(22).getAmount() - 1, 0,
-                                    this.getInventory().getItem(22).getMaxStackSize()));
-                }
-            }else{
-                this.getInventory().setItem(22, new ItemStack(Material.EMERALD));
-            }
-            if(primary){
-                this.cost1 = this.getInventory().getItem(22);
-            }else{
-                this.cost2 = this.getInventory().getItem(22);
-            }
-
-        }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&bDiamond"))){
-
-            // DIAMOND
-            if(primary) {
-                if (this.getInventory().getItem(22) != null && !this.cost1.equals(this.getInventory().getItem(22))) {
-                    this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
-                }
-            }else{
-                if (this.getInventory().getItem(22) != null && !this.cost2.equals(this.getInventory().getItem(22))) {
-                    this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
-                }
-            }
-            if (this.getInventory().getItem(22) != null && this.getInventory().getItem(22).getType() == Material.DIAMOND) {
-                if(e.getClick() == ClickType.LEFT) {
-                    this.getInventory().getItem(22).setAmount(
-                            Ints.constrainToRange(this.getInventory().getItem(22).getAmount() + 1, 0,
-                                    this.getInventory().getItem(22).getMaxStackSize()));
-                }else if(e.getClick() == ClickType.RIGHT){
-                    this.getInventory().getItem(22).setAmount(
-                            Ints.constrainToRange(this.getInventory().getItem(22).getAmount() - 1, 0,
-                                    this.getInventory().getItem(22).getMaxStackSize()));
-                }
-            }else{
-                this.getInventory().setItem(22, new ItemStack(Material.DIAMOND));
-            }
             if(primary){
                 this.cost1 = this.getInventory().getItem(22);
             }else{

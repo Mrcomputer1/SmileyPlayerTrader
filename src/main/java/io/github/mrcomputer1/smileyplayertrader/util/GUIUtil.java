@@ -34,4 +34,20 @@ public class GUIUtil {
         }
     }
 
+    public static void spreadItemsCloned(Inventory inv, int startCol, int cols, int startRow, int rows, ItemStack[] items){
+        int item = 0;
+        for(int row = startRow; row < (startRow + rows); row++){
+            for(int col = startCol; col < (startCol + cols); col++){
+                int pos = (row * 9) + col;
+                if(items.length == item){
+                    return;
+                }
+                if(items[item] == null)
+                    continue;
+                inv.setItem(pos, items[item].clone());
+                item++;
+            }
+        }
+    }
+
 }
