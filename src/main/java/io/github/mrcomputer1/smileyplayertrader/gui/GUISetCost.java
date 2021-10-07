@@ -45,6 +45,10 @@ public class GUISetCost extends AbstractGUI {
         ItemMeta im = MORE_ITEMS_BTN.getItemMeta();
         im.addEnchant(Enchantment.DURABILITY, 1, true);
         im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        im.setLore(Arrays.asList(
+                I18N.translate("&eShift Click to increase value"),
+                I18N.translate("&eShift Right Click to decrease value")
+        ));
         MORE_ITEMS_BTN.setItemMeta(im);
     }
 
@@ -85,8 +89,13 @@ public class GUISetCost extends AbstractGUI {
         // Quick Selection Row
         List<LinkedHashMap<String, Object>> priceQuickSelection = (List<LinkedHashMap<String, Object>>) SmileyPlayerTrader.getInstance().getConfig().getList("priceQuickSelection", new ArrayList<>());
         List<ItemStack> stacks = new ArrayList<>();
+        int stackCount = 0;
         for(LinkedHashMap<String, Object> item : priceQuickSelection){
             stacks.add(createQuickSelectionRowItem(item));
+            if(++stackCount == 6){ // ensure only 6 items are on the quick selection row
+                SmileyPlayerTrader.getInstance().getLogger().warning("You have too many quick selection items.");
+                break;
+            }
         }
         stacks.add(MORE_ITEMS_BTN.clone());
         createQuickSelectionRow(stacks);
@@ -198,10 +207,50 @@ public class GUISetCost extends AbstractGUI {
 
     @Override
     public boolean click(InventoryClickEvent e) {
-        if(e.getClick() == ClickType.DOUBLE_CLICK || e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT){ // Cancel double clicks and shift clicks
+        if(e.getClick() == ClickType.DOUBLE_CLICK){ // Cancel double clicks
             return true;
         }
         if(e.getRawSlot() == InventoryView.OUTSIDE){ // Disallow dropping items out of inventory
+            return true;
+        }
+
+        if(e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT){
+            if(e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta() || !e.getCurrentItem().getItemMeta().hasDisplayName()){
+                return true;
+            }
+
+            // Increase/Decrease on More Items...
+            if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&bMore Items..."))){
+                ItemStack item = this.primary ? this.cost1 : this.cost2;
+
+                // If this is a custom item, you can't do this.
+                if(item == null || !item.equals(this.getInventory().getItem(22))){
+                    return true;
+                }
+
+                // If the item in the slot is not null and is similar to the stored item, increase/decrease as required
+                if(this.getInventory().getItem(22) != null && this.getInventory().getItem(22).isSimilar(item)){
+                    if(e.getClick() == ClickType.SHIFT_LEFT){
+                        this.getInventory().getItem(22).setAmount(
+                                Ints.constrainToRange(this.getInventory().getItem(22).getAmount() + 1, 0,
+                                        this.getInventory().getItem(22).getMaxStackSize())
+                        );
+                    }else if(e.getClick() == ClickType.SHIFT_RIGHT){
+                        this.getInventory().getItem(22).setAmount(
+                                Ints.constrainToRange(this.getInventory().getItem(22).getAmount() - 1, 0,
+                                        this.getInventory().getItem(22).getMaxStackSize())
+                        );
+                    }
+                }
+
+                // Set the new item into the cost field
+                if(this.primary){
+                    this.cost1 = this.getInventory().getItem(22);
+                }else{
+                    this.cost2 = this.getInventory().getItem(22);
+                }
+            }
+
             return true;
         }
 

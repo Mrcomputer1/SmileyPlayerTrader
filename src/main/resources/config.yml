@@ -54,9 +54,9 @@ priceQuickSelection:
 
 # Configure items in the extended price selector menu on the Set Cost screen.
 priceSelectorMenu:
-  # Configures items, which should automatically be added to the item list.
+  # Configure items that should be automatically added to the "All", "Blocks" and "Items" list
   automaticAdd:
-    vanilla: true # Automatically add vanilla items
+    vanilla: true
   # Automatically added vanilla items that should not be shown, defaults to /give-only items.
   hiddenItems:
     - BARRIER
@@ -73,7 +73,13 @@ priceSelectorMenu:
     - JIGSAW
     - LIGHT_BLOCK
     - SUSPICIOUS_STEW
-  # Additionally items that should be added to the main list
+  # Additional items that should be added to the main list
   extraItems: []
-  # Items that should be in the featured list
-  featuredItems: []
+  # Items that should be in the featured list (by default, the same as the price quick selection)
+  featuredItems:
+    - type: EMERALD
+    - type: IRON_INGOT
+    - type: COPPER_INGOT
+    - type: GOLD_INGOT
+    - type: DIAMOND
+    - type: NETHERITE_INGOT

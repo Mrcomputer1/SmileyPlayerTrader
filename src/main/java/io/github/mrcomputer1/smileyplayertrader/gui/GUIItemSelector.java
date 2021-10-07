@@ -4,7 +4,6 @@ import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.GUIUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.ItemUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -12,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
@@ -25,7 +23,9 @@ public class GUIItemSelector extends AbstractGUI {
         ALL,
         BLOCKS,
         ITEMS,
-        FEATURED
+        FEATURED,
+
+        // Integrations
     }
 
     private Player player;
@@ -48,21 +48,13 @@ public class GUIItemSelector extends AbstractGUI {
     private static ItemStack FEATURED_BTN = AbstractGUI.createItem(Material.NETHER_STAR, 1, I18N.translate("&eFeatured"));
     private static ItemStack BLOCKS_BTN = AbstractGUI.createItem(Material.BRICKS, 1, I18N.translate("&eBlocks"));
     private static ItemStack ITEMS_BTN = AbstractGUI.createItem(Material.STICK, 1, I18N.translate("&eItems"));
-    private static ItemStack UP_BTN = AbstractGUI.createItem(Material.PLAYER_HEAD, 1, I18N.translate("&aPrevious Page"));
-    private static ItemStack DOWN_BTN = AbstractGUI.createItem(Material.PLAYER_HEAD, 1, I18N.translate("&aNext Page"));
+    private static ItemStack PREV_BTN = AbstractGUI.createItem(Material.ARROW, 1, I18N.translate("&aPrevious Page"));
+    private static ItemStack NEXT_BTN = AbstractGUI.createItem(Material.ARROW, 1, I18N.translate("&aNext Page"));
     private static ItemStack CANCEL_BTN = AbstractGUI.createItem(Material.BARRIER, 1, I18N.translate("&cCancel"));
 
+    // Integrations
+
     private static NamespacedKey IS_ITEM = new NamespacedKey(SmileyPlayerTrader.getInstance(), "is_item");
-
-    static{
-        SkullMeta sm = (SkullMeta) UP_BTN.getItemMeta();
-        sm.setOwningPlayer(Bukkit.getOfflinePlayer("MHF_ArrowUp"));
-        UP_BTN.setItemMeta(sm);
-
-        sm = (SkullMeta) DOWN_BTN.getItemMeta();
-        sm.setOwningPlayer(Bukkit.getOfflinePlayer("MHF_ArrowDown"));
-        DOWN_BTN.setItemMeta(sm);
-    }
 
     public GUIItemSelector(int page, boolean primary, boolean editing, long productId, ItemStack product, ItemStack cost1, ItemStack cost2, int discount, int itemSelectorPage, EnumItemSelectorFilter filter, List<ItemStack> itemStacks){
         this.page = page;
@@ -87,25 +79,19 @@ public class GUIItemSelector extends AbstractGUI {
         GUIUtil.fillStartAndEnd(this.getInventory(), 4, BORDER);
         GUIUtil.fillRow(this.getInventory(), 5, BORDER);
 
-        this.getInventory().setItem((1 * 9), ALL_BTN.clone());
-        this.getInventory().setItem((2 * 9), FEATURED_BTN.clone());
-        this.getInventory().setItem((3 * 9), BLOCKS_BTN.clone());
-        this.getInventory().setItem((4 * 9), ITEMS_BTN.clone());
+        this.getInventory().setItem(1, ALL_BTN.clone());
+        this.getInventory().setItem(2, FEATURED_BTN.clone());
+        this.getInventory().setItem(3, BLOCKS_BTN.clone());
+        this.getInventory().setItem(4, ITEMS_BTN.clone());
 
-        this.getInventory().setItem((1 * 9) + 1, BORDER.clone());
-        this.getInventory().setItem((2 * 9) + 1, BORDER.clone());
-        this.getInventory().setItem((3 * 9) + 1, BORDER.clone());
-        this.getInventory().setItem((4 * 9) + 1, BORDER.clone());
+        // Integrations
+        int integrationPos = 1;
 
-        this.getInventory().setItem((1 * 9) + 8, UP_BTN.clone());
-        this.getInventory().setItem((2 * 9) + 8, DOWN_BTN.clone());
-        this.getInventory().setItem((3 * 9) + 8, BORDER.clone());
-        this.getInventory().setItem((4 * 9) + 8, CANCEL_BTN.clone());
+        // End Integrations
 
-        this.getInventory().setItem((1 * 9) + 7, BORDER.clone());
-        this.getInventory().setItem((2 * 9) + 7, BORDER.clone());
-        this.getInventory().setItem((3 * 9) + 7, BORDER.clone());
-        this.getInventory().setItem((4 * 9) + 7, BORDER.clone());
+        this.getInventory().setItem((5 * 9), PREV_BTN.clone());
+        this.getInventory().setItem((5 * 9) + 8, NEXT_BTN.clone());
+        this.getInventory().setItem((5 * 9) + 4, CANCEL_BTN.clone());
 
         List<String> hiddenItems = (List<String>) SmileyPlayerTrader.getInstance().getConfig().getList("priceSelectorMenu.hiddenItems", new ArrayList<>());
         if(itemStacks == null){
@@ -129,7 +115,6 @@ public class GUIItemSelector extends AbstractGUI {
                     }
                 }
 
-
                 // Extra Items
                 List<LinkedHashMap<String, Object>> extraItems = (List<LinkedHashMap<String, Object>>) SmileyPlayerTrader.getInstance().getConfig().getList("priceSelectorMenu.extraItems", new ArrayList<>());
                 for (LinkedHashMap<String, Object> item : extraItems) {
@@ -146,6 +131,15 @@ public class GUIItemSelector extends AbstractGUI {
                         itemStacks.add(is);
                     }
                 }
+
+                // Integration All Filter
+                if(filter == EnumItemSelectorFilter.ALL){
+
+                }
+
+                // Integration Filters
+
+                // End Integration Filters
             }else{
                 // Featured Items
                 List<LinkedHashMap<String, Object>> featuredItems = (List<LinkedHashMap<String, Object>>) SmileyPlayerTrader.getInstance().getConfig().getList("priceSelectorMenu.featuredItems", new ArrayList<>());
@@ -160,19 +154,21 @@ public class GUIItemSelector extends AbstractGUI {
             }
         }
 
-        ItemStack[] pagedStacks = new ItemStack[20];
+        ItemStack[] pagedStacks = new ItemStack[28];
         int index = 0;
-        for(int i = (itemSelectorPage - 1) * 20; i < itemSelectorPage * 20; i++){
+        for(int i = (itemSelectorPage - 1) * 28; i < itemSelectorPage * 28; i++){
             if(i >= itemStacks.size())
                 break;
             pagedStacks[index++] = itemStacks.get(i);
         }
 
-        GUIUtil.spreadItemsCloned(this.getInventory(), 2, 5, 1, 4, pagedStacks);
+        GUIUtil.spreadItemsCloned(this.getInventory(), 1, 7, 1, 4, pagedStacks);
     }
 
     @Override
     public boolean click(InventoryClickEvent e) {
+        if(e.getCurrentItem() == null)
+            return true;
         if(e.getCurrentItem().getItemMeta().getPersistentDataContainer().has(IS_ITEM, PersistentDataType.BYTE)){
             ItemStack is = e.getCurrentItem().clone();
             ItemMeta im = is.getItemMeta();
@@ -206,6 +202,8 @@ public class GUIItemSelector extends AbstractGUI {
     }
 
     private ItemStack prepareItemStack(ItemStack is){
+        if(is == null)
+            return null;
         ItemMeta im = is.getItemMeta();
         im.getPersistentDataContainer().set(IS_ITEM, PersistentDataType.BYTE, (byte) 1);
         is.setItemMeta(im);

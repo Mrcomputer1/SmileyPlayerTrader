@@ -114,22 +114,34 @@ public class ItemUtil {
             return null;
         }
 
-        // Get material
-        Material mat = Material.getMaterial((String) item.get("type"));
-        if(mat == null){
-            if(SmileyPlayerTrader.getInstance().getDescription().getVersion().contains("SNAPSHOT")){
-                SmileyPlayerTrader.getInstance().getLogger().warning(item.get("type") + " does not exist (is it spelled right or from a version this server doesn't support?)");
+        ItemStack is;
+
+        // Vanilla handler
+        if(!item.containsKey("is") || !(item.get("is") instanceof String) || ((String) item.get("is")).equalsIgnoreCase("vanilla")){
+            // Get material
+            Material mat = Material.getMaterial((String) item.get("type"));
+            if(mat == null){
+                if(SmileyPlayerTrader.getInstance().getDescription().getVersion().contains("SNAPSHOT")){
+                    SmileyPlayerTrader.getInstance().getLogger().warning(item.get("type") + " does not exist (is it spelled right or from a version this server doesn't support?)");
+                }
+                return null;
             }
+
+            if(!mat.isItem() || mat.isAir()){
+                SmileyPlayerTrader.getInstance().getLogger().severe("Material is not an item/block or is air.");
+                return null;
+            }
+
+            // Create stack
+            is = new ItemStack(mat);
+        }else {
+            // Other/integration handlers
+            String itemIs = (String) item.get("is");
+
+            // Invalid integration
+            SmileyPlayerTrader.getInstance().getLogger().severe("Bad item type.");
             return null;
         }
-
-        if(!mat.isItem() || mat.isAir()){
-            SmileyPlayerTrader.getInstance().getLogger().severe("Material is not an item/block or is air.");
-            return null;
-        }
-
-        // Create stack
-        ItemStack is = new ItemStack(mat);
 
         // Get meta
         if(item.containsKey("meta")){
