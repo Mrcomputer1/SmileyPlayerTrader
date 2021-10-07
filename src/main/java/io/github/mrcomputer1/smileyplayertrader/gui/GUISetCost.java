@@ -280,8 +280,11 @@ public class GUISetCost extends AbstractGUI {
         }else if(e.getCurrentItem() == null) {
             return true;
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&bMore Items..."))){
+
+            // More Items... Menu
             GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(this.page, primary, editing, productId, product, cost1, cost2, discount, 1, GUIItemSelector.EnumItemSelectorFilter.ALL, null));
             return true;
+
         }else if(
                 e.getView().getInventory(e.getRawSlot()).getType() != InventoryType.PLAYER &&
                 e.getSlot() >= 4 * 9 && e.getSlot() <= (4 * 9) + 8
@@ -294,11 +297,13 @@ public class GUISetCost extends AbstractGUI {
 
             ItemStack item = this.primary ? this.cost1 : this.cost2;
 
+            // If custom item, return it to the user.
             if(this.getInventory().getItem(22) != null && !item.equals(this.getInventory().getItem(22))){
                 this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
             }
 
             ItemStack trueItemStack = getTrueItemStack(e.getCurrentItem());
+            // If the item is the same as selected, increase/decrease values as needed
             if(this.getInventory().getItem(22) != null && this.getInventory().getItem(22).isSimilar(trueItemStack)){
                 if(e.getClick() == ClickType.LEFT){
                     this.getInventory().getItem(22).setAmount(
@@ -312,9 +317,11 @@ public class GUISetCost extends AbstractGUI {
                     );
                 }
             }else{
+                // Otherwise, return the item.
                 this.getInventory().setItem(22, trueItemStack);
             }
 
+            // Set the new item into the cost field
             if(primary){
                 this.cost1 = this.getInventory().getItem(22);
             }else{
