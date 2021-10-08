@@ -91,11 +91,11 @@ public class GUISetCost extends AbstractGUI {
         List<ItemStack> stacks = new ArrayList<>();
         int stackCount = 0;
         for(LinkedHashMap<String, Object> item : priceQuickSelection){
-            stacks.add(createQuickSelectionRowItem(item));
-            if(++stackCount == 6){ // ensure only 6 items are on the quick selection row
+            if(stackCount++ >= 6){ // ensure only 6 items are on the quick selection row
                 SmileyPlayerTrader.getInstance().getLogger().warning("You have too many quick selection items.");
                 break;
             }
+            stacks.add(createQuickSelectionRowItem(item));
         }
         stacks.add(MORE_ITEMS_BTN.clone());
         createQuickSelectionRow(stacks);
