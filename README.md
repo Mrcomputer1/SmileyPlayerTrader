@@ -2,8 +2,6 @@
 
 Smiley Player Trader was created by Mrcomputer1 for [Semisol](https://github.com/Semisol)'s Minecraft server. Its purpose is to allow you to right click on a player and see a list of items they can trade.
 
-# Note: We DO NOT provide support for offline mode/cracked servers unless it is for multi-account development or a valid reason is provided.
-
 # Usage
 ## GUI
 1. Type /spt to open the GUI.
@@ -28,3 +26,5 @@ Smiley Player Trader was created by Mrcomputer1 for [Semisol](https://github.com
 
 # License
 [MIT License](LICENSE.md)
+
+#### Note: We DO NOT provide support for offline mode/cracked servers unless it is for multi-account development or a valid reason is provided.
