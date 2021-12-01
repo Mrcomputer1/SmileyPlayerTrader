@@ -133,7 +133,7 @@ public class GUIListItems extends AbstractGUI {
 
         List<ItemStack> stacks = new ArrayList<>();
         ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(
-                StatementHandler.StatementType.FIND_PRODUCTS_IN_PAGES, this.player.getUniqueId(), 28, this.page * 28);
+                StatementHandler.StatementType.FIND_PRODUCTS_IN_PAGES, this.player.getUniqueId().toString(), 28, this.page * 28);
         try {
             while (set.next()) {
                 byte[] product = set.getBytes("product");
