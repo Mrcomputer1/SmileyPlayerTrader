@@ -57,7 +57,7 @@ priceSelectorMenu:
   # Configure items that should be automatically added to the "All", "Blocks" and "Items" list
   automaticAdd:
     vanilla: true
-  # Automatically added vanilla items that should not be shown, defaults to /give-only items.
+  # Automatically added vanilla items that should not be shown, defaults to /give-only and some non-survival items.
   hiddenItems:
     - BARRIER
     - COMMAND_BLOCK
@@ -71,8 +71,14 @@ priceSelectorMenu:
     - DRAGON_EGG
     - KNOWLEDGE_BOOK
     - JIGSAW
-    - LIGHT_BLOCK
+    - LIGHT
     - SUSPICIOUS_STEW
+    - POTION
+    - SPLASH_POTION
+    - LINGERING_POTION
+    - TIPPED_ARROW
+    - ENCHANTED_BOOK
+    - "%SPAWN_EGGS%" # All spawn eggs.
   # Additional items that should be added to the main list
   extraItems: []
   # Items that should be in the featured list (by default, the same as the price quick selection)

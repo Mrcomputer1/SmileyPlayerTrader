@@ -170,4 +170,16 @@ public class ItemUtil {
         return is;
     }
 
+    public static boolean isHiddenItem(List<String> hiddenItems, Material m){
+        if (hiddenItems.contains(m.name())) {
+            return true;
+        }
+
+        if (hiddenItems.contains("%SPAWN_EGGS%") && m.name().endsWith("_SPAWN_EGG")){
+            return true;
+        }
+
+        return false;
+    }
+
 }

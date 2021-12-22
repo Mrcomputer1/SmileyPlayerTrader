@@ -101,7 +101,7 @@ public class GUIItemSelector extends AbstractGUI {
                 if (SmileyPlayerTrader.getInstance().getConfig().getBoolean("priceSelectorMenu.automaticAdd.vanilla", true)) {
                     // Vanilla Items
                     for (Material m : Material.values()) {
-                        if (hiddenItems.contains(m.name())) {
+                        if (ItemUtil.isHiddenItem(hiddenItems, m)) {
                             continue;
                         }
 
