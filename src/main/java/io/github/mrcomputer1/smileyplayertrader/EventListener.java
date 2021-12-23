@@ -45,7 +45,7 @@ public class EventListener implements Listener {
 
         if(e.getRightClicked().getType() == EntityType.PLAYER){
             Player store = (Player) e.getRightClicked();
-            MerchantUtil.openMerchant(e.getPlayer(), store, false);
+            MerchantUtil.openMerchant(e.getPlayer(), store, false, false);
         }
     }
 
@@ -164,7 +164,7 @@ public class EventListener implements Listener {
                         if(mi.getSelectedRecipe().getIngredients().size() >= 2) {
                             cost2.setAmount(cost2.getAmount() - mi.getSelectedRecipe().getIngredients().get(1).getAmount());
                         }
-                        MerchantUtil.openMerchant((Player) e.getWhoClicked(), store, false);
+                        MerchantUtil.openMerchant((Player) e.getWhoClicked(), store, true, true);
                         InventoryView iv = e.getWhoClicked().getOpenInventory();
                         iv.setCursor(mi.getSelectedRecipe().getResult());
                     }

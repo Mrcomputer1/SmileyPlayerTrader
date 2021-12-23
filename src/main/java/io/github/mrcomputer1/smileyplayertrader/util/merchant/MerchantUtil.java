@@ -34,7 +34,7 @@ public class MerchantUtil {
         merchantProductIdCache.remove(player);
     }
 
-    public static void openMerchant(Player player, Player store, boolean unsuccessfulFeedback){
+    public static void openMerchant(Player player, Player store, boolean unsuccessfulFeedback, boolean isReopen){
         if(store == null || !store.isOnline()){
             if(unsuccessfulFeedback)
                 player.sendMessage(I18N.translate("&cYou cannot trade with offline players."));
@@ -63,7 +63,9 @@ public class MerchantUtil {
 
         Merchant merchant = MerchantUtil.buildMerchant(store, productIdCache);
         player.openMerchant(merchant, true);
-        store.sendMessage(I18N.translate("&e%0% is now trading with you.", player.getName()));
+
+        if(!isReopen)
+            store.sendMessage(I18N.translate("&e%0% is now trading with you.", player.getName()));
 
         merchantProductIdCache.put(player, productIdCache);
     }

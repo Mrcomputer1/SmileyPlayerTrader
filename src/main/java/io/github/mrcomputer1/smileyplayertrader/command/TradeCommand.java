@@ -26,6 +26,6 @@ public class TradeCommand implements ICommand{
         }
 
         Player target = Bukkit.getPlayer(args[0]);
-        MerchantUtil.openMerchant((Player) sender, target, true);
+        MerchantUtil.openMerchant((Player) sender, target, true, false);
     }
 }
