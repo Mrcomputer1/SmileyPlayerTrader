@@ -144,5 +144,6 @@
   "&cThis product is no longer for sale.": "&cThis product is no longer for sale.",
   "&cThat player cannot be traded with.": "&cThat player cannot be traded with.",
   "&cYou cannot trade with yourself.": "&cYou cannot trade with yourself.",
-  "&cYou cannot trade in this world.": "&cYou cannot trade in this world."
+  "&cYou cannot trade in this world.": "&cYou cannot trade in this world.",
+  "&cThis product has been changed, please reopen the trading UI.": "&cThis product has been changed, please reopen the trading UI."
 }
