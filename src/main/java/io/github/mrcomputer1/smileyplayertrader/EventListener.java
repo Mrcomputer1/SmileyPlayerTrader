@@ -102,14 +102,14 @@ public class EventListener implements Listener {
                     store.sendMessage(I18N.translate("&a%0% just purchased %1%!", e.getWhoClicked().getName(), mi.getSelectedRecipe().getResult().getType()));
                     if(!ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult())){
                         store.sendMessage(I18N.translate("&c%0% is now out of stock!", mi.getSelectedRecipe().getResult().getType()));
-                        mi.getSelectedRecipe().setUses(Integer.MAX_VALUE);
                         ItemStack cost1 = e.getInventory().getItem(0);
                         ItemStack cost2 = e.getInventory().getItem(1);
                         cost1.setAmount(cost1.getAmount() - mi.getSelectedRecipe().getIngredients().get(0).getAmount());
                         if(mi.getSelectedRecipe().getIngredients().size() >= 2) {
                             cost2.setAmount(cost2.getAmount() - mi.getSelectedRecipe().getIngredients().get(1).getAmount());
                         }
-                        InventoryView iv = e.getWhoClicked().openMerchant(mi.getMerchant(), true);
+                        MerchantUtil.openMerchant((Player) e.getWhoClicked(), store, false);
+                        InventoryView iv = e.getWhoClicked().getOpenInventory();
                         iv.setCursor(mi.getSelectedRecipe().getResult());
                     }
                 }else{
