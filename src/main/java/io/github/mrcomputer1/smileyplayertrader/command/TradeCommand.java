@@ -26,14 +26,6 @@ public class TradeCommand implements ICommand{
         }
 
         Player target = Bukkit.getPlayer(args[0]);
-
-        if(target == null || !target.isOnline()){
-            sender.sendMessage(I18N.translate("&cYou cannot trade with offline players."));
-            return;
-        }
-
-        Merchant merchant = MerchantUtil.buildMerchant(target);
-        ((Player)sender).getPlayer().openMerchant(merchant, true);
-        target.sendMessage(I18N.translate("&e%0% is now trading with you.", sender.getName()));
+        MerchantUtil.openMerchant((Player) sender, target, true);
     }
 }

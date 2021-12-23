@@ -37,6 +37,9 @@ checkForBugs:
 # Enables/Disables the GUI Manager
 useGuiManager: true
 
+# If true, you will not be able to trade with players by right-clicking them, you will only be able to use /spt trade.
+disableRightClickTrading: false
+
 # Automatically toggle off while in combat
 autoCombatLock:
   enabled: true # Enables/Disables auto combat toggling

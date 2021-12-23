@@ -2,6 +2,7 @@ package io.github.mrcomputer1.smileyplayertrader;
 
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.ItemUtil;
+import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -11,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -19,16 +21,18 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantInventory;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class EventListener implements Listener {
 
     @EventHandler
     public void onEntityRightClick(PlayerInteractAtEntityEvent e){
-        if(SmileyPlayerTrader.getInstance().getConfig().getStringList("disabledWorlds").contains(e.getPlayer().getWorld().getName())){
+        if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("disableRightClickTrading", false))
             return;
-        }
         if(e.getRightClicked().hasMetadata("NPC")) // Citizens NPCs seem like players but they have different UUIDs and can't work.
             return;
         if(!e.getPlayer().hasPermission("smileyplayertrader.trade"))
@@ -38,11 +42,7 @@ public class EventListener implements Listener {
 
         if(e.getRightClicked().getType() == EntityType.PLAYER){
             Player store = (Player) e.getRightClicked();
-            if(!store.hasPermission("smileyplayertrader.merchant"))
-                return;
-            Merchant merchant = MerchantUtil.buildMerchant(store);
-            e.getPlayer().openMerchant(merchant, true);
-            store.sendMessage(I18N.translate("&e%0% is now trading with you.", e.getPlayer().getName()));
+            MerchantUtil.openMerchant(e.getPlayer(), store, false);
         }
     }
 
@@ -58,11 +58,34 @@ public class EventListener implements Listener {
                 Player store = Bukkit.getPlayer(e.getView().getTitle().replace(I18N.translate("&2Villager Store: "), ""));
                 if(store == null || !store.isOnline()){
                     e.getWhoClicked().sendMessage(I18N.translate("&cYou cannot trade with offline players."));
+                    e.setCancelled(true);
                     return;
                 }
                 if(mi.getSelectedRecipe() == null){
                     return;
                 }
+
+                // Check if hidden/disabled
+                long productId = MerchantUtil.getProductId((Player) e.getWhoClicked(), mi.getSelectedRecipeIndex());
+                ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_ENABLED, productId);
+                try {
+                    if (set.next()) {
+                        if(!set.getBoolean("enabled") || !set.getBoolean("available")){
+                            e.getWhoClicked().sendMessage(I18N.translate("&cThis product is no longer for sale."));
+                            e.setCancelled(true);
+                            return;
+                        }
+                    } else {
+                        e.getWhoClicked().sendMessage(I18N.translate("&cThis product is no longer for sale."));
+                        e.setCancelled(true);
+                        return;
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    e.setCancelled(true);
+                    return;
+                }
+
                 if(ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult())){
                     ItemUtil.removeStock(store, mi.getSelectedRecipe().getResult());
                     try {
@@ -98,6 +121,13 @@ public class EventListener implements Listener {
     }
 
     @EventHandler
+    public void onInventoryClose(InventoryCloseEvent e){
+        if(e.getView().getType() == InventoryType.MERCHANT){
+            MerchantUtil.clearProductIdCache((Player) e.getPlayer());
+        }
+    }
+
+    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
         if(e.getPlayer().hasPermission("smileyplayertrader.admin")){
             if(SmileyPlayerTrader.getInstance().getUpdateChecker() != null) {
@@ -118,6 +148,7 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e){
+        MerchantUtil.clearProductIdCache(e.getPlayer());
         SmileyPlayerTrader.getInstance().getPlayerConfig().unloadPlayer(e.getPlayer());
     }
 

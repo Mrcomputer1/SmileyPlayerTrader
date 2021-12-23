@@ -1,5 +1,5 @@
 {
-  "$$version$$": 6,
+  "$$version$$": 7,
   "&e%0% is now trading with you.": "&e%0% is now trading with you.",
   "&2Villager Store: ": "&2Villager Store: ",
   "&aThanks for your purchase, %0%": "&aThanks for your purchase, %0%",
@@ -140,5 +140,9 @@
   "&bMore Items...": "&bMore Items...",
   "&eFeatured": "&eFeatured",
   "&eShift Click to increase value": "&eShift Click to increase value",
-  "&eShift Right Click to decrease value": "&eShift Right Click to decrease value"
+  "&eShift Right Click to decrease value": "&eShift Right Click to decrease value",
+  "&cThis product is no longer for sale.": "&cThis product is no longer for sale.",
+  "&cThat player cannot be traded with.": "&cThat player cannot be traded with.",
+  "&cYou cannot trade with yourself.": "&cYou cannot trade with yourself.",
+  "&cYou cannot trade in this world.": "&cYou cannot trade in this world."
 }
