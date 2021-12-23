@@ -81,6 +81,8 @@ priceSelectorMenu:
     - LINGERING_POTION
     - TIPPED_ARROW
     - ENCHANTED_BOOK
+    - WRITTEN_BOOK
+    - FILLED_MAP
     - "%SPAWN_EGGS%" # All spawn eggs.
   # Additional items that should be added to the main list
   extraItems: []
