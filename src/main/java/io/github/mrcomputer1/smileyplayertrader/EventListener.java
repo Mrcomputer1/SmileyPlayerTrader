@@ -17,10 +17,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Merchant;
-import org.bukkit.inventory.MerchantInventory;
+import org.bukkit.inventory.*;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.lang.reflect.InvocationTargetException;
@@ -31,6 +28,9 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onEntityRightClick(PlayerInteractAtEntityEvent e){
+        if(e.getHand() != EquipmentSlot.HAND)
+            return;
+
         if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("disableRightClickTrading", false))
             return;
         if(e.getRightClicked().hasMetadata("NPC")) // Citizens NPCs seem like players but they have different UUIDs and can't work.
