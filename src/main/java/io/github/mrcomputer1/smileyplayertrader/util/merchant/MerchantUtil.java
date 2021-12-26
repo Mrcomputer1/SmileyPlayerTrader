@@ -116,7 +116,11 @@ public class MerchantUtil {
 
                 byte[] cost1b = set.getBytes("cost1");
                 if(cost1b != null){
-                    mr.addIngredient(buildItem(cost1b));
+                    ItemStack cost1 = buildItem(cost1b);
+                    if(cost1 == null){
+                        continue;
+                    }
+                    mr.addIngredient(cost1);
                 }else{
                     continue;
                 }
