@@ -65,6 +65,11 @@ public class SetCostCommand implements ICommand{
                     return;
                 }
 
+                if(count < 1 || count > material.getMaxStackSize()){
+                    sender.sendMessage(I18N.translate("&cNumber is either too large or too small."));
+                    return;
+                }
+
                 ItemStack is = new ItemStack(material);
                 is.setAmount(count);
                 byte[] item = ReflectionUtil.itemStackToByteArray(is);
