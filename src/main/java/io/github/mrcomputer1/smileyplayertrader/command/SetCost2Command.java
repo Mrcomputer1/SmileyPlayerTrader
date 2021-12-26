@@ -16,7 +16,7 @@ public class SetCost2Command implements ICommand{
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         if(args.length < 1){
-            sender.sendMessage(I18N.translate("&cBad Syntax! &f/spt setcost2 <id> [material] [count]"));
+            sender.sendMessage(I18N.translate("&cBad Syntax! &f/spt setcost2 <id> (none|[material] [count])"));
             return;
         }
 
@@ -51,6 +51,12 @@ public class SetCost2Command implements ICommand{
 
                 sender.sendMessage(I18N.translate("&aSecondary cost set!"));
             }else if(args.length >= 2){
+                if(args[1].equalsIgnoreCase("none")){
+                    SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_SECONDARY_COST, null, id);
+                    sender.sendMessage(I18N.translate("&aSecondary cost removed!"));
+                    return;
+                }
+                
                 Material material = Material.matchMaterial(args[1]);
                 if(material == null || !material.isItem() || material.isAir()) {
                     sender.sendMessage(I18N.translate("&c%0% isn't a valid item.", args[1]));
