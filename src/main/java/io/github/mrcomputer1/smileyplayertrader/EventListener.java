@@ -156,17 +156,21 @@ public class EventListener implements Listener {
                         e.getWhoClicked().sendMessage(I18N.translate("&aYou purchased an item from %0%", store.getName()));
                     }
                     store.sendMessage(I18N.translate("&a%0% just purchased %1%!", e.getWhoClicked().getName(), mi.getSelectedRecipe().getResult().getType()));
-                    if(!ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult())){
-                        store.sendMessage(I18N.translate("&c%0% is now out of stock!", mi.getSelectedRecipe().getResult().getType()));
-                        ItemStack cost1 = e.getInventory().getItem(0);
-                        ItemStack cost2 = e.getInventory().getItem(1);
-                        cost1.setAmount(cost1.getAmount() - mi.getSelectedRecipe().getIngredients().get(0).getAmount());
-                        if(mi.getSelectedRecipe().getIngredients().size() >= 2) {
-                            cost2.setAmount(cost2.getAmount() - mi.getSelectedRecipe().getIngredients().get(1).getAmount());
+                    try {
+                        if (!ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult())) {
+                            store.sendMessage(I18N.translate("&c%0% is now out of stock!", mi.getSelectedRecipe().getResult().getType()));
+                            ItemStack cost1 = e.getInventory().getItem(0);
+                            ItemStack cost2 = e.getInventory().getItem(1);
+                            cost1.setAmount(cost1.getAmount() - ItemUtil.computeAdjustedPrice(mi.getSelectedRecipe(), SmileyPlayerTrader.getInstance().getNMS().getSpecialCountForRecipe(mi)));
+                            if (mi.getSelectedRecipe().getIngredients().size() >= 2) {
+                                cost2.setAmount(cost2.getAmount() - mi.getSelectedRecipe().getIngredients().get(1).getAmount());
+                            }
+                            MerchantUtil.openMerchant((Player) e.getWhoClicked(), store, true, true);
+                            InventoryView iv = e.getWhoClicked().getOpenInventory();
+                            iv.setCursor(mi.getSelectedRecipe().getResult());
                         }
-                        MerchantUtil.openMerchant((Player) e.getWhoClicked(), store, true, true);
-                        InventoryView iv = e.getWhoClicked().getOpenInventory();
-                        iv.setCursor(mi.getSelectedRecipe().getResult());
+                    } catch (InvocationTargetException ex) {
+                        ex.printStackTrace();
                     }
                 }else{
                     e.getWhoClicked().sendMessage(I18N.translate("&cThis item is out of stock!"));

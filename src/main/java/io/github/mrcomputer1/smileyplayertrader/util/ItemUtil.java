@@ -14,6 +14,10 @@ import java.util.List;
 
 public class ItemUtil {
 
+    public static int computeAdjustedPrice(MerchantRecipe recipe, int specialPrice){
+        return recipe.getIngredients().get(0).getAmount() + specialPrice;
+    }
+
     public static void giveEarnings(Player player, MerchantRecipe recipe, int specialPrice){
         ItemStack first = recipe.getIngredients().get(0).clone();
         first.setAmount(first.getAmount() + specialPrice);
