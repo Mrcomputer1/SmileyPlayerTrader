@@ -14,15 +14,67 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MerchantUtil {
 
-    public static Merchant buildMerchant(Player merchant){
+    private static Map<Player, Map<Integer, Long>> merchantProductIdCache = new HashMap<>();
+
+    public static long getProductId(Player player, int index){
+        if(!merchantProductIdCache.containsKey(player))
+            return -1;
+        if(!merchantProductIdCache.get(player).containsKey(index))
+            return -1;
+        return merchantProductIdCache.get(player).get(index);
+    }
+
+    public static void clearProductIdCache(Player player){
+        merchantProductIdCache.remove(player);
+    }
+
+    public static void openMerchant(Player player, Player store, boolean unsuccessfulFeedback, boolean isReopen){
+        if(store == null || !store.isOnline()){
+            if(unsuccessfulFeedback)
+                player.sendMessage(I18N.translate("&cYou cannot trade with offline players."));
+            return;
+        }
+
+        if(SmileyPlayerTrader.getInstance().getConfig().getStringList("disabledWorlds").contains(player.getWorld().getName())){
+            if(unsuccessfulFeedback)
+                player.sendMessage(I18N.translate("&cYou cannot trade in this world."));
+            return;
+        }
+
+        if(player.getUniqueId().equals(store.getUniqueId()) && !SmileyPlayerTrader.getInstance().getConfig().getBoolean("debugSelfTrading", false)){
+            if(unsuccessfulFeedback)
+                player.sendMessage(I18N.translate("&cYou cannot trade with yourself."));
+            return;
+        }
+
+        if(!store.hasPermission("smileyplayertrader.merchant")) {
+            if(unsuccessfulFeedback)
+                player.sendMessage(I18N.translate("&cThat player cannot be traded with."));
+            return;
+        }
+
+        Map<Integer, Long> productIdCache = new HashMap<>();
+
+        Merchant merchant = MerchantUtil.buildMerchant(store, productIdCache);
+        player.openMerchant(merchant, true);
+
+        if(!isReopen)
+            store.sendMessage(I18N.translate("&e%0% is now trading with you.", player.getName()));
+
+        merchantProductIdCache.put(player, productIdCache);
+    }
+
+    public static Merchant buildMerchant(Player merchant, Map<Integer, Long> productIdCache){
         Merchant m = Bukkit.createMerchant(I18N.translate("&2Villager Store: ") + merchant.getName());
 
         try {
-            ReflectionUtil.setRecipesOnMerchant(m, getAndBuildRecipes(merchant));
+            ReflectionUtil.setRecipesOnMerchant(m, getAndBuildRecipes(merchant, productIdCache));
         } catch (InvocationTargetException e) {
             SmileyPlayerTrader.getInstance().getLogger().severe("Failed to build item list for merchant.");
             e.printStackTrace();
@@ -41,9 +93,10 @@ public class MerchantUtil {
         }
     }
 
-    private static List<MerchantRecipe> getAndBuildRecipes(Player merchant){
+    private static List<MerchantRecipe> getAndBuildRecipes(Player merchant, Map<Integer, Long> productIdCache){
         List<MerchantRecipe> recipes = new ArrayList<>();
 
+        int index = 0;
         ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.FIND_PRODUCTS, merchant.getUniqueId().toString());
         try {
             while (set.next()) {
@@ -63,7 +116,11 @@ public class MerchantUtil {
 
                 byte[] cost1b = set.getBytes("cost1");
                 if(cost1b != null){
-                    mr.addIngredient(buildItem(cost1b));
+                    ItemStack cost1 = buildItem(cost1b);
+                    if(cost1 == null){
+                        continue;
+                    }
+                    mr.addIngredient(cost1);
                 }else{
                     continue;
                 }
@@ -83,6 +140,7 @@ public class MerchantUtil {
 
                 mr.setSpecialPrice(-set.getInt("special_price"));
 
+                productIdCache.put(index++, set.getLong("id"));
                 recipes.add(mr);
             }
         } catch (SQLException e) {
