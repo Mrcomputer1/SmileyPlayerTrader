@@ -26,8 +26,10 @@ public class ReflectionUtil {
             return new MCVersion1_16_R3();
         }else if(versionParts[1].equalsIgnoreCase("17")){ // 1.17, 1.17.1
             return new MCVersion1_17();
-        }else if(versionParts[1].equalsIgnoreCase("18")){ // 1.18
+        }else if(versionParts[1].equalsIgnoreCase("18") && (versionParts.length < 3 || versionParts[2].equalsIgnoreCase("1"))){ // 1.18, 1.18.1
             return new MCVersion1_18();
+        }else if(versionParts[1].equalsIgnoreCase("18")){ // 1.18.2
+            return new MCVersion1_18_R2();
         }
         return null;
     }
