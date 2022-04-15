@@ -12,7 +12,8 @@ public interface IMCVersion {
 
     ItemStack byteArrayToItemStack(byte[] array) throws InvocationTargetException;
     byte[] itemStackToByteArray(ItemStack itemStack) throws InvocationTargetException;
-    void setRecipesOnMerchant(Merchant merchant, List<MerchantRecipe> recipes) throws InvocationTargetException;
 
+    void setRecipesOnMerchant(Merchant merchant, List<MerchantRecipe> recipes) throws InvocationTargetException;
     int getSpecialCountForRecipe(MerchantInventory inventory) throws InvocationTargetException;
+
 }

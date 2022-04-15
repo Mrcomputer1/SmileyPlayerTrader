@@ -3,8 +3,8 @@ package io.github.mrcomputer1.smileyplayertrader.util.merchant;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.ItemUtil;
-import io.github.mrcomputer1.smileyplayertrader.util.ReflectionUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
+import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -74,7 +74,7 @@ public class MerchantUtil {
         Merchant m = Bukkit.createMerchant(I18N.translate("&2Villager Store: ") + merchant.getName());
 
         try {
-            ReflectionUtil.setRecipesOnMerchant(m, getAndBuildRecipes(merchant, productIdCache));
+            VersionSupport.setRecipesOnMerchant(m, getAndBuildRecipes(merchant, productIdCache));
         } catch (InvocationTargetException e) {
             SmileyPlayerTrader.getInstance().getLogger().severe("Failed to build item list for merchant.");
             e.printStackTrace();
@@ -85,7 +85,7 @@ public class MerchantUtil {
 
     public static ItemStack buildItem(byte[] data){
         try {
-            return ReflectionUtil.byteArrayToItemStack(data);
+            return VersionSupport.byteArrayToItemStack(data);
         } catch (InvocationTargetException e) {
             SmileyPlayerTrader.getInstance().getLogger().severe("Failed to build item for merchant recipe, skipping...");
             e.printStackTrace();

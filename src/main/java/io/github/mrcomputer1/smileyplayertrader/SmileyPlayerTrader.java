@@ -5,9 +5,8 @@ import io.github.mrcomputer1.smileyplayertrader.gui.GUIEventListener;
 import io.github.mrcomputer1.smileyplayertrader.util.database.AbstractDatabase;
 import io.github.mrcomputer1.smileyplayertrader.util.database.DatabaseUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
-import io.github.mrcomputer1.smileyplayertrader.versions.IMCVersion;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
-import io.github.mrcomputer1.smileyplayertrader.util.ReflectionUtil;
+import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,7 +28,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
     private I18N i18n;
     private UpdateChecker updateChecker = null;
     private BugWarner bugWarner = null;
-    private IMCVersion nms = null;
+    private VersionSupport versionSupport = null;
 
     private Metrics metrics = null;
 
@@ -72,8 +71,10 @@ public class SmileyPlayerTrader extends JavaPlugin {
                 return;
         }
 
-        this.nms = ReflectionUtil.getVersion();
-        if(this.nms == null){
+        this.versionSupport = new VersionSupport();
+        try {
+            this.versionSupport.bindCompatibleVersion();
+        } catch (IllegalStateException ex) {
             SmileyPlayerTrader.getInstance().getLogger().severe("MINECRAFT VERSION IS NOT SUPPORTED! DISABLING!");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
@@ -136,8 +137,8 @@ public class SmileyPlayerTrader extends JavaPlugin {
         return this.bugWarner;
     }
 
-    public IMCVersion getNMS(){
-        return this.nms;
+    public VersionSupport getVersionSupport(){
+        return this.versionSupport;
     }
 
     public PlayerConfig getPlayerConfig(){
