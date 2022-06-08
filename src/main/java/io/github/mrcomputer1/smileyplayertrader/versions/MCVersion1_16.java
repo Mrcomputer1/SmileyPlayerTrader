@@ -60,28 +60,28 @@ public class MCVersion1_16 implements IMCVersion {
             this.OBC_CraftItemStack_Static_asNMSCopy_ItemStack = OBC_CraftItemStack.getMethod("asNMSCopy", ItemStack.class);
 
             // Merchant
-            Class<?> OBC_CraftMerchant = Class.forName("org.bukkit.craftbukkit.v1_16_R2.inventory.CraftMerchant");
+            Class<?> OBC_CraftMerchant = Class.forName("org.bukkit.craftbukkit.v1_16_R1.inventory.CraftMerchant");
             this.OBC_CraftMerchant_Instance_getMerchant_ = OBC_CraftMerchant.getMethod("getMerchant");
 
-            Class<?> NMS_IMerchant = Class.forName("net.minecraft.server.v1_16_R2.IMerchant");
+            Class<?> NMS_IMerchant = Class.forName("net.minecraft.server.v1_16_R1.IMerchant");
             this.NMS_IMerchant_Instance_getOffers_ = NMS_IMerchant.getMethod("getOffers");
 
-            Class<?> NMS_MerchantRecipe = Class.forName("net.minecraft.server.v1_16_R2.MerchantRecipe");
+            Class<?> NMS_MerchantRecipe = Class.forName("net.minecraft.server.v1_16_R1.MerchantRecipe");
             this.NMS_MerchantRecipe_Instance_setSpecialPrice_int = NMS_MerchantRecipe.getMethod("setSpecialPrice", int.class);
             this.NMS_MerchantRecipe_Instance_getSpecialPrice_ = NMS_MerchantRecipe.getMethod("getSpecialPrice");
 
-            Class<?> NMS_MerchantRecipeList = Class.forName("net.minecraft.server.v1_16_R2.MerchantRecipeList");
+            Class<?> NMS_MerchantRecipeList = Class.forName("net.minecraft.server.v1_16_R1.MerchantRecipeList");
             this.NMS_MerchantRecipeList_Instance_clear_ = NMS_MerchantRecipeList.getMethod("clear");
             this.NMS_MerchantRecipeList_Instance_add_MerchantRecipe = NMS_MerchantRecipeList.getMethod("add", Object.class);
 
-            Class<?> OBC_CraftMerchantRecipe = Class.forName("org.bukkit.craftbukkit.v1_16_R2.inventory.CraftMerchantRecipe");
+            Class<?> OBC_CraftMerchantRecipe = Class.forName("org.bukkit.craftbukkit.v1_16_R1.inventory.CraftMerchantRecipe");
             this.OBC_CraftMerchantRecipe_Static_fromBukkit_MerchantRecipe = OBC_CraftMerchantRecipe.getMethod("fromBukkit", org.bukkit.inventory.MerchantRecipe.class);
             this.OBC_CraftMerchantRecipe_Instance_toMinecraft_ = OBC_CraftMerchantRecipe.getMethod("toMinecraft");
 
-            Class<?> OBC_CraftInventoryMerchant = Class.forName("org.bukkit.craftbukkit.v1_16_R3.inventory.CraftInventoryMerchant");
+            Class<?> OBC_CraftInventoryMerchant = Class.forName("org.bukkit.craftbukkit.v1_16_R1.inventory.CraftInventoryMerchant");
             this.OBC_CraftInventoryMerchant_Instance_getInventory_ = OBC_CraftInventoryMerchant.getMethod("getInventory");
 
-            Class<?> NMS_InventoryMerchant = Class.forName("net.minecraft.server.v1_16_R3.InventoryMerchant");
+            Class<?> NMS_InventoryMerchant = Class.forName("net.minecraft.server.v1_16_R1.InventoryMerchant");
             this.NMS_InventoryMerchant_Instance_getRecipe_ = NMS_InventoryMerchant.getMethod("getRecipe");
         } catch (ClassNotFoundException | NoSuchMethodException e) {
             e.printStackTrace();

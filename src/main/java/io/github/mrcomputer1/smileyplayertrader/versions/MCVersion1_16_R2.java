@@ -78,10 +78,10 @@ public class MCVersion1_16_R2 implements IMCVersion {
             this.OBC_CraftMerchantRecipe_Static_fromBukkit_MerchantRecipe = OBC_CraftMerchantRecipe.getMethod("fromBukkit", org.bukkit.inventory.MerchantRecipe.class);
             this.OBC_CraftMerchantRecipe_Instance_toMinecraft_ = OBC_CraftMerchantRecipe.getMethod("toMinecraft");
 
-            Class<?> OBC_CraftInventoryMerchant = Class.forName("org.bukkit.craftbukkit.v1_16_R3.inventory.CraftInventoryMerchant");
+            Class<?> OBC_CraftInventoryMerchant = Class.forName("org.bukkit.craftbukkit.v1_16_R2.inventory.CraftInventoryMerchant");
             this.OBC_CraftInventoryMerchant_Instance_getInventory_ = OBC_CraftInventoryMerchant.getMethod("getInventory");
 
-            Class<?> NMS_InventoryMerchant = Class.forName("net.minecraft.server.v1_16_R3.InventoryMerchant");
+            Class<?> NMS_InventoryMerchant = Class.forName("net.minecraft.server.v1_16_R2.InventoryMerchant");
             this.NMS_InventoryMerchant_Instance_getRecipe_ = NMS_InventoryMerchant.getMethod("getRecipe");
         } catch (ClassNotFoundException | NoSuchMethodException e) {
             e.printStackTrace();
