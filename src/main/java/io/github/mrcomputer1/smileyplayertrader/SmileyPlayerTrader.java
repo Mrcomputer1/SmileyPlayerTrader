@@ -34,8 +34,10 @@ public class SmileyPlayerTrader extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // Configuration
         saveDefaultConfig();
 
+        // bStats
         if(!getDescription().getVersion().contains("-SNAPSHOT")) { // Disable bStats on development versions.
             this.metrics = new Metrics(this, BSTATS_PLUGIN_ID);
 
@@ -54,16 +56,19 @@ public class SmileyPlayerTrader extends JavaPlugin {
             }));
         }
 
+        // I18N
         this.i18n = new I18N();
         this.i18n.createLanguages();
         this.i18n.loadLanguages();
         this.i18n.updateLanguage();
 
+        // Update Checker
         if(getConfig().getBoolean("checkForUpdates", true)){
             this.updateChecker = new UpdateChecker();
             this.updateChecker.checkForUpdates();
         }
 
+        // Bug Warner
         if(getConfig().getBoolean("checkForBugs.check", false)){
             this.bugWarner = new BugWarner();
             boolean b = this.bugWarner.checkForBugs();
@@ -71,6 +76,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
                 return;
         }
 
+        // Version Support
         this.versionSupport = new VersionSupport();
         try {
             this.versionSupport.bindCompatibleVersion();
@@ -80,6 +86,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
             return;
         }
 
+        // Database
         boolean shouldCreateTables = true;
         if(this.getConfig().getString("database.type", "sqlite").equals("sqlite")){
             if(new File(this.getDataFolder(), this.getConfig().getString("database.file", "database.db")).exists()){
@@ -96,14 +103,17 @@ public class SmileyPlayerTrader extends JavaPlugin {
         }
         this.db.upgrade();
 
+        // Player Configuration
         this.playerConfig = new PlayerConfig();
         if(Bukkit.getOnlinePlayers().size() != 0)
             this.playerConfig.reloadPlayers();
 
+        // Commands
         CommandSmileyPlayerTrader cspt = new CommandSmileyPlayerTrader();
         getCommand("smileyplayertrader").setExecutor(cspt);
         getCommand("smileyplayertrader").setTabCompleter(cspt);
 
+        // GUIs
         Bukkit.getPluginManager().registerEvents(new EventListener(), this);
         if(getConfig().getBoolean("useGuiManager", true)){
             Bukkit.getPluginManager().registerEvents(new GUIEventListener(), this);
