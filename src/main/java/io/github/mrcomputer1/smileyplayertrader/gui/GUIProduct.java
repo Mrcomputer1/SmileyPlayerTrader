@@ -3,9 +3,8 @@ package io.github.mrcomputer1.smileyplayertrader.gui;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.GUIUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
-import io.github.mrcomputer1.smileyplayertrader.util.ReflectionUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
-import org.bukkit.Bukkit;
+import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -126,9 +125,9 @@ public class GUIProduct extends AbstractGUI {
             try {
                 this.stack = this.getInventory().getItem(22);
 
-                byte[] stackBytes = (this.stack == null || this.stack.getType().isAir()) ? null : ReflectionUtil.itemStackToByteArray(this.stack);
-                byte[] costBytes = (this.costStack == null || this.costStack.getType().isAir()) ? null : ReflectionUtil.itemStackToByteArray(this.costStack);
-                byte[] cost2Bytes = (this.costStack2 == null || this.costStack2.getType().isAir()) ? null : ReflectionUtil.itemStackToByteArray(this.costStack2);
+                byte[] stackBytes = (this.stack == null || this.stack.getType().isAir()) ? null : VersionSupport.itemStackToByteArray(this.stack);
+                byte[] costBytes = (this.costStack == null || this.costStack.getType().isAir()) ? null : VersionSupport.itemStackToByteArray(this.costStack);
+                byte[] cost2Bytes = (this.costStack2 == null || this.costStack2.getType().isAir()) ? null : VersionSupport.itemStackToByteArray(this.costStack2);
 
                 if (isEditing) {
                     SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_PRODUCT_COST_COST2_SPECIALPRICE,

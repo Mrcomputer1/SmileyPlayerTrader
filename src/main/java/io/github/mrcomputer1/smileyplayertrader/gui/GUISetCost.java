@@ -95,7 +95,9 @@ public class GUISetCost extends AbstractGUI {
                 SmileyPlayerTrader.getInstance().getLogger().warning("You have too many quick selection items.");
                 break;
             }
-            stacks.add(createQuickSelectionRowItem(item));
+            ItemStack stack = createQuickSelectionRowItem(item);
+            if(stack != null)
+                stacks.add(stack);
         }
         stacks.add(MORE_ITEMS_BTN.clone());
         createQuickSelectionRow(stacks);
@@ -164,6 +166,9 @@ public class GUISetCost extends AbstractGUI {
 
     private ItemStack createQuickSelectionRowItem(LinkedHashMap<String, Object> item){
         ItemStack is = ItemUtil.buildConfigurationItem(item);
+
+        if(is == null)
+            return null;
 
         ItemMeta im = is.getItemMeta();
         im.getPersistentDataContainer().set(IS_QUICK_SELECT, PersistentDataType.BYTE, (byte) 1);

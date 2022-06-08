@@ -5,18 +5,22 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantInventory;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+// 1.16.2 to 1.16.3
 public class MCVersion1_16_R2 implements IMCVersion {
     // Sources: NMS = net.minecraft.server, OBC = org.bukkit.craftbukkit
     // Source_ClassName_Static/Instance_MethodName_ArgTypes...
 
     // Item Stack
-    private Constructor NMS_NBTTagCompound__CONSTRUCTOR_;
+    private Constructor<?> NMS_NBTTagCompound__CONSTRUCTOR_;
     private Method NMS_NBTCompressedStreamTools_Static_a_InputStream;
     private Method NMS_NBTCompressedStreamTools_Static_a_NBTTagCompound_OutputStream;
     private Method NMS_ItemStack_Instance_save_NBTTagCompound;
@@ -39,45 +43,45 @@ public class MCVersion1_16_R2 implements IMCVersion {
     public MCVersion1_16_R2(){
         try {
             // Item Stack
-            Class NMS_NBTTagCompound = Class.forName("net.minecraft.server.v1_16_R2.NBTTagCompound");
+            Class<?> NMS_NBTTagCompound = Class.forName("net.minecraft.server.v1_16_R2.NBTTagCompound");
             this.NMS_NBTTagCompound__CONSTRUCTOR_ = NMS_NBTTagCompound.getConstructor();
 
-            Class NMS_NBTCompressedStreamTools = Class.forName("net.minecraft.server.v1_16_R2.NBTCompressedStreamTools");
+            Class<?> NMS_NBTCompressedStreamTools = Class.forName("net.minecraft.server.v1_16_R2.NBTCompressedStreamTools");
             this.NMS_NBTCompressedStreamTools_Static_a_InputStream = NMS_NBTCompressedStreamTools.getMethod("a", InputStream.class);
             this.NMS_NBTCompressedStreamTools_Static_a_NBTTagCompound_OutputStream =
                     NMS_NBTCompressedStreamTools.getMethod("a", NMS_NBTTagCompound, OutputStream.class);
 
-            Class NMS_ItemStack = Class.forName("net.minecraft.server.v1_16_R2.ItemStack");
+            Class<?> NMS_ItemStack = Class.forName("net.minecraft.server.v1_16_R2.ItemStack");
             this.NMS_ItemStack_Instance_save_NBTTagCompound = NMS_ItemStack.getMethod("save", NMS_NBTTagCompound);
             this.NMS_ItemStack_Static_a_NBTTagCompound = NMS_ItemStack.getMethod("a", NMS_NBTTagCompound);
 
-            Class OBC_CraftItemStack = Class.forName("org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack");
+            Class<?> OBC_CraftItemStack = Class.forName("org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack");
             this.OBC_CraftItemStack_Static_asCraftMirror_ItemStack = OBC_CraftItemStack.getMethod("asCraftMirror", NMS_ItemStack);
             this.OBC_CraftItemStack_Static_asNMSCopy_ItemStack = OBC_CraftItemStack.getMethod("asNMSCopy", ItemStack.class);
 
             // Merchant
-            Class OBC_CraftMerchant = Class.forName("org.bukkit.craftbukkit.v1_16_R2.inventory.CraftMerchant");
+            Class<?> OBC_CraftMerchant = Class.forName("org.bukkit.craftbukkit.v1_16_R2.inventory.CraftMerchant");
             this.OBC_CraftMerchant_Instance_getMerchant_ = OBC_CraftMerchant.getMethod("getMerchant");
 
-            Class NMS_IMerchant = Class.forName("net.minecraft.server.v1_16_R2.IMerchant");
+            Class<?> NMS_IMerchant = Class.forName("net.minecraft.server.v1_16_R2.IMerchant");
             this.NMS_IMerchant_Instance_getOffers_ = NMS_IMerchant.getMethod("getOffers");
 
-            Class NMS_MerchantRecipe = Class.forName("net.minecraft.server.v1_16_R2.MerchantRecipe");
+            Class<?> NMS_MerchantRecipe = Class.forName("net.minecraft.server.v1_16_R2.MerchantRecipe");
             this.NMS_MerchantRecipe_Instance_setSpecialPrice_int = NMS_MerchantRecipe.getMethod("setSpecialPrice", int.class);
             this.NMS_MerchantRecipe_Instance_getSpecialPrice_ = NMS_MerchantRecipe.getMethod("getSpecialPrice");
 
-            Class NMS_MerchantRecipeList = Class.forName("net.minecraft.server.v1_16_R2.MerchantRecipeList");
+            Class<?> NMS_MerchantRecipeList = Class.forName("net.minecraft.server.v1_16_R2.MerchantRecipeList");
             this.NMS_MerchantRecipeList_Instance_clear_ = NMS_MerchantRecipeList.getMethod("clear");
             this.NMS_MerchantRecipeList_Instance_add_MerchantRecipe = NMS_MerchantRecipeList.getMethod("add", Object.class);
 
-            Class OBC_CraftMerchantRecipe = Class.forName("org.bukkit.craftbukkit.v1_16_R2.inventory.CraftMerchantRecipe");
+            Class<?> OBC_CraftMerchantRecipe = Class.forName("org.bukkit.craftbukkit.v1_16_R2.inventory.CraftMerchantRecipe");
             this.OBC_CraftMerchantRecipe_Static_fromBukkit_MerchantRecipe = OBC_CraftMerchantRecipe.getMethod("fromBukkit", org.bukkit.inventory.MerchantRecipe.class);
             this.OBC_CraftMerchantRecipe_Instance_toMinecraft_ = OBC_CraftMerchantRecipe.getMethod("toMinecraft");
 
-            Class OBC_CraftInventoryMerchant = Class.forName("org.bukkit.craftbukkit.v1_16_R3.inventory.CraftInventoryMerchant");
+            Class<?> OBC_CraftInventoryMerchant = Class.forName("org.bukkit.craftbukkit.v1_16_R2.inventory.CraftInventoryMerchant");
             this.OBC_CraftInventoryMerchant_Instance_getInventory_ = OBC_CraftInventoryMerchant.getMethod("getInventory");
 
-            Class NMS_InventoryMerchant = Class.forName("net.minecraft.server.v1_16_R3.InventoryMerchant");
+            Class<?> NMS_InventoryMerchant = Class.forName("net.minecraft.server.v1_16_R2.InventoryMerchant");
             this.NMS_InventoryMerchant_Instance_getRecipe_ = NMS_InventoryMerchant.getMethod("getRecipe");
         } catch (ClassNotFoundException | NoSuchMethodException e) {
             e.printStackTrace();
@@ -106,9 +110,7 @@ public class MCVersion1_16_R2 implements IMCVersion {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             NMS_NBTCompressedStreamTools_Static_a_NBTTagCompound_OutputStream.invoke(null, tagCompound, baos);
             return baos.toByteArray();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
+        } catch (IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
         return null;
@@ -127,9 +129,7 @@ public class MCVersion1_16_R2 implements IMCVersion {
                 NMS_MerchantRecipe_Instance_setSpecialPrice_int.invoke(mr, recipe.getSpecialPrice());
                 NMS_MerchantRecipeList_Instance_add_MerchantRecipe.invoke(offers, mr);
             }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
     }

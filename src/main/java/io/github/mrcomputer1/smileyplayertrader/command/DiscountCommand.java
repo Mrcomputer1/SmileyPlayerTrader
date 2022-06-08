@@ -3,9 +3,8 @@ package io.github.mrcomputer1.smileyplayertrader.command;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.CommandUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
-import io.github.mrcomputer1.smileyplayertrader.util.ReflectionUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
-import org.bukkit.Bukkit;
+import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
@@ -50,7 +49,7 @@ public class DiscountCommand implements ICommand{
         try {
             if(set.next()){
                 byte[] cost = set.getBytes("cost1");
-                ItemStack costIS = ReflectionUtil.byteArrayToItemStack(cost);
+                ItemStack costIS = VersionSupport.byteArrayToItemStack(cost);
 
                 int specialPrice = -amount + costIS.getAmount();
                 if(specialPrice < 1 || specialPrice > costIS.getMaxStackSize()){

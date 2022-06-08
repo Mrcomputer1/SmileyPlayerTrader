@@ -2,9 +2,9 @@ package io.github.mrcomputer1.smileyplayertrader;
 
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.ItemUtil;
-import io.github.mrcomputer1.smileyplayertrader.util.ReflectionUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantUtil;
+import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -87,7 +87,7 @@ public class EventListener implements Listener {
                             e.setCancelled(true);
                             return;
                         }
-                        ItemStack product = ReflectionUtil.byteArrayToItemStack(productBytes);
+                        ItemStack product = VersionSupport.byteArrayToItemStack(productBytes);
                         if(product == null || !product.equals(mi.getSelectedRecipe().getResult())){
                             e.getWhoClicked().sendMessage(I18N.translate("&cThis product has been changed, please reopen the trading UI."));
                             e.setCancelled(true);
@@ -101,7 +101,7 @@ public class EventListener implements Listener {
                             e.setCancelled(true);
                             return;
                         }
-                        ItemStack cost1 = ReflectionUtil.byteArrayToItemStack(cost1Bytes);
+                        ItemStack cost1 = VersionSupport.byteArrayToItemStack(cost1Bytes);
                         if(cost1 == null || !cost1.equals(mi.getSelectedRecipe().getIngredients().get(0))){
                             e.getWhoClicked().sendMessage(I18N.translate("&cThis product has been changed, please reopen the trading UI."));
                             e.setCancelled(true);
@@ -116,7 +116,7 @@ public class EventListener implements Listener {
                             return;
                         }
                         if(cost2Bytes != null){
-                            ItemStack cost2 = ReflectionUtil.byteArrayToItemStack(cost2Bytes);
+                            ItemStack cost2 = VersionSupport.byteArrayToItemStack(cost2Bytes);
                             if(cost2 == null || !cost2.equals(mi.getSelectedRecipe().getIngredients().get(1))){
                                 e.getWhoClicked().sendMessage(I18N.translate("&cThis product has been changed, please reopen the trading UI."));
                                 e.setCancelled(true);
@@ -125,7 +125,7 @@ public class EventListener implements Listener {
                         }
 
                         int discount = -set.getInt("special_price");
-                        if(discount != SmileyPlayerTrader.getInstance().getNMS().getSpecialCountForRecipe(mi)){
+                        if(discount != VersionSupport.getSpecialCountForRecipe(mi)){
                             e.getWhoClicked().sendMessage(I18N.translate("&cThis product has been changed, please reopen the trading UI."));
                             e.setCancelled(true);
                             return;
@@ -145,7 +145,7 @@ public class EventListener implements Listener {
                 if(ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult())){
                     ItemUtil.removeStock(store, mi.getSelectedRecipe().getResult());
                     try {
-                        ItemUtil.giveEarnings(store, mi.getSelectedRecipe(), SmileyPlayerTrader.getInstance().getNMS().getSpecialCountForRecipe(mi));
+                        ItemUtil.giveEarnings(store, mi.getSelectedRecipe(), VersionSupport.getSpecialCountForRecipe(mi));
                     } catch (InvocationTargetException ex) {
                         ex.printStackTrace();
                         SmileyPlayerTrader.getInstance().getLogger().severe("Something went wrong while attempting to give earnings to " + store.getName());
@@ -161,7 +161,7 @@ public class EventListener implements Listener {
                             store.sendMessage(I18N.translate("&c%0% is now out of stock!", mi.getSelectedRecipe().getResult().getType()));
                             ItemStack cost1 = e.getInventory().getItem(0);
                             ItemStack cost2 = e.getInventory().getItem(1);
-                            cost1.setAmount(cost1.getAmount() - ItemUtil.computeAdjustedPrice(mi.getSelectedRecipe(), SmileyPlayerTrader.getInstance().getNMS().getSpecialCountForRecipe(mi)));
+                            cost1.setAmount(cost1.getAmount() - ItemUtil.computeAdjustedPrice(mi.getSelectedRecipe(), VersionSupport.getSpecialCountForRecipe(mi)));
                             if (mi.getSelectedRecipe().getIngredients().size() >= 2) {
                                 cost2.setAmount(cost2.getAmount() - mi.getSelectedRecipe().getIngredients().get(1).getAmount());
                             }
