@@ -27,6 +27,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@SuppressWarnings("unused")
 public class EventListener implements Listener {
 
     @EventHandler
@@ -69,7 +70,7 @@ public class EventListener implements Listener {
                 }
 
                 // Check if trade is still valid
-                long productId = MerchantUtil.getProductId((Player) e.getWhoClicked(), mi.getSelectedRecipeIndex());
+                long productId = MerchantUtil.getProductId((Player) e.getWhoClicked(), mi.getSelectedRecipe().getResult());
                 ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, productId);
                 try {
                     if (set.next()) {

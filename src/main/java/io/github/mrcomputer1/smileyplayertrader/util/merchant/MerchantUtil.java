@@ -13,21 +13,18 @@ import org.bukkit.inventory.Merchant;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MerchantUtil {
 
-    private static Map<Player, Map<Integer, Long>> merchantProductIdCache = new HashMap<>();
+    private static final Map<Player, Map<ItemStack, Long>> merchantProductIdCache = new HashMap<>();
 
-    public static long getProductId(Player player, int index){
+    public static long getProductId(Player player, ItemStack stack){
         if(!merchantProductIdCache.containsKey(player))
             return -1;
-        if(!merchantProductIdCache.get(player).containsKey(index))
+        if(!merchantProductIdCache.get(player).containsKey(stack))
             return -1;
-        return merchantProductIdCache.get(player).get(index);
+        return merchantProductIdCache.get(player).get(stack);
     }
 
     public static void clearProductIdCache(Player player){
@@ -59,7 +56,7 @@ public class MerchantUtil {
             return;
         }
 
-        Map<Integer, Long> productIdCache = new HashMap<>();
+        Map<ItemStack, Long> productIdCache = new IdentityHashMap<>();
 
         Merchant merchant = MerchantUtil.buildMerchant(store, productIdCache);
         player.openMerchant(merchant, true);
@@ -70,7 +67,7 @@ public class MerchantUtil {
         merchantProductIdCache.put(player, productIdCache);
     }
 
-    public static Merchant buildMerchant(Player merchant, Map<Integer, Long> productIdCache){
+    public static Merchant buildMerchant(Player merchant, Map<ItemStack, Long> productIdCache){
         Merchant m = Bukkit.createMerchant(I18N.translate("&2Villager Store: ") + merchant.getName());
 
         try {
@@ -93,7 +90,7 @@ public class MerchantUtil {
         }
     }
 
-    private static List<MerchantRecipe> getAndBuildRecipes(Player merchant, Map<Integer, Long> productIdCache){
+    private static List<MerchantRecipe> getAndBuildRecipes(Player merchant, Map<ItemStack, Long> productIdCache){
         List<MerchantRecipe> recipes = new ArrayList<>();
 
         int index = 0;
@@ -140,7 +137,7 @@ public class MerchantUtil {
 
                 mr.setSpecialPrice(-set.getInt("special_price"));
 
-                productIdCache.put(index++, set.getLong("id"));
+                productIdCache.put(mr.getResult(), set.getLong("id"));
                 recipes.add(mr);
             }
         } catch (SQLException e) {
