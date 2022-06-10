@@ -52,7 +52,7 @@ public class EventListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e){
         if(e.getView().getType() == InventoryType.MERCHANT){
-            if(e.getView().getTitle().startsWith(I18N.translate("&2Villager Store: ")) && e.getSlot() == 2){
+            if(e.getView().getTitle().startsWith(I18N.translate("&2Villager Store: ")) && e.getRawSlot() == 2){
                 if(e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT){
                     e.setCancelled(true);
                     return;
