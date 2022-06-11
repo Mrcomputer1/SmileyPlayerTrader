@@ -48,7 +48,7 @@ public class CommandSmileyPlayerTrader implements TabExecutor {
                 }
                 GUIManager.getInstance().openGUI((Player)sender, new GUIListItems(0));
             }else {
-                sender.sendMessage(I18N.translate("&bSmiley Player Trader by Mrcomputer1 and sc15. Version %0%.",
+                sender.sendMessage(I18N.translate("&bSmiley Player Trader by Mrcomputer1 and Semisol. Version %0%.",
                         SmileyPlayerTrader.getInstance().getDescription().getVersion()));
                 sender.sendMessage(I18N.translate("&eType /spt help for help!"));
             }
