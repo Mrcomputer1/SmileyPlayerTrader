@@ -34,6 +34,7 @@ public class GenericStatementHandler implements StatementHandler {
         statements.put(StatementType.UPDATE_PLAYER_CONFIG, "UPDATE $prefix$settings SET trade_toggle=?, combat_notice_toggle=? WHERE player=?");
         statements.put(StatementType.HIDE_PRODUCT, "UPDATE $prefix$products SET enabled=0 WHERE id=?");
         statements.put(StatementType.SET_DISCOUNT, "UPDATE $prefix$products SET special_price=? WHERE id=?");
+        statements.put(StatementType.SET_PRIORITY, "UPDATE $prefix$products SET priority=? WHERE id=?");
     }
 
     @Override

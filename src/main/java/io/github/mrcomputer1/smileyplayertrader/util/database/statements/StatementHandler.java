@@ -110,7 +110,13 @@ public interface StatementHandler {
          * discount (int)
          * id (int)
          */
-        SET_DISCOUNT
+        SET_DISCOUNT,
+
+        /**
+         * priority (int)
+         * id (int)
+         */
+        SET_PRIORITY
     }
 
     void run(StatementType type, Object... objs);

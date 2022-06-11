@@ -145,5 +145,16 @@
   "&cThat player cannot be traded with.": "&cThat player cannot be traded with.",
   "&cYou cannot trade with yourself.": "&cYou cannot trade with yourself.",
   "&cYou cannot trade in this world.": "&cYou cannot trade in this world.",
-  "&cThis product has been changed, please reopen the trading UI.": "&cThis product has been changed, please reopen the trading UI."
+  "&cThis product has been changed, please reopen the trading UI.": "&cThis product has been changed, please reopen the trading UI.",
+  "&2Set Priority": "&2Set Priority",
+  "&eSet Priority": "&eSet Priority",
+  "&aIncrease Priority": "&aIncrease Priority",
+  "&cDecrease Priority": "&cDecrease Priority",
+  "&cReset Priority": "&cReset Priority",
+  "&bPriority: %0%": "&bPriority: %0%",
+  "&eHigher priorities appear higher in the trade list.": "&eHigher priorities appear higher in the trade list.",
+  "&cBad Syntax! &f/spt priority <id> [amount]": "&cBad Syntax! &f/spt priority <id> [amount]",
+  "&aSet priority.": "&aSet priority.",
+  "&cYou cannot have a negative priority.": "&cYou cannot have a negative priority.",
+  "&f/spt priority <id> [amount] &e- Set priority of a product": "&f/spt priority <id> [amount] &e- Set priority of a product"
 }
