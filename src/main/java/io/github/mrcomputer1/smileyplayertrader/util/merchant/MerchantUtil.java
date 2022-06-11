@@ -31,6 +31,11 @@ public class MerchantUtil {
         merchantProductIdCache.remove(player);
     }
 
+    public static void openPreviewMerchant(Player player){
+        Merchant merchant = MerchantUtil.buildMerchant(player, new IdentityHashMap<>(), true);
+        player.openMerchant(merchant, true);
+    }
+
     public static void openMerchant(Player player, Player store, boolean unsuccessfulFeedback, boolean isReopen){
         if(store == null || !store.isOnline()){
             if(unsuccessfulFeedback)
@@ -58,7 +63,7 @@ public class MerchantUtil {
 
         Map<ItemStack, Long> productIdCache = new IdentityHashMap<>();
 
-        Merchant merchant = MerchantUtil.buildMerchant(store, productIdCache);
+        Merchant merchant = MerchantUtil.buildMerchant(store, productIdCache, false);
         player.openMerchant(merchant, true);
 
         if(!isReopen)
@@ -67,8 +72,11 @@ public class MerchantUtil {
         merchantProductIdCache.put(player, productIdCache);
     }
 
-    public static Merchant buildMerchant(Player merchant, Map<ItemStack, Long> productIdCache){
-        Merchant m = Bukkit.createMerchant(I18N.translate("&2Villager Store: ") + merchant.getName());
+    public static Merchant buildMerchant(Player merchant, Map<ItemStack, Long> productIdCache, boolean preview){
+        Merchant m = Bukkit.createMerchant(
+                preview ? I18N.translate("&2Preview Store: ") + merchant.getName()
+                        : I18N.translate("&2Villager Store: ") + merchant.getName()
+        );
 
         try {
             VersionSupport.setRecipesOnMerchant(m, getAndBuildRecipes(merchant, productIdCache));

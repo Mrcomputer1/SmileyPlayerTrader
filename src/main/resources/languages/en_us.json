@@ -156,5 +156,8 @@
   "&cBad Syntax! &f/spt priority <id> [amount]": "&cBad Syntax! &f/spt priority <id> [amount]",
   "&aSet priority.": "&aSet priority.",
   "&cYou cannot have a negative priority.": "&cYou cannot have a negative priority.",
-  "&f/spt priority <id> [amount] &e- Set priority of a product": "&f/spt priority <id> [amount] &e- Set priority of a product"
+  "&f/spt priority <id> [amount] &e- Set priority of a product": "&f/spt priority <id> [amount] &e- Set priority of a product",
+  "&2Preview Store: ": "&2Preview Store: ",
+  "&aPreview Store": "&aPreview Store",
+  "&f/spt preview &e- Preview your trade list": "&f/spt preview &e- Preview your trade list"
 }

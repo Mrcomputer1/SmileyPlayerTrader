@@ -177,6 +177,8 @@ public class EventListener implements Listener {
                     e.getWhoClicked().sendMessage(I18N.translate("&cThis item is out of stock!"));
                     e.setCancelled(true);
                 }
+            } else if (e.getView().getTitle().startsWith(I18N.translate("&2Preview Store: ")) && e.getRawSlot() == 2){
+                e.setCancelled(true);
             }
         }
     }

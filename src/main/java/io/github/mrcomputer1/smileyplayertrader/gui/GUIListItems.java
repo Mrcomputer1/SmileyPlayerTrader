@@ -35,6 +35,10 @@ public class GUIListItems extends AbstractGUI {
             Material.EMERALD, 1,
             I18N.translate("&aCreate New Product")
     );
+    private static ItemStack PREVIEW_BTN = AbstractGUI.createItem(
+            Material.VILLAGER_SPAWN_EGG, 1,
+            I18N.translate("&aPreview Store")
+    );
 
     public static NamespacedKey IS_PRODUCT_BOOLEAN_KEY = new NamespacedKey(SmileyPlayerTrader.getInstance(), "is_product");
 
@@ -48,8 +52,10 @@ public class GUIListItems extends AbstractGUI {
         GUIUtil.fillStartAndEnd(this.getInventory(), 2, BORDER);
         GUIUtil.fillStartAndEnd(this.getInventory(), 3, BORDER);
         GUIUtil.fillStartAndEnd(this.getInventory(), 4, BORDER);
+
         GUIUtil.drawLine(this.getInventory(), 5 * 9, 3, MENU_BAR);
-        GUIUtil.drawLine(this.getInventory(), (5 * 9) + 6, 3, MENU_BAR);
+        GUIUtil.drawLine(this.getInventory(), (5 * 9) + 6, 2, MENU_BAR);
+        this.getInventory().setItem((5 * 9) + 8, PREVIEW_BTN);
 
         if(this.page == 0){
             this.getInventory().setItem((5 * 9) + 3, NO_PREVIOUS_BTN);
@@ -77,6 +83,8 @@ public class GUIListItems extends AbstractGUI {
                 GUIManager.getInstance().openGUI(player, new GUIListItems(this.page - 1));
             } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(I18N.translate("&aCreate New Product"))) {
                 GUIManager.getInstance().openGUI(player, new GUIProduct(new ProductGUIState(this.page)));
+            } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(I18N.translate("&aPreview Store"))){
+                MerchantUtil.openPreviewMerchant(player);
             }
         }else{
             if(e.getCurrentItem().getItemMeta().getLore() != null &&
