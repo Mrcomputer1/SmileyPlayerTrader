@@ -74,9 +74,10 @@ public interface StatementHandler {
          * cost (nbt blob)
          * cost2 (nbt blob)
          * special_price (int)
+         * priority (int)
          * id (int)
          */
-        SET_PRODUCT_COST_COST2_SPECIALPRICE,
+        SET_PRODUCT_COST_COST2_SPECIALPRICE_PRIORITY,
 
         /**
          * id (int)

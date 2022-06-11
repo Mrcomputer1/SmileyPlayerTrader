@@ -27,14 +27,7 @@ import java.util.List;
 public class GUISetCost extends AbstractGUI {
     private Player player;
     private boolean primary;
-    private boolean editing;
-    private long productId;
-    private ItemStack product;
-    private ItemStack cost1;
-    private ItemStack cost2;
-    private int discount;
-
-    private int page;
+    private final ProductGUIState state;
 
     private static ItemStack BORDER = AbstractGUI.createItem(Material.BLACK_STAINED_GLASS_PANE, 1, ChatColor.RESET.toString());
     private static ItemStack INSERT_LBL = AbstractGUI.createItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE, 1, I18N.translate("&eInsert Price"));
@@ -54,15 +47,9 @@ public class GUISetCost extends AbstractGUI {
 
     private static NamespacedKey IS_QUICK_SELECT = new NamespacedKey(SmileyPlayerTrader.getInstance(), "is_quick_select");
 
-    public GUISetCost(int page, boolean primary, boolean editing, long productId, ItemStack product, ItemStack cost1, ItemStack cost2, int discount){
+    public GUISetCost(boolean primary, ProductGUIState state){
         this.primary = primary;
-        this.editing = editing;
-        this.productId = productId;
-        this.product = product;
-        this.cost1 = cost1;
-        this.cost2 = cost2;
-        this.page = page;
-        this.discount = discount;
+        this.state = state;
 
         if(primary) {
             this.createInventory(I18N.translate("&2Set Primary Cost"), 6);
@@ -78,9 +65,9 @@ public class GUISetCost extends AbstractGUI {
 
         GUIUtil.drawLine(this.getInventory(), (2 * 9), 4, BORDER);
         if(primary){
-            this.getInventory().setItem((2 * 9) + 4, this.cost1.clone());
+            this.getInventory().setItem((2 * 9) + 4, this.state.costStack.clone());
         }else{
-            this.getInventory().setItem((2 * 9) + 4, this.cost2.clone());
+            this.getInventory().setItem((2 * 9) + 4, this.state.costStack2.clone());
         }
         GUIUtil.drawLine(this.getInventory(), (2 * 9) + 5, 4, BORDER);
 
@@ -226,7 +213,7 @@ public class GUISetCost extends AbstractGUI {
 
             // Increase/Decrease on More Items...
             if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&bMore Items..."))){
-                ItemStack item = this.primary ? this.cost1 : this.cost2;
+                ItemStack item = this.primary ? this.state.costStack : this.state.costStack2;
 
                 // If this is a custom item, you can't do this.
                 if(item == null || !item.equals(this.getInventory().getItem(22))){
@@ -250,9 +237,9 @@ public class GUISetCost extends AbstractGUI {
 
                 // Set the new item into the cost field
                 if(this.primary){
-                    this.cost1 = this.getInventory().getItem(22);
+                    this.state.costStack = this.getInventory().getItem(22);
                 }else{
-                    this.cost2 = this.getInventory().getItem(22);
+                    this.state.costStack2 = this.getInventory().getItem(22);
                 }
             }
 
@@ -263,15 +250,15 @@ public class GUISetCost extends AbstractGUI {
 
             // Input Slot
             if(primary) {
-                if (!this.cost1.getType().isAir() && this.cost1.equals(e.getCurrentItem())) {
+                if (!this.state.costStack.getType().isAir() && this.state.costStack.equals(e.getCurrentItem())) {
                     this.getInventory().setItem(22, null);
-                    this.cost1 = new ItemStack(Material.AIR);
+                    this.state.costStack = new ItemStack(Material.AIR);
                     return true;
                 }
             }else {
-                if (!this.cost2.getType().isAir() && this.cost2.equals(e.getCurrentItem())) {
+                if (!this.state.costStack2.getType().isAir() && this.state.costStack2.equals(e.getCurrentItem())) {
                     this.getInventory().setItem(22, null);
-                    this.cost2 = new ItemStack(Material.AIR);
+                    this.state.costStack2 = new ItemStack(Material.AIR);
                     return true;
                 }
             }
@@ -287,7 +274,7 @@ public class GUISetCost extends AbstractGUI {
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&bMore Items..."))){
 
             // More Items... Menu
-            GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(this.page, primary, editing, productId, product, cost1, cost2, discount, 1, GUIItemSelector.EnumItemSelectorFilter.ALL, null));
+            GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(primary, state, 1, GUIItemSelector.EnumItemSelectorFilter.ALL, null));
             return true;
 
         }else if(
@@ -300,7 +287,7 @@ public class GUISetCost extends AbstractGUI {
                 return true;
             }
 
-            ItemStack item = this.primary ? this.cost1 : this.cost2;
+            ItemStack item = this.primary ? this.state.costStack : this.state.costStack2;
 
             // If custom item, return it to the user.
             if(this.getInventory().getItem(22) != null && !item.equals(this.getInventory().getItem(22))){
@@ -328,27 +315,27 @@ public class GUISetCost extends AbstractGUI {
 
             // Set the new item into the cost field
             if(primary){
-                this.cost1 = this.getInventory().getItem(22);
+                this.state.costStack = this.getInventory().getItem(22);
             }else{
-                this.cost2 = this.getInventory().getItem(22);
+                this.state.costStack2 = this.getInventory().getItem(22);
             }
 
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&aOK"))){
 
             // Okay
             if(primary){
-                if(this.getInventory().getItem(22) != null && !this.cost1.equals(this.getInventory().getItem(22))){
+                if(this.getInventory().getItem(22) != null && !this.state.costStack.equals(this.getInventory().getItem(22))){
                     this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
                 }
-                this.cost1 = this.getInventory().getItem(22);
-                this.discount = 0;
+                this.state.costStack = this.getInventory().getItem(22);
+                this.state.discount = 0;
             }else{
-                if(this.getInventory().getItem(22) != null && !this.cost2.equals(this.getInventory().getItem(22))){
+                if(this.getInventory().getItem(22) != null && !this.state.costStack2.equals(this.getInventory().getItem(22))){
                     this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
                 }
-                this.cost2 = this.getInventory().getItem(22);
+                this.state.costStack2 = this.getInventory().getItem(22);
             }
-            GUIManager.getInstance().openGUI(this.player, new GUIProduct(this.page, editing, product, productId, cost1, cost2, discount));
+            GUIManager.getInstance().openGUI(this.player, new GUIProduct(state));
 
         }
         return true;
@@ -357,11 +344,11 @@ public class GUISetCost extends AbstractGUI {
     @Override
     public void close() {
         if(primary) {
-            if (this.getInventory().getItem(22) != null && !this.cost1.equals(this.getInventory().getItem(22))) {
+            if (this.getInventory().getItem(22) != null && !this.state.costStack.equals(this.getInventory().getItem(22))) {
                 this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
             }
         }else{
-            if(this.getInventory().getItem(22) != null && !this.cost2.equals(this.getInventory().getItem(22))){
+            if(this.getInventory().getItem(22) != null && !this.state.costStack2.equals(this.getInventory().getItem(22))){
                 this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
             }
         }

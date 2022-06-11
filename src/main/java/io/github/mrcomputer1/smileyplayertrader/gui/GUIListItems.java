@@ -76,7 +76,7 @@ public class GUIListItems extends AbstractGUI {
             } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(I18N.translate("&aPrevious Page"))) {
                 GUIManager.getInstance().openGUI(player, new GUIListItems(this.page - 1));
             } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(I18N.translate("&aCreate New Product"))) {
-                GUIManager.getInstance().openGUI(player, new GUIProduct(this.page, false, null, -1, null, null, 0));
+                GUIManager.getInstance().openGUI(player, new GUIProduct(new ProductGUIState(this.page)));
             }
         }else{
             if(e.getCurrentItem().getItemMeta().getLore() != null &&
@@ -99,8 +99,11 @@ public class GUIListItems extends AbstractGUI {
                             ItemStack cost2 = cost2Bytes == null ? null : MerchantUtil.buildItem(cost2Bytes);
 
                             int discount = set.getInt("special_price");
+                            int priority = set.getInt("priority");
 
-                            GUIManager.getInstance().openGUI(player, new GUIProduct(this.page, true, stack, id, cost1, cost2, discount));
+                            GUIManager.getInstance().openGUI(player, new GUIProduct(new ProductGUIState(
+                                    this.page, id, stack, cost1, cost2, discount, priority
+                            )));
                         }
                     } catch (SQLException ex) {
                         ex.printStackTrace();
