@@ -129,9 +129,10 @@ public class GUIListItems extends AbstractGUI {
 
                             int storedProduct = set.getInt("stored_product");
                             int storedCost = set.getInt("stored_cost");
+                            int storedCost2 = set.getInt("stored_cost2");
 
                             GUIManager.getInstance().openGUI(player, new GUIProduct(new ProductGUIState(
-                                    this.page, id, stack, cost1, cost2, discount, priority, storedProduct, storedCost
+                                    this.page, id, stack, cost1, cost2, discount, priority, storedProduct, storedCost, storedCost2
                             )));
                         }
                     } catch (SQLException ex) {
@@ -148,7 +149,7 @@ public class GUIListItems extends AbstractGUI {
                     // Drop - Delete
                     try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
                         if (set.next()) {
-                            if(set.getInt("stored_product") > 0 || set.getInt("stored_cost") > 0){
+                            if(set.getInt("stored_product") > 0 || set.getInt("stored_cost") > 0 || set.getInt("stored_cost2") > 0){
                                 this.player.sendMessage(I18N.translate("&cYou must withdraw all stored product and earnings before deleting the product."));
                                 return true;
                             }
@@ -195,8 +196,6 @@ public class GUIListItems extends AbstractGUI {
     @Override
     public void open(Player player) {
         this.player = player;
-
-        boolean uncollectedItems = false;
 
         List<ItemStack> stacks = new ArrayList<>();
         try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(

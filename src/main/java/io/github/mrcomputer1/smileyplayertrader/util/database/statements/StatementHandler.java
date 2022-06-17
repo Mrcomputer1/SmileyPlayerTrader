@@ -134,7 +134,19 @@ public interface StatementHandler {
          * amount (int)
          * id (int)
          */
+        CHANGE_STORED_COST2,
+
+        /**
+         * amount (int)
+         * id (int)
+         */
         SET_STORED_COST,
+
+        /**
+         * amount (int)
+         * id (int)
+         */
+        SET_STORED_COST2,
 
         /**
          * merchant (uuid)

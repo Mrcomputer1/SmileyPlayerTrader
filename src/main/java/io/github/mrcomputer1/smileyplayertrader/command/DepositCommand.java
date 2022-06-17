@@ -63,11 +63,10 @@ public class DepositCommand implements ICommand{
                 ItemStack product = VersionSupport.byteArrayToItemStack(productBytes);
 
                 if(hand.isSimilar(product)){
-                    int amountOfProduct = hand.getAmount() / product.getAmount();
-                    int itemAmount = amountOfProduct * product.getAmount();
+                    int count = hand.getAmount();
 
                     int limit = SmileyPlayerTrader.getInstance().getConfig().getInt("itemStorage.productStorageLimit", -1);
-                    if(limit != -1 && set.getInt("stored_product") + amountOfProduct > limit){
+                    if(limit != -1 && set.getInt("stored_product") + count > limit){
                         sender.sendMessage(I18N.translate("&cYou cannot store more than %0% of a product.", limit));
                         return;
                     }
@@ -75,13 +74,13 @@ public class DepositCommand implements ICommand{
                     // Add to storage
                     SmileyPlayerTrader.getInstance().getStatementHandler().run(
                             StatementHandler.StatementType.CHANGE_STORED_PRODUCT,
-                            amountOfProduct, id
+                            count, id
                     );
 
                     // Remove from hand
-                    hand.setAmount(hand.getAmount() - itemAmount);
+                    hand.setAmount(hand.getAmount() - count);
 
-                    sender.sendMessage(I18N.translate("&aDeposited %0% of %1%.", itemAmount, product.getType()));
+                    sender.sendMessage(I18N.translate("&aDeposited %0% of %1%.", count, product.getType()));
                 }else{
                     sender.sendMessage(I18N.translate("&cThis item does not match the type of the product."));
                 }

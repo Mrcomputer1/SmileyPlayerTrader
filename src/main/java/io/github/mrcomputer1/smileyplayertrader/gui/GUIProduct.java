@@ -152,7 +152,7 @@ public class GUIProduct extends AbstractGUI {
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eSet Secondary Cost (Not Required)"))){
 
             // Set Secondary Cost
-            if(this.state.storedCost > 0){
+            if(this.state.storedCost2 > 0){
                 this.player.sendMessage(I18N.translate("&cYou must collect all earnings before changing the cost."));
                 return true;
             }
@@ -166,11 +166,6 @@ public class GUIProduct extends AbstractGUI {
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eSet Optional Discount"))){
 
             // Set Discount
-            if(this.state.storedCost > 0){
-                this.player.sendMessage(I18N.translate("&cYou must collect all earnings before changing the cost."));
-                return true;
-            }
-
             if(this.getInventory().getItem(22) != null && !this.state.stack.equals(this.getInventory().getItem(22))){
                 this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
             }

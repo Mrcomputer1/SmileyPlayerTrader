@@ -44,11 +44,7 @@ disableRightClickTrading: false
 # Configure item storage, used for offline trading.
 itemStorage:
   enable: true # Enables storing product items and earnings in the product for offline trading.
-  # Limits are based on how many times an instance of a product can be stored, not the item count.
-  # If you have a product selling a stack of stone and store a stack of stone, that counts as one.
-  # If you have a product selling a single stone and store a stack of stone, that counts as 64.
-  # -1 disables the limit.
-  productStorageLimit: -1
+  productStorageLimit: -1 # Limits amount of an item that can be stored. -1 to disable.
   notifyUncollectedEarningsOnLogin: true # Displays a notification when a player joins with uncollected earnings.
 
 # Automatically toggle off while in combat

@@ -175,19 +175,20 @@ public class ItemUtil {
                 ItemStack cost2 = cost2Bytes == null ? null : VersionSupport.byteArrayToItemStack(cost2Bytes);
 
                 int amount = set.getInt("stored_cost");
+                int amount2 = set.getInt("stored_cost2");
 
-                if(amount > 0){
+                if(amount > 0 || amount2 > 0){
                     collected += 1;
                 }
 
-                cost.setAmount((cost.getAmount() - set.getInt("special_price")) * amount);
+                cost.setAmount(amount);
                 Map<Integer, ItemStack> errs = p.getInventory().addItem(cost);
                 for(ItemStack is : errs.values()){
                     p.getWorld().dropItem(p.getLocation(), is);
                 }
 
                 if(cost2 != null) {
-                    cost2.setAmount(cost2.getAmount() * amount);
+                    cost2.setAmount(amount2);
                     errs = p.getInventory().addItem(cost2);
                     for(ItemStack is : errs.values()){
                         p.getWorld().dropItem(p.getLocation(), is);
@@ -195,6 +196,7 @@ public class ItemUtil {
                 }
 
                 SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_STORED_COST, 0, set.getLong("id"));
+                SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_STORED_COST2, 0, set.getLong("id"));
             }
 
             if(collected > 0) {

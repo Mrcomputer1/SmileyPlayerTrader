@@ -81,8 +81,7 @@ public class GUIItemStorage extends AbstractGUI{
             return;
         }
 
-        int itemAmount = limit * stack.getAmount();
-        stack.setAmount(itemAmount);
+        stack.setAmount(limit);
 
         Map<Integer, ItemStack> errs = player.getInventory().addItem(stack);
         for(ItemStack is : errs.values()){
@@ -110,23 +109,22 @@ public class GUIItemStorage extends AbstractGUI{
             ItemStack product = this.product;
 
             if(clicked.isSimilar(product)) {
-                int amountOfProduct = clicked.getAmount() / product.getAmount();
-                int itemAmount = amountOfProduct * product.getAmount();
+                int count = clicked.getAmount();
 
                 int limit = SmileyPlayerTrader.getInstance().getConfig().getInt("itemStorage.productStorageLimit", -1);
-                if (limit != -1 && this.storedProduct + amountOfProduct > limit) {
+                if (limit != -1 && this.storedProduct + count > limit) {
                     player.sendMessage(I18N.translate("&cYou cannot store more than %0% of a product.", limit));
                     return true;
                 }
 
                 // Add to storage
-                this.storedProduct += amountOfProduct;
+                this.storedProduct += count;
                 SmileyPlayerTrader.getInstance().getStatementHandler().run(
                         StatementHandler.StatementType.CHANGE_STORED_PRODUCT,
-                        amountOfProduct, this.id
+                        count, this.id
                 );
                 // Remove from hand
-                clicked.setAmount(clicked.getAmount() - itemAmount);
+                clicked.setAmount(clicked.getAmount() - count);
 
                 this.drawInfoPane();
             }

@@ -14,16 +14,17 @@ public class ItemStorageStockLocation implements IStockLocation{
 
     @Override
     public ItemStack giveEarnings(OfflinePlayer player, ItemStack stack, long id, boolean primaryCost) {
-        if(!primaryCost)
-            return null;
-
-        SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.CHANGE_STORED_COST, 1, id);
+        if(primaryCost) {
+            SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.CHANGE_STORED_COST, stack.getAmount(), id);
+        }else{
+            SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.CHANGE_STORED_COST2, stack.getAmount(), id);
+        }
         return null;
     }
 
     @Override
     public ItemStack removeStock(OfflinePlayer player, ItemStack stack, long id) {
-        SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.CHANGE_STORED_PRODUCT, -1, id);
+        SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.CHANGE_STORED_PRODUCT, -stack.getAmount(), id);
         return null;
     }
 
@@ -31,12 +32,11 @@ public class ItemStorageStockLocation implements IStockLocation{
     public int doesPlayerHaveItem(OfflinePlayer player, ItemStack stack, long id) {
         try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
             if(set.next()){
-                ItemStack product = VersionSupport.byteArrayToItemStack(set.getBytes("product"));
-                return set.getInt("stored_product") * product.getAmount();
+                return set.getInt("stored_product");
             }else{
                 return 0;
             }
-        } catch (SQLException | InvocationTargetException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

@@ -71,9 +71,7 @@ public class WithdrawCommand implements ICommand{
                 }
 
                 ItemStack stack = VersionSupport.byteArrayToItemStack(set.getBytes("product"));
-
-                int itemAmount = limit * stack.getAmount();
-                stack.setAmount(itemAmount);
+                stack.setAmount(limit);
 
                 Map<Integer, ItemStack> errs = p.getInventory().addItem(stack);
                 for(ItemStack is : errs.values()){
@@ -82,7 +80,7 @@ public class WithdrawCommand implements ICommand{
 
                 SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.CHANGE_STORED_PRODUCT, -limit, id);
 
-                sender.sendMessage(I18N.translate("&aWithdrew %0% of %1%.", itemAmount, stack.getType()));
+                sender.sendMessage(I18N.translate("&aWithdrew %0% of %1%.", limit, stack.getType()));
             }
         } catch (SQLException | InvocationTargetException e) {
             throw new RuntimeException(e);

@@ -23,11 +23,12 @@ public class ProductGUIState {
     // Item storage
     public int storedProduct = 0;
     public int storedCost = 0;
+    public int storedCost2 = 0;
 
     // Menu screen memory
     public final int page;
 
-    public ProductGUIState(int page, long id, ItemStack stack, ItemStack costStack, ItemStack costStack2, int discount, int priority, int storedProduct, int storedCost){
+    public ProductGUIState(int page, long id, ItemStack stack, ItemStack costStack, ItemStack costStack2, int discount, int priority, int storedProduct, int storedCost, int storedCost2){
         this.page = page;
 
         this.isEditing = true;
@@ -51,6 +52,7 @@ public class ProductGUIState {
 
         this.storedProduct = storedProduct;
         this.storedCost = storedCost;
+        this.storedCost2 = storedCost2;
     }
 
     public ProductGUIState(int page){

@@ -32,7 +32,7 @@ public class RemoveCommand implements ICommand{
 
         try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
             if(set.next()){
-                if(set.getInt("stored_product") > 0 || set.getInt("stored_cost") > 0){
+                if(set.getInt("stored_product") > 0 || set.getInt("stored_cost") > 0 || set.getInt("stored_cost2") > 0){
                     sender.sendMessage(I18N.translate("&cYou must withdraw all stored product and earnings before deleting the product."));
                     return;
                 }
