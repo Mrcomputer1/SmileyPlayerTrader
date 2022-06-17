@@ -35,6 +35,9 @@ public class CommandSmileyPlayerTrader implements TabExecutor {
         this.commands.put("openguifor", new OpenGUIForCommand());
         this.commands.put("priority", new PriorityCommand());
         this.commands.put("preview", new PreviewCommand());
+        this.commands.put("deposit", new DepositCommand());
+        this.commands.put("withdraw", new WithdrawCommand());
+        this.commands.put("collect", new CollectCommand());
     }
 
     @Override

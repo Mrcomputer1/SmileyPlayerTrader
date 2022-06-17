@@ -84,6 +84,11 @@ public class GUIProduct extends AbstractGUI {
         if(e.getRawSlot() == 22){
 
             // Input Slot
+            if(this.state.storedProduct > 0){
+                this.player.sendMessage(I18N.translate("&cYou must withdraw all stored product before changing the product."));
+                return true;
+            }
+
             if(!this.state.stack.getType().isAir() && this.state.stack.equals(e.getCurrentItem())){
                 this.getInventory().setItem(22 , null);
                 this.state.stack = new ItemStack(Material.AIR);
@@ -133,6 +138,11 @@ public class GUIProduct extends AbstractGUI {
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eSet Primary Cost"))){
 
             // Set Primary Cost
+            if(this.state.storedCost > 0){
+                this.player.sendMessage(I18N.translate("&cYou must collect all earnings before changing the cost."));
+                return true;
+            }
+
             if(this.getInventory().getItem(22) != null && !this.state.stack.equals(this.getInventory().getItem(22))){
                 this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
             }
@@ -142,6 +152,11 @@ public class GUIProduct extends AbstractGUI {
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eSet Secondary Cost (Not Required)"))){
 
             // Set Secondary Cost
+            if(this.state.storedCost > 0){
+                this.player.sendMessage(I18N.translate("&cYou must collect all earnings before changing the cost."));
+                return true;
+            }
+
             if(this.getInventory().getItem(22) != null && !this.state.stack.equals(this.getInventory().getItem(22))){
                 this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
             }
@@ -151,6 +166,11 @@ public class GUIProduct extends AbstractGUI {
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eSet Optional Discount"))){
 
             // Set Discount
+            if(this.state.storedCost > 0){
+                this.player.sendMessage(I18N.translate("&cYou must collect all earnings before changing the cost."));
+                return true;
+            }
+
             if(this.getInventory().getItem(22) != null && !this.state.stack.equals(this.getInventory().getItem(22))){
                 this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
             }

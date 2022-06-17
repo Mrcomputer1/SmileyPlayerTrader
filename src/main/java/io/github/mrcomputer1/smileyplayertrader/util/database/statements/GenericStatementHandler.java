@@ -35,6 +35,11 @@ public class GenericStatementHandler implements StatementHandler {
         statements.put(StatementType.HIDE_PRODUCT, "UPDATE $prefix$products SET enabled=0 WHERE id=?");
         statements.put(StatementType.SET_DISCOUNT, "UPDATE $prefix$products SET special_price=? WHERE id=?");
         statements.put(StatementType.SET_PRIORITY, "UPDATE $prefix$products SET priority=? WHERE id=?");
+        statements.put(StatementType.CHANGE_STORED_PRODUCT, "UPDATE $prefix$products SET stored_product=stored_product + ? WHERE id=?");
+        statements.put(StatementType.CHANGE_STORED_COST, "UPDATE $prefix$products SET stored_cost=stored_cost + ? WHERE id=?");
+        statements.put(StatementType.SET_STORED_COST, "UPDATE $prefix$products SET stored_cost=? WHERE id=?");
+        statements.put(StatementType.FIND_PRODUCTS_WITH_EARNINGS, "SELECT * FROM $prefix$products WHERE merchant=? AND stored_cost>0");
+        statements.put(StatementType.GET_UNCOLLECTED_EARNINGS, "SELECT COUNT(*) AS uncollected_earnings FROM $prefix$products WHERE merchant=? AND stored_cost>0");
     }
 
     @Override

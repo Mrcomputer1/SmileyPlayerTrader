@@ -116,7 +116,35 @@ public interface StatementHandler {
          * priority (int)
          * id (int)
          */
-        SET_PRIORITY
+        SET_PRIORITY,
+
+        /**
+         * amount (int)
+         * id (int)
+         */
+        CHANGE_STORED_PRODUCT,
+
+        /**
+         * amount (int)
+         * id (int)
+         */
+        CHANGE_STORED_COST,
+
+        /**
+         * amount (int)
+         * id (int)
+         */
+        SET_STORED_COST,
+
+        /**
+         * merchant (uuid)
+         */
+        FIND_PRODUCTS_WITH_EARNINGS,
+
+        /**
+         * merchant (uuid)
+         */
+        GET_UNCOLLECTED_EARNINGS
     }
 
     void run(StatementType type, Object... objs);

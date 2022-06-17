@@ -2,10 +2,14 @@ package io.github.mrcomputer1.smileyplayertrader.util.merchant;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
-import io.github.mrcomputer1.smileyplayertrader.util.ItemUtil;
+import io.github.mrcomputer1.smileyplayertrader.util.VaultUtil;
+import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
+import io.github.mrcomputer1.smileyplayertrader.util.item.stocklocations.IStockLocation;
+import io.github.mrcomputer1.smileyplayertrader.util.item.stocklocations.StockLocations;
 import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
@@ -36,8 +40,8 @@ public class MerchantUtil {
         player.openMerchant(merchant, true);
     }
 
-    public static void openMerchant(Player player, Player store, boolean unsuccessfulFeedback, boolean isReopen){
-        if(store == null || !store.isOnline()){
+    public static void openMerchant(Player player, OfflinePlayer store, boolean unsuccessfulFeedback, boolean isReopen){
+        if(!store.isOnline() && !StockLocations.canTradeWithPlayer(store)){
             if(unsuccessfulFeedback)
                 player.sendMessage(I18N.translate("&cYou cannot trade with offline players."));
             return;
@@ -55,24 +59,50 @@ public class MerchantUtil {
             return;
         }
 
-        if(!store.hasPermission("smileyplayertrader.merchant")) {
-            if(unsuccessfulFeedback)
-                player.sendMessage(I18N.translate("&cThat player cannot be traded with."));
-            return;
+        if(store.isOnline()) {
+            //noinspection ConstantConditions
+            if (!store.getPlayer().hasPermission("smileyplayertrader.merchant")) {
+                if (unsuccessfulFeedback)
+                    player.sendMessage(I18N.translate("&cThat player cannot be traded with."));
+            }else{
+                actuallyOpenMerchant(player, store, unsuccessfulFeedback, isReopen);
+            }
+        }else{
+            Bukkit.getScheduler().runTaskAsynchronously(
+                    SmileyPlayerTrader.getInstance(),
+                    (task) -> {
+                        if(!VaultUtil.hasPermission(player.getWorld(), store, "smileyplayertrader.merchant")){
+                            if (unsuccessfulFeedback) {
+                                Bukkit.getScheduler().runTask(
+                                        SmileyPlayerTrader.getInstance(),
+                                        (task2) -> player.sendMessage(I18N.translate("&cThat player cannot be traded with."))
+                                );
+                            }
+                        }else{
+                            Bukkit.getScheduler().runTask(SmileyPlayerTrader.getInstance(),
+                                    (task2) -> actuallyOpenMerchant(player, store, unsuccessfulFeedback, isReopen));
+                        }
+                    }
+            );
         }
 
+
+    }
+
+    private static void actuallyOpenMerchant(Player player, OfflinePlayer store, boolean unsuccessfulFeedback, boolean isReopen){
         Map<ItemStack, Long> productIdCache = new IdentityHashMap<>();
 
         Merchant merchant = MerchantUtil.buildMerchant(store, productIdCache, false);
         player.openMerchant(merchant, true);
 
-        if(!isReopen)
-            store.sendMessage(I18N.translate("&e%0% is now trading with you.", player.getName()));
+        if(!isReopen && store.isOnline())
+            //noinspection ConstantConditions
+            store.getPlayer().sendMessage(I18N.translate("&e%0% is now trading with you.", player.getName()));
 
         merchantProductIdCache.put(player, productIdCache);
     }
 
-    public static Merchant buildMerchant(Player merchant, Map<ItemStack, Long> productIdCache, boolean preview){
+    public static Merchant buildMerchant(OfflinePlayer merchant, Map<ItemStack, Long> productIdCache, boolean preview){
         Merchant m = Bukkit.createMerchant(
                 preview ? I18N.translate("&2Preview Store: ") + merchant.getName()
                         : I18N.translate("&2Villager Store: ") + merchant.getName()
@@ -98,7 +128,7 @@ public class MerchantUtil {
         }
     }
 
-    private static List<MerchantRecipe> getAndBuildRecipes(Player merchant, Map<ItemStack, Long> productIdCache){
+    private static List<MerchantRecipe> getAndBuildRecipes(OfflinePlayer merchant, Map<ItemStack, Long> productIdCache){
         List<MerchantRecipe> recipes = new ArrayList<>();
 
         int index = 0;
@@ -135,7 +165,7 @@ public class MerchantUtil {
                     mr.addIngredient(buildItem(cost2b));
                 }
 
-                if(!ItemUtil.doesPlayerHaveItem(merchant, is)){
+                if(!ItemUtil.doesPlayerHaveItem(merchant, is, set.getLong("id"))){
                     mr.setUses(Integer.MAX_VALUE);
                 }
 

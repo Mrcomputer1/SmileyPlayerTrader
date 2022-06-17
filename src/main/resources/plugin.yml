@@ -6,6 +6,8 @@ authors:
   - Mrcomputer1
   - Semisol
 main: io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader
+softdepend:
+  - Vault # for offline permissions checking
 commands:
   smileyplayertrader:
     description: "Smiley Player Trader Command"
