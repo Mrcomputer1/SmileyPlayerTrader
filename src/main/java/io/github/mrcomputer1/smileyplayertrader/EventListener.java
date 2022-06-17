@@ -74,8 +74,7 @@ public class EventListener implements Listener {
 
                 // Check if trade is still valid
                 long productId = MerchantUtil.getProductId((Player) e.getWhoClicked(), mi.getSelectedRecipe().getResult());
-                ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, productId);
-                try {
+                try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, productId)) {
                     if (set.next()) {
                         // Check hidden/disabled
                         if(!set.getBoolean("enabled") || !set.getBoolean("available")){
@@ -213,8 +212,7 @@ public class EventListener implements Listener {
 
         if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", true)
             && SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.notifyUncollectedEarningsOnLogin", true)){
-            ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_UNCOLLECTED_EARNINGS, e.getPlayer().getUniqueId().toString());
-            try {
+            try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_UNCOLLECTED_EARNINGS, e.getPlayer().getUniqueId().toString())) {
                 if(set.next()){
                     if(set.getInt("uncollected_earnings") > 0){
                         e.getPlayer().sendMessage(I18N.translate("&2&oYou have uncollected earnings. Type &f&o/spt collect &2&oto collect."));

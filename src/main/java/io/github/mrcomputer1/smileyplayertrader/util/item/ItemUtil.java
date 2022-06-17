@@ -166,9 +166,8 @@ public class ItemUtil {
     }
 
     public static void collectEarnings(Player p){
-        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.FIND_PRODUCTS_WITH_EARNINGS, p.getUniqueId().toString());
         int collected = 0;
-        try {
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.FIND_PRODUCTS_WITH_EARNINGS, p.getUniqueId().toString())) {
             while (set.next()) {
                 ItemStack cost = VersionSupport.byteArrayToItemStack(set.getBytes("cost1"));
 

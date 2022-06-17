@@ -47,8 +47,7 @@ public class WithdrawCommand implements ICommand{
 
         Player p = (Player) sender;
 
-        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id);
-        try {
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
             if(set.next()){
 
                 int limit = Integer.MAX_VALUE;

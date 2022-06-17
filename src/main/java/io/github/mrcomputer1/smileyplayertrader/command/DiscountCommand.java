@@ -45,8 +45,7 @@ public class DiscountCommand implements ICommand{
             return;
         }
 
-        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id);
-        try {
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
             if(set.next()){
                 if(set.getInt("stored_cost") > 0){
                     sender.sendMessage(I18N.translate("&cYou must collect all earnings before changing the cost."));

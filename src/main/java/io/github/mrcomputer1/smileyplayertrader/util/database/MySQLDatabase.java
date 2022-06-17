@@ -50,6 +50,7 @@ public class MySQLDatabase extends AbstractDatabase {
             if(s.next()){
                 this.insertId = s.getLong(1);
             }
+            stmt.close();
         }catch(SQLException e){
             SmileyPlayerTrader.getInstance().getLogger().severe("Failed to execute MySQL statement.");
             e.printStackTrace();

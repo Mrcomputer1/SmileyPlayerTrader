@@ -44,8 +44,7 @@ public class CollectCommand implements ICommand{
                 return;
             }
 
-            ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id);
-            try {
+            try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
                 if(set.next()){
                     ItemStack cost = VersionSupport.byteArrayToItemStack(set.getBytes("cost1"));
 

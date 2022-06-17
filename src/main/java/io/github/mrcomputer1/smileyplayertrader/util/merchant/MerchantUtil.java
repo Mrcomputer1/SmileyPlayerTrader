@@ -132,8 +132,7 @@ public class MerchantUtil {
         List<MerchantRecipe> recipes = new ArrayList<>();
 
         int index = 0;
-        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.FIND_PRODUCTS, merchant.getUniqueId().toString());
-        try {
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.FIND_PRODUCTS, merchant.getUniqueId().toString())) {
             while (set.next()) {
                 if(!set.getBoolean("enabled"))
                     continue;

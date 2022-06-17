@@ -51,6 +51,7 @@ public class SQLiteDatabase extends AbstractDatabase {
             if(s.next()){
                 this.insertId = s.getLong(1);
             }
+            stmt.close();
         }catch(SQLException e){
             SmileyPlayerTrader.getInstance().getLogger().severe("Failed to execute SQLite3 statement.");
             e.printStackTrace();

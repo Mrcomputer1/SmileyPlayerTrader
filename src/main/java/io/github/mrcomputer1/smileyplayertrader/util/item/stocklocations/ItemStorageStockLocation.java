@@ -29,8 +29,7 @@ public class ItemStorageStockLocation implements IStockLocation{
 
     @Override
     public int doesPlayerHaveItem(OfflinePlayer player, ItemStack stack, long id) {
-        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id);
-        try {
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
             if(set.next()){
                 ItemStack product = VersionSupport.byteArrayToItemStack(set.getBytes("product"));
                 return set.getInt("stored_product") * product.getAmount();

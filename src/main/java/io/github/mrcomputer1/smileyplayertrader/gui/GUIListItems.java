@@ -113,8 +113,7 @@ public class GUIListItems extends AbstractGUI {
                 if(e.getClick() == ClickType.LEFT){
 
                     // Left Click - Edit
-                    ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id);
-                    try {
+                    try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
                         if (set.next()) {
                             byte[] stackBytes = set.getBytes("product");
                             ItemStack stack = stackBytes == null ? null : MerchantUtil.buildItem(stackBytes);
@@ -147,8 +146,7 @@ public class GUIListItems extends AbstractGUI {
                 }else if(e.getClick() == ClickType.DROP || e.getClick() == ClickType.CONTROL_DROP){
 
                     // Drop - Delete
-                    ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id);
-                    try {
+                    try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
                         if (set.next()) {
                             if(set.getInt("stored_product") > 0 || set.getInt("stored_cost") > 0){
                                 this.player.sendMessage(I18N.translate("&cYou must withdraw all stored product and earnings before deleting the product."));
@@ -167,8 +165,7 @@ public class GUIListItems extends AbstractGUI {
                     if(!SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", true))
                         return true;
 
-                    ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id);
-                    try {
+                    try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
                         if (set.next()) {
                             byte[] productBytes = set.getBytes("product");
                             if(productBytes == null){
@@ -202,9 +199,8 @@ public class GUIListItems extends AbstractGUI {
         boolean uncollectedItems = false;
 
         List<ItemStack> stacks = new ArrayList<>();
-        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(
-                StatementHandler.StatementType.FIND_PRODUCTS_IN_PAGES, this.player.getUniqueId().toString(), 28, this.page * 28);
-        try {
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(
+                StatementHandler.StatementType.FIND_PRODUCTS_IN_PAGES, this.player.getUniqueId().toString(), 28, this.page * 28);) {
             while (set.next()) {
                 byte[] product = set.getBytes("product");
 
@@ -242,13 +238,14 @@ public class GUIListItems extends AbstractGUI {
             }
 
             if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", true)){
-                set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_UNCOLLECTED_EARNINGS, this.player.getUniqueId().toString());
-                if(set.next()) {
-                    if(set.getInt("uncollected_earnings") > 0) {
-                        ItemStack collectBtn = this.getInventory().getItem(5 * 9);
-                        ItemMeta collectIm = collectBtn.getItemMeta();
-                        collectIm.setLore(Arrays.asList(I18N.translate("&a&l&k# &r&a&lUncollected Earnings &a&l&k#")));
-                        collectBtn.setItemMeta(collectIm);
+                try(ResultSet set2 = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_UNCOLLECTED_EARNINGS, this.player.getUniqueId().toString())) {
+                    if (set2.next()) {
+                        if (set2.getInt("uncollected_earnings") > 0) {
+                            ItemStack collectBtn = this.getInventory().getItem(5 * 9);
+                            ItemMeta collectIm = collectBtn.getItemMeta();
+                            collectIm.setLore(Arrays.asList(I18N.translate("&a&l&k# &r&a&lUncollected Earnings &a&l&k#")));
+                            collectBtn.setItemMeta(collectIm);
+                        }
                     }
                 }
             }

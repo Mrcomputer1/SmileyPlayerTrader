@@ -16,8 +16,7 @@ public class CommandUtil {
         }
         Player sender = (Player)target;
 
-        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id);
-        try {
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
             if (set.next()) {
                 if(sender.getUniqueId().toString().equalsIgnoreCase(set.getString("merchant"))){
                     return false;

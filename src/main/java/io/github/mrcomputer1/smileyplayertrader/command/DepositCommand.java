@@ -53,8 +53,7 @@ public class DepositCommand implements ICommand{
 
         ItemStack hand = p.getInventory().getItemInMainHand();
 
-        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id);
-        try {
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
             if (set.next()) {
                 byte[] productBytes = set.getBytes("product");
                 if(productBytes == null){

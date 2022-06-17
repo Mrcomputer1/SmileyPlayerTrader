@@ -32,10 +32,8 @@ public class ListCommand implements ICommand{
             target = (Player)sender;
         }
 
-        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.FIND_PRODUCTS,
-                target.getUniqueId().toString());
-
-        try {
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.FIND_PRODUCTS,
+                target.getUniqueId().toString())) {
             while (set.next()) {
                 boolean isStocked = true;
                 byte[] productb = set.getBytes("product");
