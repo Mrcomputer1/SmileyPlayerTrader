@@ -157,7 +157,13 @@ public interface StatementHandler {
         /**
          * merchant (uuid)
          */
-        GET_UNCOLLECTED_EARNINGS
+        GET_UNCOLLECTED_EARNINGS,
+
+        /**
+         * hide_on_out_of_stock (boolean),
+         * id (int)
+         */
+        SET_HIDE_ON_OUT_OF_STOCK
     }
 
     void run(StatementType type, Object... objs);

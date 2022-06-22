@@ -38,6 +38,7 @@ public class CommandSmileyPlayerTrader implements TabExecutor {
         this.commands.put("deposit", new DepositCommand());
         this.commands.put("withdraw", new WithdrawCommand());
         this.commands.put("collect", new CollectCommand());
+        this.commands.put("hidewhenout", new HideWhenOutCommand());
     }
 
     @Override

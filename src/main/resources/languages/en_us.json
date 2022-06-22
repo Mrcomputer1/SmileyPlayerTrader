@@ -187,5 +187,8 @@
   "&a&l&k# &r&a&lUncollected Earnings &a&l&k#": "&a&l&k# &r&a&lUncollected Earnings &a&l&k#",
   "&2&oYou have uncollected earnings. Type &f&o/spt collect &2&oto collect.": "&2&oYou have uncollected earnings. Type &f&o/spt collect &2&oto collect.",
   "&eToggle hide on out of stock": "&eToggle hide on out of stock",
-  "&eWhen enabled, this trade will be hidden when out of stock.": "&eWhen enabled, this trade will be hidden when out of stock."
+  "&eWhen enabled, this trade will be hidden when out of stock.": "&eWhen enabled, this trade will be hidden when out of stock.",
+  "&aUpdated hide on out of stock.": "&aUpdated hide on out of stock.",
+  "&cBad Syntax! &f/spt hidewhenout <id> <yes|no|true|false>": "&cBad Syntax! &f/spt hidewhenout <id> <yes|no|true|false>",
+  "&f/spt hidewhenout <id> <yes|no|true|false> &e- Set hide when out of stock setting": "&f/spt hidewhenout <id> <yes|no|true|false> &e- Set hide when out of stock setting"
 }
