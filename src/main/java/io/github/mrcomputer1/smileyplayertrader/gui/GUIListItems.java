@@ -126,13 +126,15 @@ public class GUIListItems extends AbstractGUI {
 
                             int discount = set.getInt("special_price");
                             int priority = set.getInt("priority");
+                            boolean hideOnOutOfStock = set.getBoolean("hide_on_out_of_stock");
 
                             int storedProduct = set.getInt("stored_product");
                             int storedCost = set.getInt("stored_cost");
                             int storedCost2 = set.getInt("stored_cost2");
 
                             GUIManager.getInstance().openGUI(player, new GUIProduct(new ProductGUIState(
-                                    this.page, id, stack, cost1, cost2, discount, priority, storedProduct, storedCost, storedCost2
+                                    this.page, id, stack, cost1, cost2, discount, priority, hideOnOutOfStock,
+                                    storedProduct, storedCost, storedCost2
                             )));
                         }
                     } catch (SQLException ex) {

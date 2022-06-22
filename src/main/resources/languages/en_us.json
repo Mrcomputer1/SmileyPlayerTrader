@@ -185,5 +185,7 @@
   "&bShift Click to &lManage Stored Items": "&bShift Click to &lManage Stored Items",
   "&bDrop to &lDelete": "&bDrop to &lDelete",
   "&a&l&k# &r&a&lUncollected Earnings &a&l&k#": "&a&l&k# &r&a&lUncollected Earnings &a&l&k#",
-  "&2&oYou have uncollected earnings. Type &f&o/spt collect &2&oto collect.": "&2&oYou have uncollected earnings. Type &f&o/spt collect &2&oto collect."
+  "&2&oYou have uncollected earnings. Type &f&o/spt collect &2&oto collect.": "&2&oYou have uncollected earnings. Type &f&o/spt collect &2&oto collect.",
+  "&eToggle hide on out of stock": "&eToggle hide on out of stock",
+  "&eWhen enabled, this trade will be hidden when out of stock.": "&eWhen enabled, this trade will be hidden when out of stock."
 }

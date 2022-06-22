@@ -165,6 +165,11 @@ public class MerchantUtil {
                 }
 
                 if(!ItemUtil.doesPlayerHaveItem(merchant, is, set.getLong("id"))){
+                    String outOfStockBehaviour = SmileyPlayerTrader.getInstance().getConfig().getString("outOfStockBehaviour", "showByDefault");
+                    if(outOfStockBehaviour.equalsIgnoreCase("hide"))
+                        continue;
+                    if(!outOfStockBehaviour.equalsIgnoreCase("show") && set.getBoolean("hide_on_out_of_stock"))
+                        continue;
                     mr.setUses(Integer.MAX_VALUE);
                 }
 

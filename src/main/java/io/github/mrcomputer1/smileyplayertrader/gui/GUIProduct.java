@@ -7,12 +7,15 @@ import io.github.mrcomputer1.smileyplayertrader.util.database.statements.Stateme
 import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -29,6 +32,11 @@ public class GUIProduct extends AbstractGUI {
             Material.NETHER_STAR, 1,
             I18N.translate("&eSet Priority"),
             I18N.translate("&eHigher priorities appear higher in the trade list.")
+    );
+    private static ItemStack HIDE_ON_OUT_OF_STOCK = AbstractGUI.createItemWithLore(
+            Material.YELLOW_WOOL, 1,
+            I18N.translate("&eToggle hide on out of stock"),
+            I18N.translate("&eWhen enabled, this trade will be hidden when out of stock.")
     );
 
     private static ItemStack CREATE_PRODUCT = AbstractGUI.createItem(Material.EMERALD_BLOCK, 1, I18N.translate("&aCreate Product"));
@@ -55,7 +63,20 @@ public class GUIProduct extends AbstractGUI {
 
         GUIUtil.drawLine(this.getInventory(), 1 * 9, 4, BORDER);
         this.getInventory().setItem((1 * 9) + 4, INSERT_PRODUCT_LBL.clone());
-        GUIUtil.drawLine(this.getInventory(), (1 * 9) + 5, 4, BORDER);
+        GUIUtil.drawLine(this.getInventory(), (1 * 9) + 5, 3, BORDER);
+
+        String outOfStockBehaviour = SmileyPlayerTrader.getInstance().getConfig().getString("outOfStockBehaviour", "showByDefault");
+        //noinspection ConstantConditions
+        switch (outOfStockBehaviour.toLowerCase()){
+            case "show":
+            case "hide":
+                this.getInventory().setItem((1 * 9) + 8, BORDER.clone());
+                break;
+            case "showbydefault":
+            case "hidebydefault":
+            default:
+                updateHideOnOutOfStockButton();
+        }
 
         GUIUtil.drawLine(this.getInventory(), 2 * 9, 4, BORDER);
         this.getInventory().setItem((2 * 9) + 4, this.state.stack.clone());
@@ -119,11 +140,11 @@ public class GUIProduct extends AbstractGUI {
                 byte[] cost2Bytes = (this.state.costStack2 == null || this.state.costStack2.getType().isAir()) ? null : VersionSupport.itemStackToByteArray(this.state.costStack2);
 
                 if (this.state.isEditing) {
-                    SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_PRODUCT_COST_COST2_SPECIALPRICE_PRIORITY,
-                            stackBytes, costBytes, cost2Bytes, this.state.discount, this.state.priority, this.state.id);
+                    SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_PRODUCT_COST_COST2_SPECIALPRICE_PRIORITY_HIDEOUTOFSTOCK,
+                            stackBytes, costBytes, cost2Bytes, this.state.discount, this.state.priority, this.state.hideOnOutOfStock, this.state.id);
                 } else {
                     SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.ADD_PRODUCT,
-                            this.player.getUniqueId().toString(), stackBytes, costBytes, cost2Bytes, true, true, 0);
+                            this.player.getUniqueId().toString(), stackBytes, costBytes, cost2Bytes, true, true, 0, this.state.hideOnOutOfStock);
                 }
 
                 GUIManager.getInstance().openGUI(this.player, new GUIListItems(this.state.page));
@@ -181,8 +202,28 @@ public class GUIProduct extends AbstractGUI {
             this.state.stack = this.getInventory().getItem(22);
             GUIManager.getInstance().openGUI(this.player, new GUIPriority(state));
 
+        }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eToggle hide on out of stock"))){
+
+            // Toggle hide on out of stock
+            this.state.hideOnOutOfStock = !this.state.hideOnOutOfStock;
+            updateHideOnOutOfStockButton();
+
         }
         return true;
+    }
+
+    private void updateHideOnOutOfStockButton(){
+        ItemStack btn = HIDE_ON_OUT_OF_STOCK.clone();
+        ItemMeta im = btn.getItemMeta();
+
+        if(this.state.hideOnOutOfStock) {
+            im.addEnchant(Enchantment.DURABILITY, 1, true);
+            im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
+
+        btn.setItemMeta(im);
+
+        this.getInventory().setItem((1 * 9) + 8, btn);
     }
 
     @Override

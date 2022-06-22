@@ -1,5 +1,6 @@
 package io.github.mrcomputer1.smileyplayertrader.gui;
 
+import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,6 +20,7 @@ public class ProductGUIState {
     // Product properties
     public int discount = 0;
     public int priority = 0;
+    public boolean hideOnOutOfStock = false;
 
     // Item storage
     public int storedProduct = 0;
@@ -28,7 +30,7 @@ public class ProductGUIState {
     // Menu screen memory
     public final int page;
 
-    public ProductGUIState(int page, long id, ItemStack stack, ItemStack costStack, ItemStack costStack2, int discount, int priority, int storedProduct, int storedCost, int storedCost2){
+    public ProductGUIState(int page, long id, ItemStack stack, ItemStack costStack, ItemStack costStack2, int discount, int priority, boolean hideOnOutOfStock, int storedProduct, int storedCost, int storedCost2){
         this.page = page;
 
         this.isEditing = true;
@@ -49,6 +51,7 @@ public class ProductGUIState {
 
         this.discount = discount;
         this.priority = priority;
+        this.hideOnOutOfStock = hideOnOutOfStock;
 
         this.storedProduct = storedProduct;
         this.storedCost = storedCost;
@@ -60,6 +63,20 @@ public class ProductGUIState {
 
         this.id = -1L;
         this.isEditing = false;
+
+        String outOfStockBehaviour = SmileyPlayerTrader.getInstance().getConfig().getString("outOfStockBehaviour", "showByDefault");
+        //noinspection ConstantConditions
+        switch (outOfStockBehaviour.toLowerCase()){
+            case "hidebydefault":
+            case "hide":
+                this.hideOnOutOfStock = true;
+                break;
+            case "showbydefault":
+            case "show":
+            default:
+                this.hideOnOutOfStock = false;
+                break;
+        }
     }
 
 }

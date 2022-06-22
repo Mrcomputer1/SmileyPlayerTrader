@@ -118,6 +118,7 @@ public class SQLiteDatabase extends AbstractDatabase {
             run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN stored_product INTEGER DEFAULT 0 NOT NULL");
             run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN stored_cost INTEGER DEFAULT 0 NOT NULL");
             run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN stored_cost2 INTEGER DEFAULT 0 NOT NULL");
+            run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN hide_on_out_of_stock INTEGER DEFAULT 0 NOT NULL");
         }
     }
 

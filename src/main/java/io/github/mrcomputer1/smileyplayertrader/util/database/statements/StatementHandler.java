@@ -75,9 +75,10 @@ public interface StatementHandler {
          * cost2 (nbt blob)
          * special_price (int)
          * priority (int)
+         * hide_on_out_of_stock (boolean)
          * id (int)
          */
-        SET_PRODUCT_COST_COST2_SPECIALPRICE_PRIORITY,
+        SET_PRODUCT_COST_COST2_SPECIALPRICE_PRIORITY_HIDEOUTOFSTOCK,
 
         /**
          * id (int)
