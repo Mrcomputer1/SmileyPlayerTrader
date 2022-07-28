@@ -14,9 +14,10 @@ public interface StatementHandler {
          * product (nbt blob),
          * cost1 (nbt blob),
          * cost2 (nbt blob),
-         * enabled (boolean)
-         * available (boolean)
-         * special_price (int)
+         * enabled (boolean),
+         * available (boolean),
+         * special_price (int),
+         * hide_on_out_of_stock (boolean)
          */
         ADD_PRODUCT,
 
