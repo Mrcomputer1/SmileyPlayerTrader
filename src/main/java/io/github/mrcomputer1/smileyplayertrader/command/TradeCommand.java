@@ -3,9 +3,9 @@ package io.github.mrcomputer1.smileyplayertrader.command;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Merchant;
 
 public class TradeCommand implements ICommand{
     @Override
@@ -25,7 +25,8 @@ public class TradeCommand implements ICommand{
             return;
         }
 
-        Player target = Bukkit.getPlayer(args[0]);
+        //noinspection deprecation
+        OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
         MerchantUtil.openMerchant((Player) sender, target, true, false);
     }
 }

@@ -33,6 +33,12 @@ public class CommandSmileyPlayerTrader implements TabExecutor {
         this.commands.put("hide", new HideCommand());
         this.commands.put("discount", new DiscountCommand());
         this.commands.put("openguifor", new OpenGUIForCommand());
+        this.commands.put("priority", new PriorityCommand());
+        this.commands.put("preview", new PreviewCommand());
+        this.commands.put("deposit", new DepositCommand());
+        this.commands.put("withdraw", new WithdrawCommand());
+        this.commands.put("collect", new CollectCommand());
+        this.commands.put("hidewhenout", new HideWhenOutCommand());
     }
 
     @Override
@@ -48,7 +54,7 @@ public class CommandSmileyPlayerTrader implements TabExecutor {
                 }
                 GUIManager.getInstance().openGUI((Player)sender, new GUIListItems(0));
             }else {
-                sender.sendMessage(I18N.translate("&bSmiley Player Trader by Mrcomputer1 and sc15. Version %0%.",
+                sender.sendMessage(I18N.translate("&bSmiley Player Trader by Mrcomputer1 and Semisol. Version %0%.",
                         SmileyPlayerTrader.getInstance().getDescription().getVersion()));
                 sender.sendMessage(I18N.translate("&eType /spt help for help!"));
             }

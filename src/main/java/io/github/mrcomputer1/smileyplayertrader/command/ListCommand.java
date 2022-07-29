@@ -2,7 +2,7 @@ package io.github.mrcomputer1.smileyplayertrader.command;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
-import io.github.mrcomputer1.smileyplayertrader.util.ItemUtil;
+import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import org.bukkit.Bukkit;
@@ -32,17 +32,15 @@ public class ListCommand implements ICommand{
             target = (Player)sender;
         }
 
-        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.FIND_PRODUCTS,
-                target.getUniqueId().toString());
-
-        try {
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.FIND_PRODUCTS,
+                target.getUniqueId().toString())) {
             while (set.next()) {
                 boolean isStocked = true;
                 byte[] productb = set.getBytes("product");
                 String products = I18N.translate(", Product: UNSET");
                 if(productb != null){
                     ItemStack product = MerchantUtil.buildItem(productb);
-                    if(target.isOnline() && !ItemUtil.doesPlayerHaveItem(target.getPlayer(), product)){
+                    if(target.isOnline() && !ItemUtil.doesPlayerHaveItem(target.getPlayer(), product, set.getLong("id"))){
                         isStocked = false;
                     }
                     if(product.getItemMeta().hasDisplayName()) {

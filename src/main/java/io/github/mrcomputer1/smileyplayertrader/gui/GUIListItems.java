@@ -3,14 +3,18 @@ package io.github.mrcomputer1.smileyplayertrader.gui;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.GUIUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
+import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -18,6 +22,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GUIListItems extends AbstractGUI {
@@ -35,6 +40,14 @@ public class GUIListItems extends AbstractGUI {
             Material.EMERALD, 1,
             I18N.translate("&aCreate New Product")
     );
+    private static ItemStack PREVIEW_BTN = AbstractGUI.createItem(
+            Material.VILLAGER_SPAWN_EGG, 1,
+            I18N.translate("&aPreview Store")
+    );
+    private static ItemStack COLLECT_EARNINGS_BTN = AbstractGUI.createItem(
+            Material.CHEST, 1,
+            I18N.translate("&eCollect All Earnings")
+    );
 
     public static NamespacedKey IS_PRODUCT_BOOLEAN_KEY = new NamespacedKey(SmileyPlayerTrader.getInstance(), "is_product");
 
@@ -48,8 +61,15 @@ public class GUIListItems extends AbstractGUI {
         GUIUtil.fillStartAndEnd(this.getInventory(), 2, BORDER);
         GUIUtil.fillStartAndEnd(this.getInventory(), 3, BORDER);
         GUIUtil.fillStartAndEnd(this.getInventory(), 4, BORDER);
-        GUIUtil.drawLine(this.getInventory(), 5 * 9, 3, MENU_BAR);
-        GUIUtil.drawLine(this.getInventory(), (5 * 9) + 6, 3, MENU_BAR);
+
+        if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", false)){
+            this.getInventory().setItem(5 * 9, COLLECT_EARNINGS_BTN);
+        }else{
+            this.getInventory().setItem(5 * 9, MENU_BAR);
+        }
+        GUIUtil.drawLine(this.getInventory(), (5 * 9) + 1, 2, MENU_BAR);
+        GUIUtil.drawLine(this.getInventory(), (5 * 9) + 6, 2, MENU_BAR);
+        this.getInventory().setItem((5 * 9) + 8, PREVIEW_BTN);
 
         if(this.page == 0){
             this.getInventory().setItem((5 * 9) + 3, NO_PREVIOUS_BTN);
@@ -76,7 +96,14 @@ public class GUIListItems extends AbstractGUI {
             } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(I18N.translate("&aPrevious Page"))) {
                 GUIManager.getInstance().openGUI(player, new GUIListItems(this.page - 1));
             } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(I18N.translate("&aCreate New Product"))) {
-                GUIManager.getInstance().openGUI(player, new GUIProduct(this.page, false, null, -1, null, null, 0));
+                GUIManager.getInstance().openGUI(player, new GUIProduct(new ProductGUIState(this.page)));
+            } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(I18N.translate("&aPreview Store"))){
+                MerchantUtil.openPreviewMerchant(player);
+            } else if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(I18N.translate("&eCollect All Earnings"))){
+                ItemUtil.collectEarnings(player);
+                ItemMeta im = e.getCurrentItem().getItemMeta();
+                im.setLore(null);
+                e.getCurrentItem().setItemMeta(im);
             }
         }else{
             if(e.getCurrentItem().getItemMeta().getLore() != null &&
@@ -86,8 +113,7 @@ public class GUIListItems extends AbstractGUI {
                 if(e.getClick() == ClickType.LEFT){
 
                     // Left Click - Edit
-                    ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id);
-                    try {
+                    try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
                         if (set.next()) {
                             byte[] stackBytes = set.getBytes("product");
                             ItemStack stack = stackBytes == null ? null : MerchantUtil.buildItem(stackBytes);
@@ -99,8 +125,17 @@ public class GUIListItems extends AbstractGUI {
                             ItemStack cost2 = cost2Bytes == null ? null : MerchantUtil.buildItem(cost2Bytes);
 
                             int discount = set.getInt("special_price");
+                            int priority = set.getInt("priority");
+                            boolean hideOnOutOfStock = set.getBoolean("hide_on_out_of_stock");
 
-                            GUIManager.getInstance().openGUI(player, new GUIProduct(this.page, true, stack, id, cost1, cost2, discount));
+                            int storedProduct = set.getInt("stored_product");
+                            int storedCost = set.getInt("stored_cost");
+                            int storedCost2 = set.getInt("stored_cost2");
+
+                            GUIManager.getInstance().openGUI(player, new GUIProduct(new ProductGUIState(
+                                    this.page, id, stack, cost1, cost2, discount, priority, hideOnOutOfStock,
+                                    storedProduct, storedCost, storedCost2
+                            )));
                         }
                     } catch (SQLException ex) {
                         ex.printStackTrace();
@@ -111,10 +146,43 @@ public class GUIListItems extends AbstractGUI {
                     // Right Click - Enable/Disable/Show/Hide
                     GUIManager.getInstance().openGUI(this.player, new GUIEnableDisableProduct(this.page, id));
 
+                }else if(e.getClick() == ClickType.DROP || e.getClick() == ClickType.CONTROL_DROP){
+
+                    // Drop - Delete
+                    try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
+                        if (set.next()) {
+                            if(set.getInt("stored_product") > 0 || set.getInt("stored_cost") > 0 || set.getInt("stored_cost2") > 0){
+                                this.player.sendMessage(I18N.translate("&cYou must withdraw all stored product and earnings before deleting the product."));
+                                return true;
+                            }
+
+                            GUIManager.getInstance().openGUI(this.player, new GUIDeleteProduct(this.page, id));
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+
                 }else if(e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT){
 
-                    // Shift Click - Delete
-                    GUIManager.getInstance().openGUI(this.player, new GUIDeleteProduct(this.page, id));
+                    // Shift Click - Deposit/Withdraw
+                    if(!SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", false))
+                        return true;
+
+                    try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
+                        if (set.next()) {
+                            byte[] productBytes = set.getBytes("product");
+                            if(productBytes == null){
+                                return true;
+                            }
+
+                            ItemStack product = MerchantUtil.buildItem(productBytes);
+                            int storedProduct = set.getInt("stored_product");
+
+                            GUIManager.getInstance().openGUI(this.player, new GUIItemStorage(this.page, id, storedProduct, product));
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
 
                 }
             }
@@ -132,9 +200,8 @@ public class GUIListItems extends AbstractGUI {
         this.player = player;
 
         List<ItemStack> stacks = new ArrayList<>();
-        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(
-                StatementHandler.StatementType.FIND_PRODUCTS_IN_PAGES, this.player.getUniqueId().toString(), 28, this.page * 28);
-        try {
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(
+                StatementHandler.StatementType.FIND_PRODUCTS_IN_PAGES, this.player.getUniqueId().toString(), 28, this.page * 28);) {
             while (set.next()) {
                 byte[] product = set.getBytes("product");
 
@@ -160,11 +227,28 @@ public class GUIListItems extends AbstractGUI {
                     lore.add(I18N.translate("&bRight Click to &lEnable/Show"));
                 }
 
-                lore.add(I18N.translate("&bShift Click to &lDelete"));
+                if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", false)){
+                    lore.add(I18N.translate("&bShift Click to &lManage Stored Items"));
+                }
+
+                lore.add(I18N.translate("&bDrop to &lDelete"));
 
                 im.setLore(lore);
                 is.setItemMeta(im);
                 stacks.add(is);
+            }
+
+            if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", false)){
+                try(ResultSet set2 = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_UNCOLLECTED_EARNINGS, this.player.getUniqueId().toString())) {
+                    if (set2.next()) {
+                        if (set2.getInt("uncollected_earnings") > 0) {
+                            ItemStack collectBtn = this.getInventory().getItem(5 * 9);
+                            ItemMeta collectIm = collectBtn.getItemMeta();
+                            collectIm.setLore(Arrays.asList(I18N.translate("&a&l&k# &r&a&lUncollected Earnings &a&l&k#")));
+                            collectBtn.setItemMeta(collectIm);
+                        }
+                    }
+                }
             }
         }catch(SQLException e){
             e.printStackTrace();

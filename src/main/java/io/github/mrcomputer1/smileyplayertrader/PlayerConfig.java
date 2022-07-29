@@ -33,8 +33,7 @@ public class PlayerConfig {
     private Map<String, Long> playerCombatLock = new HashMap<>();
 
     public void loadPlayer(Player player){
-        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.LOAD_PLAYER_CONFIG, player.getUniqueId().toString());
-        try {
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.LOAD_PLAYER_CONFIG, player.getUniqueId().toString())) {
             if(set.next()){
                 Config c = new Config();
                 c.tradeToggle = set.getBoolean("trade_toggle");

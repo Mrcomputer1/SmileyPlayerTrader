@@ -50,6 +50,7 @@ public class MySQLDatabase extends AbstractDatabase {
             if(s.next()){
                 this.insertId = s.getLong(1);
             }
+            stmt.close();
         }catch(SQLException e){
             SmileyPlayerTrader.getInstance().getLogger().severe("Failed to execute MySQL statement.");
             e.printStackTrace();
@@ -111,6 +112,12 @@ public class MySQLDatabase extends AbstractDatabase {
         }else if(version == 3){
             run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN available BOOLEAN DEFAULT 1 NOT NULL");
             run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN special_price INTEGER DEFAULT 0 NOT NULL");
+        }else if(version == 4){
+            run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN priority INTEGER DEFAULT 0 NOT NULL");
+            run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN stored_product INTEGER DEFAULT 0 NOT NULL");
+            run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN stored_cost INTEGER DEFAULT 0 NOT NULL");
+            run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN stored_cost2 INTEGER DEFAULT 0 NOT NULL");
+            run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN hide_on_out_of_stock INTEGER DEFAULT 0 NOT NULL");
         }
     }
 

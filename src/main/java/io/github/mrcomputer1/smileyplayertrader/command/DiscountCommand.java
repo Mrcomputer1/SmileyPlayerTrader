@@ -45,8 +45,7 @@ public class DiscountCommand implements ICommand{
             return;
         }
 
-        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id);
-        try {
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
             if(set.next()){
                 byte[] cost = set.getBytes("cost1");
                 ItemStack costIS = VersionSupport.byteArrayToItemStack(cost);

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public abstract class AbstractDatabase {
 
-    protected static int dbVersion = 4;
+    protected static int dbVersion = 5;
 
     public abstract long getInsertId();
     public abstract void run(String sql, Object... objs);

@@ -8,6 +8,7 @@ disabledWorlds: []
 stockLocations:
   - inventory
   - enderchest
+  - itemstorage # Requires item storage to be enabled, otherwise ignored.
 
 # Automatically thank a player for a purchase
 autoThanks: true
@@ -39,6 +40,21 @@ useGuiManager: true
 
 # If true, you will not be able to trade with players by right-clicking them, you will only be able to use /spt trade.
 disableRightClickTrading: false
+
+# Configure item storage, used for offline trading.
+# [BETA FEATURE]
+itemStorage:
+  enable: false # Enables storing product items and earnings in the product for offline trading.
+  productStorageLimit: -1 # Limits amount of an item that can be stored. -1 to disable.
+  notifyUncollectedEarningsOnLogin: true # Displays a notification when a player joins with uncollected earnings.
+
+# Configure behaviour of out of stock items. Invalid options are treated as showByDefault.
+# Supported options are:
+# showByDefault - Show as out of stock, but let the player toggle this.
+# hideByDefault - Hide when out of stock, but let the player toggle this.
+# show: Always show as out of stock.
+# hide: Always hide when out of stock.
+outOfStockBehaviour: showByDefault
 
 # Automatically toggle off while in combat
 autoCombatLock:

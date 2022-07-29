@@ -3,7 +3,7 @@ package io.github.mrcomputer1.smileyplayertrader.gui;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.GUIUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
-import io.github.mrcomputer1.smileyplayertrader.util.ItemUtil;
+import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -30,14 +30,7 @@ public class GUIItemSelector extends AbstractGUI {
 
     private Player player;
     private boolean primary;
-    private boolean editing;
-    private long productId;
-    private ItemStack product;
-    private ItemStack cost1;
-    private ItemStack cost2;
-    private int discount;
-
-    private int page;
+    private final ProductGUIState state;
 
     private int itemSelectorPage;
     private EnumItemSelectorFilter selectorFilter;
@@ -56,15 +49,9 @@ public class GUIItemSelector extends AbstractGUI {
 
     private static NamespacedKey IS_ITEM = new NamespacedKey(SmileyPlayerTrader.getInstance(), "is_item");
 
-    public GUIItemSelector(int page, boolean primary, boolean editing, long productId, ItemStack product, ItemStack cost1, ItemStack cost2, int discount, int itemSelectorPage, EnumItemSelectorFilter filter, List<ItemStack> itemStacks){
-        this.page = page;
+    public GUIItemSelector(boolean primary, ProductGUIState state, int itemSelectorPage, EnumItemSelectorFilter filter, List<ItemStack> itemStacks){
         this.primary = primary;
-        this.editing = editing;
-        this.productId = productId;
-        this.product = product;
-        this.cost1 = cost1;
-        this.cost2 = cost2;
-        this.discount = discount;
+        this.state = state;
 
         this.itemSelectorPage = itemSelectorPage;
         this.selectorFilter = filter;
@@ -175,27 +162,27 @@ public class GUIItemSelector extends AbstractGUI {
             im.getPersistentDataContainer().remove(IS_ITEM);
             is.setItemMeta(im);
             if(primary){
-                cost1 = is;
+                state.costStack = is;
             }else{
-                cost2 = is;
+                state.costStack2 = is;
             }
-            GUIManager.getInstance().openGUI(this.player, new GUISetCost(page, primary, editing, productId, product, cost1, cost2, discount));
+            GUIManager.getInstance().openGUI(this.player, new GUISetCost(primary, state));
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&aPrevious Page"))){
             if(itemSelectorPage - 1 <= 0)
                 return true;
-            GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(page, primary, editing, productId, product, cost1, cost2, discount, itemSelectorPage - 1, selectorFilter, itemStacks));
+            GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(primary, state, itemSelectorPage - 1, selectorFilter, itemStacks));
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&aNext Page"))){
-            GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(page, primary, editing, productId, product, cost1, cost2, discount, itemSelectorPage + 1, selectorFilter, itemStacks));
+            GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(primary, state, itemSelectorPage + 1, selectorFilter, itemStacks));
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eAll Items"))){
-            GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(page, primary, editing, productId, product, cost1, cost2, discount, 1, EnumItemSelectorFilter.ALL, null));
+            GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(primary, state, 1, EnumItemSelectorFilter.ALL, null));
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eFeatured"))){
-            GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(page, primary, editing, productId, product, cost1, cost2, discount, 1, EnumItemSelectorFilter.FEATURED, null));
+            GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(primary, state, 1, EnumItemSelectorFilter.FEATURED, null));
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eBlocks"))){
-            GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(page, primary, editing, productId, product, cost1, cost2, discount, 1, EnumItemSelectorFilter.BLOCKS, null));
+            GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(primary, state, 1, EnumItemSelectorFilter.BLOCKS, null));
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eItems"))){
-            GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(page, primary, editing, productId, product, cost1, cost2, discount, 1, EnumItemSelectorFilter.ITEMS, null));
+            GUIManager.getInstance().openGUI(this.player, new GUIItemSelector(primary, state, 1, EnumItemSelectorFilter.ITEMS, null));
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&cCancel"))){
-            GUIManager.getInstance().openGUI(this.player, new GUISetCost(page, primary, editing, productId, product, cost1, cost2, discount));
+            GUIManager.getInstance().openGUI(this.player, new GUISetCost(primary, state));
         }
 
         return true;

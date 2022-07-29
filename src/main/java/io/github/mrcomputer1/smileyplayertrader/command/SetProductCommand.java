@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class SetProductCommand implements ICommand{
     @Override
@@ -31,6 +33,17 @@ public class SetProductCommand implements ICommand{
         if(CommandUtil.isNotAuthorized(sender, id)){
             sender.sendMessage(I18N.translate("&cWhoops! You are not authorized to edit others products!"));
             return;
+        }
+
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
+            if(set.next()){
+                if(set.getInt("stored_product") > 0){
+                    sender.sendMessage(I18N.translate("&cYou must withdraw all stored product before changing the product."));
+                    return;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
         try {

@@ -33,8 +33,7 @@ public class GUIEnableDisableProduct extends AbstractGUI {
         this.productId = productId;
         this.page = page;
 
-        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_ENABLED, productId);
-        try {
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_ENABLED, productId)) {
             if (set.next()) {
                 this.enable = !set.getBoolean("enabled") || !set.getBoolean("available");
             }

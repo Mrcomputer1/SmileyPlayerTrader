@@ -26,8 +26,23 @@ public class AddCommand implements ICommand {
             target = (Player)sender;
         }
 
+        String outOfStockBehaviour = SmileyPlayerTrader.getInstance().getConfig().getString("outOfStockBehaviour", "showByDefault");
+        boolean hideOnOutOfStock = false;
+        //noinspection ConstantConditions
+        switch (outOfStockBehaviour.toLowerCase()){
+            case "hidebydefault":
+            case "hide":
+                hideOnOutOfStock = true;
+                break;
+            case "showbydefault":
+            case "show":
+            default:
+                hideOnOutOfStock = false;
+                break;
+        }
+
         SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.ADD_PRODUCT,
-                target.getUniqueId().toString(), null, null, null, true, true, 0);
+                target.getUniqueId().toString(), null, null, null, true, true, 0, hideOnOutOfStock);
 
         sender.sendMessage(I18N.translate("&aAdded product %0%. Use &f/spt setcost <id> &aand &f/spt setproduct <id> &awhile holding items!", SmileyPlayerTrader.getInstance().getDatabase().getInsertId()));
     }

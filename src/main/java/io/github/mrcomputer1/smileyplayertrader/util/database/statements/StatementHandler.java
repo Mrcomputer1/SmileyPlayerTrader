@@ -14,9 +14,10 @@ public interface StatementHandler {
          * product (nbt blob),
          * cost1 (nbt blob),
          * cost2 (nbt blob),
-         * enabled (boolean)
-         * available (boolean)
-         * special_price (int)
+         * enabled (boolean),
+         * available (boolean),
+         * special_price (int),
+         * hide_on_out_of_stock (boolean)
          */
         ADD_PRODUCT,
 
@@ -74,9 +75,11 @@ public interface StatementHandler {
          * cost (nbt blob)
          * cost2 (nbt blob)
          * special_price (int)
+         * priority (int)
+         * hide_on_out_of_stock (boolean)
          * id (int)
          */
-        SET_PRODUCT_COST_COST2_SPECIALPRICE,
+        SET_PRODUCT_COST_COST2_SPECIALPRICE_PRIORITY_HIDEOUTOFSTOCK,
 
         /**
          * id (int)
@@ -109,7 +112,59 @@ public interface StatementHandler {
          * discount (int)
          * id (int)
          */
-        SET_DISCOUNT
+        SET_DISCOUNT,
+
+        /**
+         * priority (int)
+         * id (int)
+         */
+        SET_PRIORITY,
+
+        /**
+         * amount (int)
+         * id (int)
+         */
+        CHANGE_STORED_PRODUCT,
+
+        /**
+         * amount (int)
+         * id (int)
+         */
+        CHANGE_STORED_COST,
+
+        /**
+         * amount (int)
+         * id (int)
+         */
+        CHANGE_STORED_COST2,
+
+        /**
+         * amount (int)
+         * id (int)
+         */
+        SET_STORED_COST,
+
+        /**
+         * amount (int)
+         * id (int)
+         */
+        SET_STORED_COST2,
+
+        /**
+         * merchant (uuid)
+         */
+        FIND_PRODUCTS_WITH_EARNINGS,
+
+        /**
+         * merchant (uuid)
+         */
+        GET_UNCOLLECTED_EARNINGS,
+
+        /**
+         * hide_on_out_of_stock (boolean),
+         * id (int)
+         */
+        SET_HIDE_ON_OUT_OF_STOCK
     }
 
     void run(StatementType type, Object... objs);

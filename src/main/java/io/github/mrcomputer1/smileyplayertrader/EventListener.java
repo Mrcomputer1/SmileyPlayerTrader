@@ -1,11 +1,13 @@
 package io.github.mrcomputer1.smileyplayertrader;
 
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
-import io.github.mrcomputer1.smileyplayertrader.util.ItemUtil;
+import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
+import io.github.mrcomputer1.smileyplayertrader.util.item.stocklocations.StockLocations;
 import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantUtil;
 import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,6 +29,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@SuppressWarnings("unused")
 public class EventListener implements Listener {
 
     @EventHandler
@@ -52,14 +55,15 @@ public class EventListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e){
         if(e.getView().getType() == InventoryType.MERCHANT){
-            if(e.getView().getTitle().startsWith(I18N.translate("&2Villager Store: ")) && e.getSlot() == 2){
+            if(e.getView().getTitle().startsWith(I18N.translate("&2Villager Store: ")) && e.getRawSlot() == 2){
                 if(e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT){
                     e.setCancelled(true);
                     return;
                 }
                 MerchantInventory mi = (MerchantInventory)e.getInventory();
-                Player store = Bukkit.getPlayer(e.getView().getTitle().replace(I18N.translate("&2Villager Store: "), ""));
-                if(store == null || !store.isOnline()){
+                //noinspection deprecation
+                OfflinePlayer store = Bukkit.getOfflinePlayer(e.getView().getTitle().replace(I18N.translate("&2Villager Store: "), ""));
+                if(!store.isOnline() && !StockLocations.canTradeWithPlayer(store)){
                     e.getWhoClicked().sendMessage(I18N.translate("&cYou cannot trade with offline players."));
                     e.setCancelled(true);
                     return;
@@ -69,9 +73,8 @@ public class EventListener implements Listener {
                 }
 
                 // Check if trade is still valid
-                long productId = MerchantUtil.getProductId((Player) e.getWhoClicked(), mi.getSelectedRecipeIndex());
-                ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, productId);
-                try {
+                long productId = MerchantUtil.getProductId((Player) e.getWhoClicked(), mi.getSelectedRecipe().getResult());
+                try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, productId)) {
                     if (set.next()) {
                         // Check hidden/disabled
                         if(!set.getBoolean("enabled") || !set.getBoolean("available")){
@@ -142,23 +145,25 @@ public class EventListener implements Listener {
                     return;
                 }
 
-                if(ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult())){
-                    ItemUtil.removeStock(store, mi.getSelectedRecipe().getResult());
+                if(ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult(), productId)){
+                    ItemUtil.removeStock(store, mi.getSelectedRecipe().getResult(), productId);
                     try {
-                        ItemUtil.giveEarnings(store, mi.getSelectedRecipe(), VersionSupport.getSpecialCountForRecipe(mi));
+                        ItemUtil.giveEarnings(store, mi.getSelectedRecipe(), VersionSupport.getSpecialCountForRecipe(mi), productId);
                     } catch (InvocationTargetException ex) {
                         ex.printStackTrace();
                         SmileyPlayerTrader.getInstance().getLogger().severe("Something went wrong while attempting to give earnings to " + store.getName());
                     }
-                    if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("autoThanks", true)) {
-                        store.chat(I18N.translate("&aThanks for your purchase, %0%", e.getWhoClicked().getName()));
+                    if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("autoThanks", true) && store.isOnline()) {
+                        store.getPlayer().chat(I18N.translate("&aThanks for your purchase, %0%", e.getWhoClicked().getName()));
                     }else{
                         e.getWhoClicked().sendMessage(I18N.translate("&aYou purchased an item from %0%", store.getName()));
                     }
-                    store.sendMessage(I18N.translate("&a%0% just purchased %1%!", e.getWhoClicked().getName(), mi.getSelectedRecipe().getResult().getType()));
+                    if(store.isOnline())
+                        store.getPlayer().sendMessage(I18N.translate("&a%0% just purchased %1%!", e.getWhoClicked().getName(), mi.getSelectedRecipe().getResult().getType()));
                     try {
-                        if (!ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult())) {
-                            store.sendMessage(I18N.translate("&c%0% is now out of stock!", mi.getSelectedRecipe().getResult().getType()));
+                        if (!ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult(), productId)) {
+                            if(store.isOnline())
+                                store.getPlayer().sendMessage(I18N.translate("&c%0% is now out of stock!", mi.getSelectedRecipe().getResult().getType()));
                             ItemStack cost1 = e.getInventory().getItem(0);
                             ItemStack cost2 = e.getInventory().getItem(1);
                             cost1.setAmount(cost1.getAmount() - ItemUtil.computeAdjustedPrice(mi.getSelectedRecipe(), VersionSupport.getSpecialCountForRecipe(mi)));
@@ -176,6 +181,8 @@ public class EventListener implements Listener {
                     e.getWhoClicked().sendMessage(I18N.translate("&cThis item is out of stock!"));
                     e.setCancelled(true);
                 }
+            } else if (e.getView().getTitle().startsWith(I18N.translate("&2Preview Store: ")) && e.getRawSlot() == 2){
+                e.setCancelled(true);
             }
         }
     }
@@ -200,6 +207,19 @@ public class EventListener implements Listener {
                 if (SmileyPlayerTrader.getInstance().getUpdateChecker().isOutdated) {
                     e.getPlayer().sendMessage(I18N.translate("&e[Smiley Player Trader] Plugin is outdated! Latest version is %0%. It is recommended to download the update.", SmileyPlayerTrader.getInstance().getUpdateChecker().upToDateVersion));
                 }
+            }
+        }
+
+        if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", false)
+            && SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.notifyUncollectedEarningsOnLogin", true)){
+            try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_UNCOLLECTED_EARNINGS, e.getPlayer().getUniqueId().toString())) {
+                if(set.next()){
+                    if(set.getInt("uncollected_earnings") > 0){
+                        e.getPlayer().sendMessage(I18N.translate("&2&oYou have uncollected earnings. Type &f&o/spt collect &2&oto collect."));
+                    }
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
         }
 
