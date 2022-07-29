@@ -43,7 +43,7 @@ public class ItemStorageStockLocation implements IStockLocation{
 
     @Override
     public boolean isAvailable(OfflinePlayer player) {
-        return SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", true);
+        return SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", false);
     }
 
 }

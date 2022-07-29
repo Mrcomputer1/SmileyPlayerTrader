@@ -210,7 +210,7 @@ public class EventListener implements Listener {
             }
         }
 
-        if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", true)
+        if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", false)
             && SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.notifyUncollectedEarningsOnLogin", true)){
             try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_UNCOLLECTED_EARNINGS, e.getPlayer().getUniqueId().toString())) {
                 if(set.next()){

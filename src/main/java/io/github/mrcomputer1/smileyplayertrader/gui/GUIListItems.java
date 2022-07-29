@@ -62,7 +62,7 @@ public class GUIListItems extends AbstractGUI {
         GUIUtil.fillStartAndEnd(this.getInventory(), 3, BORDER);
         GUIUtil.fillStartAndEnd(this.getInventory(), 4, BORDER);
 
-        if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", true)){
+        if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", false)){
             this.getInventory().setItem(5 * 9, COLLECT_EARNINGS_BTN);
         }else{
             this.getInventory().setItem(5 * 9, MENU_BAR);
@@ -165,7 +165,7 @@ public class GUIListItems extends AbstractGUI {
                 }else if(e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT){
 
                     // Shift Click - Deposit/Withdraw
-                    if(!SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", true))
+                    if(!SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", false))
                         return true;
 
                     try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
@@ -227,7 +227,7 @@ public class GUIListItems extends AbstractGUI {
                     lore.add(I18N.translate("&bRight Click to &lEnable/Show"));
                 }
 
-                if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", true)){
+                if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", false)){
                     lore.add(I18N.translate("&bShift Click to &lManage Stored Items"));
                 }
 
@@ -238,7 +238,7 @@ public class GUIListItems extends AbstractGUI {
                 stacks.add(is);
             }
 
-            if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", true)){
+            if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", false)){
                 try(ResultSet set2 = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_UNCOLLECTED_EARNINGS, this.player.getUniqueId().toString())) {
                     if (set2.next()) {
                         if (set2.getInt("uncollected_earnings") > 0) {

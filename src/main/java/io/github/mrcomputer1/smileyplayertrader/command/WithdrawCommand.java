@@ -22,7 +22,7 @@ public class WithdrawCommand implements ICommand{
             return;
         }
 
-        if(!SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", true)){
+        if(!SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", false)){
             sender.sendMessage(I18N.translate("&cItem storage is not enabled."));
             return;
         }
