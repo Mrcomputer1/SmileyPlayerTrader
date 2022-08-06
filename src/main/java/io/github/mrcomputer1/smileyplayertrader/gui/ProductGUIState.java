@@ -79,4 +79,25 @@ public class ProductGUIState {
         }
     }
 
+    public void setStack(ItemStack stack) {
+        this.stack = stack;
+        if(this.stack == null){
+            this.stack = TEMPLATE_ITEM.clone();
+        }
+    }
+
+    public void setCostStack(ItemStack costStack) {
+        this.costStack = costStack;
+        if(this.costStack == null){
+            this.costStack = TEMPLATE_ITEM.clone();
+        }
+    }
+
+    public void setCostStack2(ItemStack costStack2) {
+        this.costStack2 = costStack2;
+        if(this.costStack2 == null){
+            this.costStack2 = TEMPLATE_ITEM.clone();
+        }
+    }
+
 }

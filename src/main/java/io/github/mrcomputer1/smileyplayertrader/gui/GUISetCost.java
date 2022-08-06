@@ -235,9 +235,9 @@ public class GUISetCost extends AbstractGUI {
 
                 // Set the new item into the cost field
                 if(this.primary){
-                    this.state.costStack = this.getInventory().getItem(22);
+                    this.state.setCostStack(this.getInventory().getItem(22));
                 }else{
-                    this.state.costStack2 = this.getInventory().getItem(22);
+                    this.state.setCostStack2(this.getInventory().getItem(22));
                 }
             }
 
@@ -250,13 +250,13 @@ public class GUISetCost extends AbstractGUI {
             if(primary) {
                 if (!this.state.costStack.getType().isAir() && this.state.costStack.equals(e.getCurrentItem())) {
                     this.getInventory().setItem(22, null);
-                    this.state.costStack = new ItemStack(Material.AIR);
+                    this.state.setCostStack(null);
                     return true;
                 }
             }else {
                 if (!this.state.costStack2.getType().isAir() && this.state.costStack2.equals(e.getCurrentItem())) {
                     this.getInventory().setItem(22, null);
-                    this.state.costStack2 = new ItemStack(Material.AIR);
+                    this.state.setCostStack2(null);
                     return true;
                 }
             }
@@ -313,9 +313,9 @@ public class GUISetCost extends AbstractGUI {
 
             // Set the new item into the cost field
             if(primary){
-                this.state.costStack = this.getInventory().getItem(22);
+                this.state.setCostStack(this.getInventory().getItem(22));
             }else{
-                this.state.costStack2 = this.getInventory().getItem(22);
+                this.state.setCostStack2(this.getInventory().getItem(22));
             }
 
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&aOK"))){
@@ -325,13 +325,13 @@ public class GUISetCost extends AbstractGUI {
                 if(this.getInventory().getItem(22) != null && !this.state.costStack.equals(this.getInventory().getItem(22))){
                     this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
                 }
-                this.state.costStack = this.getInventory().getItem(22);
+                this.state.setCostStack(this.getInventory().getItem(22));
                 this.state.discount = 0;
             }else{
                 if(this.getInventory().getItem(22) != null && !this.state.costStack2.equals(this.getInventory().getItem(22))){
                     this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
                 }
-                this.state.costStack2 = this.getInventory().getItem(22);
+                this.state.setCostStack2(this.getInventory().getItem(22));
             }
             GUIManager.getInstance().openGUI(this.player, new GUIProduct(state));
 

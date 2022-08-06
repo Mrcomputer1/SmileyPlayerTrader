@@ -112,7 +112,7 @@ public class GUIProduct extends AbstractGUI {
 
             if(!this.state.stack.getType().isAir() && this.state.stack.equals(e.getCurrentItem())){
                 this.getInventory().setItem(22 , null);
-                this.state.stack = new ItemStack(Material.AIR);
+                this.state.setStack(null);
                 return true;
             }
             return false;
@@ -133,7 +133,7 @@ public class GUIProduct extends AbstractGUI {
             }
 
             try {
-                this.state.stack = this.getInventory().getItem(22);
+                this.state.setStack(this.getInventory().getItem(22));
 
                 byte[] stackBytes = (this.state.stack == null || this.state.stack.getType().isAir()) ? null : VersionSupport.itemStackToByteArray(this.state.stack);
                 byte[] costBytes = (this.state.costStack == null || this.state.costStack.getType().isAir()) ? null : VersionSupport.itemStackToByteArray(this.state.costStack);
@@ -167,7 +167,7 @@ public class GUIProduct extends AbstractGUI {
             if(this.getInventory().getItem(22) != null && !this.state.stack.equals(this.getInventory().getItem(22))){
                 this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
             }
-            this.state.stack = this.getInventory().getItem(22);
+            this.state.setStack(this.getInventory().getItem(22));
             GUIManager.getInstance().openGUI(this.player, new GUISetCost(true, state));
 
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eSet Secondary Cost (Not Required)"))){
@@ -181,7 +181,7 @@ public class GUIProduct extends AbstractGUI {
             if(this.getInventory().getItem(22) != null && !this.state.stack.equals(this.getInventory().getItem(22))){
                 this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
             }
-            this.state.stack = this.getInventory().getItem(22);
+            this.state.setStack(this.getInventory().getItem(22));
             GUIManager.getInstance().openGUI(this.player, new GUISetCost(false, state));
 
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eSet Optional Discount"))){
@@ -190,7 +190,7 @@ public class GUIProduct extends AbstractGUI {
             if(this.getInventory().getItem(22) != null && !this.state.stack.equals(this.getInventory().getItem(22))){
                 this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
             }
-            this.state.stack = this.getInventory().getItem(22);
+            this.state.setStack(this.getInventory().getItem(22));
             GUIManager.getInstance().openGUI(this.player, new GUIDiscount(state));
 
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eSet Priority"))){
@@ -199,7 +199,7 @@ public class GUIProduct extends AbstractGUI {
             if(this.getInventory().getItem(22) != null && !this.state.stack.equals(this.getInventory().getItem(22))){
                 this.player.getInventory().addItem(this.getInventory().getItem(22).clone());
             }
-            this.state.stack = this.getInventory().getItem(22);
+            this.state.setStack( this.getInventory().getItem(22));
             GUIManager.getInstance().openGUI(this.player, new GUIPriority(state));
 
         }else if(e.getCurrentItem().getItemMeta().getDisplayName().equals(I18N.translate("&eToggle hide on out of stock"))){
