@@ -1,5 +1,6 @@
 package io.github.mrcomputer1.smileyplayertrader.gui;
 
+import io.github.mrcomputer1.smileyplayertrader.SPTConfiguration;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.GUIUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
@@ -65,15 +66,14 @@ public class GUIProduct extends AbstractGUI {
         this.getInventory().setItem((1 * 9) + 4, INSERT_PRODUCT_LBL.clone());
         GUIUtil.drawLine(this.getInventory(), (1 * 9) + 5, 3, BORDER);
 
-        String outOfStockBehaviour = SmileyPlayerTrader.getInstance().getConfig().getString("outOfStockBehaviour", "showByDefault");
-        //noinspection ConstantConditions
-        switch (outOfStockBehaviour.toLowerCase()){
-            case "show":
-            case "hide":
+        SPTConfiguration.EnumOutOfStockBehaviour outOfStockBehaviour = SmileyPlayerTrader.getInstance().getConfiguration().getOutOfStockBehaviour();
+        switch (outOfStockBehaviour){
+            case SHOW:
+            case HIDE:
                 this.getInventory().setItem((1 * 9) + 8, BORDER.clone());
                 break;
-            case "showbydefault":
-            case "hidebydefault":
+            case SHOW_BY_DEFAULT:
+            case HIDE_BY_DEFAULT:
             default:
                 updateHideOnOutOfStockButton();
         }

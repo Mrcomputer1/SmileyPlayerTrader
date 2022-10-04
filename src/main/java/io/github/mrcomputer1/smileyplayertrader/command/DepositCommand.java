@@ -21,7 +21,7 @@ public class DepositCommand implements ICommand{
             return;
         }
 
-        if(!SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", false)){
+        if(!SmileyPlayerTrader.getInstance().getConfiguration().getItemStorageEnabled()){
             sender.sendMessage(I18N.translate("&cItem storage is not enabled."));
             return;
         }
@@ -65,7 +65,7 @@ public class DepositCommand implements ICommand{
                 if(hand.isSimilar(product)){
                     int count = hand.getAmount();
 
-                    int limit = SmileyPlayerTrader.getInstance().getConfig().getInt("itemStorage.productStorageLimit", -1);
+                    int limit = SmileyPlayerTrader.getInstance().getConfiguration().getItemStorageProductStorageLimit();
                     if(limit != -1 && set.getInt("stored_product") + count > limit){
                         sender.sendMessage(I18N.translate("&cYou cannot store more than %0% of a product.", limit));
                         return;

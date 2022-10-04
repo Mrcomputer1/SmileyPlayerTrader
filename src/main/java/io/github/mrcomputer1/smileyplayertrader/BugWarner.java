@@ -62,15 +62,13 @@ public class BugWarner {
                 }
             }
 
-            if (SmileyPlayerTrader.getInstance().getConfig().getBoolean("checkForBugs.disable", false) && disable) {
+            if (SmileyPlayerTrader.getInstance().getConfiguration().getCheckForBugsShouldDisable() && disable) {
                 SmileyPlayerTrader.getInstance().getLogger().severe("Disabling due to bugs...");
                 Bukkit.getPluginManager().disablePlugin(SmileyPlayerTrader.getInstance());
                 return true;
             }
 
             return false;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -72,14 +72,15 @@ public class GUISetCost extends AbstractGUI {
         GUIUtil.fillRow(this.getInventory(), 3, BORDER);
 
         // Quick Selection Row
-        List<LinkedHashMap<String, Object>> priceQuickSelection = (List<LinkedHashMap<String, Object>>) SmileyPlayerTrader.getInstance().getConfig().getList("priceQuickSelection", new ArrayList<>());
+        List<ItemStack> priceQuickSelectionStacks = SmileyPlayerTrader.getInstance().getConfiguration().getPriceQuickSelection();
         List<ItemStack> stacks = new ArrayList<>();
         int stackCount = 0;
-        for(LinkedHashMap<String, Object> item : priceQuickSelection){
-            if(stackCount++ >= 6){ // ensure only 6 items are on the quick selection row
+        for(ItemStack item : priceQuickSelectionStacks){
+            if (stackCount++ >= 6) { // ensure only 6 items are on the quick selection row
                 SmileyPlayerTrader.getInstance().getLogger().warning("You have too many quick selection items.");
                 break;
             }
+
             ItemStack stack = createQuickSelectionRowItem(item);
             if(stack != null)
                 stacks.add(stack);
@@ -149,9 +150,7 @@ public class GUISetCost extends AbstractGUI {
         }
     }
 
-    private ItemStack createQuickSelectionRowItem(LinkedHashMap<String, Object> item){
-        ItemStack is = ItemUtil.buildConfigurationItem(item);
-
+    private ItemStack createQuickSelectionRowItem(ItemStack is){
         if(is == null)
             return null;
 

@@ -37,7 +37,7 @@ public class EventListener implements Listener {
         if(e.getHand() != EquipmentSlot.HAND)
             return;
 
-        if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("disableRightClickTrading", false))
+        if(SmileyPlayerTrader.getInstance().getConfiguration().getDisableRightClickTrading())
             return;
         if(e.getRightClicked().hasMetadata("NPC")) // Citizens NPCs seem like players but they have different UUIDs and can't work.
             return;
@@ -153,7 +153,7 @@ public class EventListener implements Listener {
                         ex.printStackTrace();
                         SmileyPlayerTrader.getInstance().getLogger().severe("Something went wrong while attempting to give earnings to " + store.getName());
                     }
-                    if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("autoThanks", true) && store.isOnline()) {
+                    if(SmileyPlayerTrader.getInstance().getConfiguration().getAutoThanks() && store.isOnline()) {
                         store.getPlayer().chat(I18N.translate("&aThanks for your purchase, %0%", e.getWhoClicked().getName()));
                     }else{
                         e.getWhoClicked().sendMessage(I18N.translate("&aYou purchased an item from %0%", store.getName()));
@@ -210,8 +210,8 @@ public class EventListener implements Listener {
             }
         }
 
-        if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", false)
-            && SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.notifyUncollectedEarningsOnLogin", true)){
+        if(SmileyPlayerTrader.getInstance().getConfiguration().getItemStorageEnabled()
+            && SmileyPlayerTrader.getInstance().getConfiguration().getItemStorageNotifyUncollectedEarningsEnabled()){
             try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_UNCOLLECTED_EARNINGS, e.getPlayer().getUniqueId().toString())) {
                 if(set.next()){
                     if(set.getInt("uncollected_earnings") > 0){
@@ -234,11 +234,11 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onEntityTakeDamageByEntity(EntityDamageByEntityEvent e) {
-        if(SmileyPlayerTrader.getInstance().getConfig().getStringList("disabledWorlds").contains(e.getEntity().getWorld().getName())){
+        if(SmileyPlayerTrader.getInstance().getConfiguration().getDisabledWorlds().contains(e.getEntity().getWorld().getName())){
             return;
         }
 
-        if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("autoCombatLock.enabled", true)) {
+        if(SmileyPlayerTrader.getInstance().getConfiguration().getAutoCombatLockEnabled()) {
             if (e.getDamager() instanceof Player) {
                 SmileyPlayerTrader.getInstance().getPlayerConfig().lockPlayer((Player) e.getDamager());
             }

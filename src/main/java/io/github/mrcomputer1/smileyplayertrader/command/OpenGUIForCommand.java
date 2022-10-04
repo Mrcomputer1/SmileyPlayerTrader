@@ -16,7 +16,7 @@ public class OpenGUIForCommand implements ICommand{
             return;
         }
 
-        if(!SmileyPlayerTrader.getInstance().getConfig().getBoolean("useGuiManager", true)){
+        if(!SmileyPlayerTrader.getInstance().getConfiguration().getUseGuiManager()){
             sender.sendMessage(I18N.translate("&cGUI functionality is disabled, this command has no effect."));
             return;
         }

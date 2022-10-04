@@ -25,7 +25,7 @@ public class StockLocations {
     }
 
     public static List<IStockLocation> getActiveStockLocations(){
-        List<String> locations = SmileyPlayerTrader.getInstance().getConfig().getStringList("stockLocations");
+        List<String> locations = SmileyPlayerTrader.getInstance().getConfiguration().getStockLocations();
 
         ArrayList<IStockLocation> stockLocations = new ArrayList<>();
 

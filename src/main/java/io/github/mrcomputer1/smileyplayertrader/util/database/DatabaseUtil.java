@@ -9,9 +9,9 @@ public class DatabaseUtil {
 
     public static AbstractDatabase loadDatabase(){
         AbstractDatabase db;
-        switch(SmileyPlayerTrader.getInstance().getConfig().getString("database.type", "sqlite")){
+        switch(SmileyPlayerTrader.getInstance().getConfiguration().getDatabaseType()){
             case "sqlite":
-                db = new SQLiteDatabase(new File(SmileyPlayerTrader.getInstance().getDataFolder(), SmileyPlayerTrader.getInstance().getConfig().getString("database.file", "database.db")));
+                db = new SQLiteDatabase(new File(SmileyPlayerTrader.getInstance().getDataFolder(), SmileyPlayerTrader.getInstance().getConfiguration().getDatabaseFile()));
                 break;
             case "mysql":
                 if(!SmileyPlayerTrader.getInstance().getConfig().contains("database.host")
@@ -23,11 +23,11 @@ public class DatabaseUtil {
                     return null;
                 }else{
                     db = new MySQLDatabase(
-                            SmileyPlayerTrader.getInstance().getConfig().getString("database.host"),
-                            SmileyPlayerTrader.getInstance().getConfig().getInt("database.port", 3306),
-                            SmileyPlayerTrader.getInstance().getConfig().getString("database.name"),
-                            SmileyPlayerTrader.getInstance().getConfig().getString("database.username"),
-                            SmileyPlayerTrader.getInstance().getConfig().getString("database.password")
+                            SmileyPlayerTrader.getInstance().getConfiguration().getDatabaseHost(),
+                            SmileyPlayerTrader.getInstance().getConfiguration().getDatabasePort(),
+                            SmileyPlayerTrader.getInstance().getConfiguration().getDatabaseName(),
+                            SmileyPlayerTrader.getInstance().getConfiguration().getDatabaseUsername(),
+                            SmileyPlayerTrader.getInstance().getConfiguration().getDatabasePassword()
                     );
                 }
                 break;

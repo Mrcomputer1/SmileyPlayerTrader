@@ -1,5 +1,6 @@
 package io.github.mrcomputer1.smileyplayertrader.command;
 
+import io.github.mrcomputer1.smileyplayertrader.SPTConfiguration;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
@@ -26,16 +27,15 @@ public class AddCommand implements ICommand {
             target = (Player)sender;
         }
 
-        String outOfStockBehaviour = SmileyPlayerTrader.getInstance().getConfig().getString("outOfStockBehaviour", "showByDefault");
-        boolean hideOnOutOfStock = false;
-        //noinspection ConstantConditions
-        switch (outOfStockBehaviour.toLowerCase()){
-            case "hidebydefault":
-            case "hide":
+        SPTConfiguration.EnumOutOfStockBehaviour outOfStockBehaviour = SmileyPlayerTrader.getInstance().getConfiguration().getOutOfStockBehaviour();
+        boolean hideOnOutOfStock;
+        switch (outOfStockBehaviour){
+            case HIDE_BY_DEFAULT:
+            case HIDE:
                 hideOnOutOfStock = true;
                 break;
-            case "showbydefault":
-            case "show":
+            case SHOW_BY_DEFAULT:
+            case SHOW:
             default:
                 hideOnOutOfStock = false;
                 break;
