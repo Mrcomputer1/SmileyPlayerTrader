@@ -153,11 +153,7 @@ public class EventListener implements Listener {
                         ex.printStackTrace();
                         SmileyPlayerTrader.getInstance().getLogger().severe("Something went wrong while attempting to give earnings to " + store.getName());
                     }
-                    if(SmileyPlayerTrader.getInstance().getConfiguration().getAutoThanks() && store.isOnline()) {
-                        store.getPlayer().chat(I18N.translate("&aThanks for your purchase, %0%", e.getWhoClicked().getName()));
-                    }else{
-                        e.getWhoClicked().sendMessage(I18N.translate("&aYou purchased an item from %0%", store.getName()));
-                    }
+                    MerchantUtil.thankPurchaser(store, (Player) e.getWhoClicked());
                     if(store.isOnline())
                         store.getPlayer().sendMessage(I18N.translate("&a%0% just purchased %1%!", e.getWhoClicked().getName(), mi.getSelectedRecipe().getResult().getType()));
                     try {

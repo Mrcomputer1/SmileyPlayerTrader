@@ -11,7 +11,25 @@ stockLocations:
   - itemstorage # Requires item storage to be enabled, otherwise ignored.
 
 # Automatically thank a player for a purchase
-autoThanks: true
+autoThanks:
+  # Supported modes are:
+  # - player_chat: Send a message as the player in chat.
+  # -     * may break on some versions of Paper, if the message contains colour or other formatting.
+  # -     * does not work while the store player is offline.
+  # - system_chat: Send a server message.
+  # -     * works while the store player is offline.
+  # - none: Disable autoThanks.
+  mode: system_chat
+  # Choose the message to send.
+  # - Use "default" for the default message.
+  # - Or, specify your own message, with colour codes accepted (example: &a for green).
+  # Custom message replacements:
+  # - %CUSTOMER% - The player that made the purchased.
+  # - %MERCHANT% - The player that was purchased from.
+  # Default messages are these:
+  # - player_chat: "&aThanks for your purchase, %CUSTOMER%"
+  # - system_chat: "&a[%MERCHANT%]: Thanks for your purchase, %CUSTOMER%"
+  message: "default"
 
 # Selected language (see the languages folder for a list of languages (or make your own inside that folder))
 currentLanguage: en_us

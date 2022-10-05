@@ -1,7 +1,6 @@
 package io.github.mrcomputer1.smileyplayertrader;
 
 import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
-import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.inventory.ItemStack;
 
@@ -23,9 +22,55 @@ public class SPTConfiguration {
         return this.config.getStringList("stockLocations");
     }
 
-    public boolean getAutoThanks(){
-        return this.config.getBoolean("autoThanks", true);
+    // Auto Thanks
+    public enum EnumAutoThanks{
+        PLAYER_CHAT("player_chat"),
+        SYSTEM_CHAT("system_chat"),
+        NONE("none");
+
+        private static final Map<String, EnumAutoThanks> autoThanksModes = new HashMap<>();
+
+        static{
+            for(EnumAutoThanks mode : values()){
+                autoThanksModes.put(mode.id.toLowerCase(), mode);
+            }
+        }
+
+        public static EnumAutoThanks getById(String id){
+            if(id == null)
+                return EnumAutoThanks.SYSTEM_CHAT;
+            EnumAutoThanks mode = autoThanksModes.get(id.toLowerCase());
+            return mode == null ? EnumAutoThanks.SYSTEM_CHAT : mode;
+        }
+
+        private final String id;
+
+        EnumAutoThanks(String id){
+            this.id = id;
+        }
+
+        public String getId() {
+            return id;
+        }
     }
+
+    public EnumAutoThanks getAutoThanksMode(){
+        // Legacy config property support
+        if(this.config.isBoolean("autoThanks"))
+            return this.config.getBoolean("autoThanks", true) ? EnumAutoThanks.SYSTEM_CHAT : EnumAutoThanks.NONE;
+
+        return EnumAutoThanks.getById(this.config.getString("autoThanks.mode", EnumAutoThanks.SYSTEM_CHAT.getId()));
+    }
+
+    public String getAutoThanksMessage(){
+        String message = this.config.getString("autoThanks.message", "default");
+        //noinspection ConstantConditions
+        if(message.equalsIgnoreCase("default"))
+            return null;
+        else
+            return message;
+    }
+    // End Auto Thanks
 
     public String getCurrentLanguage(){
         return this.config.getString("currentLanguage", "en_us");
