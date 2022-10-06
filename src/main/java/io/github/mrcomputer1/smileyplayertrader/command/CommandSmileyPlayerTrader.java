@@ -47,7 +47,7 @@ public class CommandSmileyPlayerTrader implements TabExecutor {
             return false;
 
         if(args.length == 0){
-            if(SmileyPlayerTrader.getInstance().getConfig().getBoolean("useGuiManager", true)) {
+            if(SmileyPlayerTrader.getInstance().getConfiguration().getUseGuiManager()) {
                 if(!(sender instanceof Player)){
                     sender.sendMessage(I18N.translate("&cYou must be running this command from a player."));
                     return true;

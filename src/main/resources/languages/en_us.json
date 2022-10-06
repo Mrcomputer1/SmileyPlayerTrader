@@ -1,5 +1,5 @@
 {
-  "$$version$$": 8,
+  "$$version$$": 9,
   "&e%0% is now trading with you.": "&e%0% is now trading with you.",
   "&2Villager Store: ": "&2Villager Store: ",
   "&aThanks for your purchase, %0%": "&aThanks for your purchase, %0%",
@@ -190,5 +190,6 @@
   "&eWhen enabled, this trade will be hidden when out of stock.": "&eWhen enabled, this trade will be hidden when out of stock.",
   "&aUpdated hide on out of stock.": "&aUpdated hide on out of stock.",
   "&cBad Syntax! &f/spt hidewhenout <id> <yes|no|true|false>": "&cBad Syntax! &f/spt hidewhenout <id> <yes|no|true|false>",
-  "&f/spt hidewhenout <id> <yes|no|true|false> &e- Set hide when out of stock setting": "&f/spt hidewhenout <id> <yes|no|true|false> &e- Set hide when out of stock setting"
+  "&f/spt hidewhenout <id> <yes|no|true|false> &e- Set hide when out of stock setting": "&f/spt hidewhenout <id> <yes|no|true|false> &e- Set hide when out of stock setting",
+  "&a[%0%]: Thanks for your purchase, %1%": "&a[%0%]: Thanks for your purchase, %1%"
 }

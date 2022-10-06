@@ -29,6 +29,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
     private UpdateChecker updateChecker = null;
     private BugWarner bugWarner = null;
     private VersionSupport versionSupport = null;
+    private SPTConfiguration configuration = null;
 
     private Metrics metrics = null;
 
@@ -36,6 +37,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
     public void onEnable() {
         // Configuration
         saveDefaultConfig();
+        this.configuration = new SPTConfiguration(getConfig());
 
         // bStats
         if(!getDescription().getVersion().contains("-SNAPSHOT")) { // Disable bStats on development versions.
@@ -44,7 +46,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
             this.metrics.addCustomChart(new Metrics.SimplePie("database_system", new Callable<String>() {
                 @Override
                 public String call() {
-                    switch(getConfig().getString("database.type", "sqlite")){
+                    switch(getConfiguration().getDatabaseType()){
                         case "sqlite":
                             return "SQLite";
                         case "mysql":
@@ -63,13 +65,13 @@ public class SmileyPlayerTrader extends JavaPlugin {
         this.i18n.updateLanguage();
 
         // Update Checker
-        if(getConfig().getBoolean("checkForUpdates", true)){
+        if(getConfiguration().getCheckForUpdatesEnabled()){
             this.updateChecker = new UpdateChecker();
             this.updateChecker.checkForUpdates();
         }
 
         // Bug Warner
-        if(getConfig().getBoolean("checkForBugs.check", false)){
+        if(getConfiguration().getCheckForBugsEnabled()){
             this.bugWarner = new BugWarner();
             boolean b = this.bugWarner.checkForBugs();
             if(b)
@@ -88,8 +90,8 @@ public class SmileyPlayerTrader extends JavaPlugin {
 
         // Database
         boolean shouldCreateTables = true;
-        if(this.getConfig().getString("database.type", "sqlite").equals("sqlite")){
-            if(new File(this.getDataFolder(), this.getConfig().getString("database.file", "database.db")).exists()){
+        if(this.getConfiguration().getDatabaseType().equals("sqlite")){
+            if(new File(this.getDataFolder(), this.getConfiguration().getDatabaseFile()).exists()){
                 shouldCreateTables = false;
             }
         }
@@ -115,7 +117,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
 
         // GUIs
         Bukkit.getPluginManager().registerEvents(new EventListener(), this);
-        if(getConfig().getBoolean("useGuiManager", true)){
+        if(getConfiguration().getUseGuiManager()){
             Bukkit.getPluginManager().registerEvents(new GUIEventListener(), this);
         }
     }
@@ -153,5 +155,9 @@ public class SmileyPlayerTrader extends JavaPlugin {
 
     public PlayerConfig getPlayerConfig(){
         return this.playerConfig;
+    }
+
+    public SPTConfiguration getConfiguration() {
+        return this.configuration;
     }
 }

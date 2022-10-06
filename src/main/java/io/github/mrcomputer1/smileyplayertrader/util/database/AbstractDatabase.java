@@ -19,13 +19,13 @@ public abstract class AbstractDatabase {
     public abstract void close();
 
     public String getDatabasePrefix(){
-        return SmileyPlayerTrader.getInstance().getConfig().getString("database.prefix", "spt");
+        return SmileyPlayerTrader.getInstance().getConfiguration().getDatabasePrefix();
     }
 
     public StatementHandler getNewStatementHandler(){
-        if(SmileyPlayerTrader.getInstance().getConfig().getString("database.type", "sqlite").equals("sqlite")){
+        if(SmileyPlayerTrader.getInstance().getConfiguration().getDatabaseType().equals("sqlite")){
             return new SQLiteStatementHandler((SQLiteDatabase)this);
-        }else if(SmileyPlayerTrader.getInstance().getConfig().getString("database.type").equals("mysql")){
+        }else if(SmileyPlayerTrader.getInstance().getConfiguration().getDatabaseType().equals("mysql")){
             return new MySQLStatementHandler((MySQLDatabase)this);
         }else return null;
     }

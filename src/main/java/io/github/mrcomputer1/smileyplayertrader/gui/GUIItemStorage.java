@@ -111,7 +111,7 @@ public class GUIItemStorage extends AbstractGUI{
             if(clicked.isSimilar(product)) {
                 int count = clicked.getAmount();
 
-                int limit = SmileyPlayerTrader.getInstance().getConfig().getInt("itemStorage.productStorageLimit", -1);
+                int limit = SmileyPlayerTrader.getInstance().getConfiguration().getItemStorageProductStorageLimit();
                 if (limit != -1 && this.storedProduct + count > limit) {
                     player.sendMessage(I18N.translate("&cYou cannot store more than %0% of a product.", limit));
                     return true;

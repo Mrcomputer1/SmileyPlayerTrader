@@ -1,5 +1,6 @@
 package io.github.mrcomputer1.smileyplayertrader.gui;
 
+import io.github.mrcomputer1.smileyplayertrader.SPTConfiguration;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -64,15 +65,14 @@ public class ProductGUIState {
         this.id = -1L;
         this.isEditing = false;
 
-        String outOfStockBehaviour = SmileyPlayerTrader.getInstance().getConfig().getString("outOfStockBehaviour", "showByDefault");
-        //noinspection ConstantConditions
-        switch (outOfStockBehaviour.toLowerCase()){
-            case "hidebydefault":
-            case "hide":
+        SPTConfiguration.EnumOutOfStockBehaviour outOfStockBehaviour = SmileyPlayerTrader.getInstance().getConfiguration().getOutOfStockBehaviour();
+        switch (outOfStockBehaviour){
+            case HIDE_BY_DEFAULT:
+            case HIDE:
                 this.hideOnOutOfStock = true;
                 break;
-            case "showbydefault":
-            case "show":
+            case SHOW_BY_DEFAULT:
+            case SHOW:
             default:
                 this.hideOnOutOfStock = false;
                 break;

@@ -12,7 +12,7 @@ public class I18N {
     private static String[] languages = {"en_us"};
 
     public void loadLanguages(){
-        String lang = SmileyPlayerTrader.getInstance().getConfig().getString("currentLanguage", "en_us");
+        String lang = SmileyPlayerTrader.getInstance().getConfiguration().getCurrentLanguage();
         File langFolder = new File(SmileyPlayerTrader.getInstance().getDataFolder(), "languages");
         JsonParser parser = new JsonParser();
         try {
@@ -39,7 +39,7 @@ public class I18N {
 
     public void updateLanguage(){
         try {
-            String lang = SmileyPlayerTrader.getInstance().getConfig().getString("currentLanguage", "en_us");
+            String lang = SmileyPlayerTrader.getInstance().getConfiguration().getCurrentLanguage();
             InputStream resource = SmileyPlayerTrader.getInstance().getResource("languages/" + lang + ".json");
             if (resource == null) {
                 return;

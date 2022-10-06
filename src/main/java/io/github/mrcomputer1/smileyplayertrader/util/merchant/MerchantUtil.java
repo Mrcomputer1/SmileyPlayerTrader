@@ -1,14 +1,15 @@
 package io.github.mrcomputer1.smileyplayertrader.util.merchant;
 
+import io.github.mrcomputer1.smileyplayertrader.SPTConfiguration;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.VaultUtil;
-import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
-import io.github.mrcomputer1.smileyplayertrader.util.item.stocklocations.IStockLocation;
+import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.item.stocklocations.StockLocations;
 import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -40,6 +41,48 @@ public class MerchantUtil {
         player.openMerchant(merchant, true);
     }
 
+    public static void thankPurchaser(OfflinePlayer merchant, Player customer){
+        String message = SmileyPlayerTrader.getInstance().getConfiguration().getAutoThanksMessage();
+        switch(SmileyPlayerTrader.getInstance().getConfiguration().getAutoThanksMode()){
+            case NONE:
+                customer.sendMessage(I18N.translate("&aYou purchased an item from %0%", merchant.getName()));
+                return;
+            case PLAYER_CHAT:
+                if(!merchant.isOnline()) {
+                    customer.sendMessage(I18N.translate("&aYou purchased an item from %0%", merchant.getName()));
+                    return;
+                }
+
+                // This requireNonNull should never catch a null.
+                Player onlineMerchant = Objects.requireNonNull(merchant.getPlayer());
+
+                if(message == null) {
+                    message = I18N.translate("&aThanks for your purchase, %0%", merchant.getName());
+                }else{
+                    message = ChatColor.translateAlternateColorCodes('&', message);
+                    message = message.replace("%CUSTOMER%", customer.getName());
+                    message = message.replace("%MERCHANT%", onlineMerchant.getName());
+                }
+
+                onlineMerchant.chat(message);
+                break;
+            case SYSTEM_CHAT:
+                if(message == null){
+                    message = I18N.translate("&a[%0%]: Thanks for your purchase, %1%", merchant.getName(), customer.getName());
+                }else{
+                    message = ChatColor.translateAlternateColorCodes('&', message);
+                    message = message.replace("%CUSTOMER%", customer.getName());
+                    if(merchant.getName() != null) {
+                        message = message.replace("%MERCHANT%", merchant.getName());
+                    }else{
+                        message = message.replace("%MERCHANT%", "an unknown merchant");
+                    }
+                }
+
+                Bukkit.broadcastMessage(message);
+        }
+    }
+
     public static void openMerchant(Player player, OfflinePlayer store, boolean unsuccessfulFeedback, boolean isReopen){
         if(!store.isOnline() && !StockLocations.canTradeWithPlayer(store)){
             if(unsuccessfulFeedback)
@@ -47,13 +90,13 @@ public class MerchantUtil {
             return;
         }
 
-        if(SmileyPlayerTrader.getInstance().getConfig().getStringList("disabledWorlds").contains(player.getWorld().getName())){
+        if(SmileyPlayerTrader.getInstance().getConfiguration().getDisabledWorlds().contains(player.getWorld().getName())){
             if(unsuccessfulFeedback)
                 player.sendMessage(I18N.translate("&cYou cannot trade in this world."));
             return;
         }
 
-        if(player.getUniqueId().equals(store.getUniqueId()) && !SmileyPlayerTrader.getInstance().getConfig().getBoolean("debugSelfTrading", false)){
+        if(player.getUniqueId().equals(store.getUniqueId()) && !SmileyPlayerTrader.getInstance().getConfiguration().getDebugSelfTrading()){
             if(unsuccessfulFeedback)
                 player.sendMessage(I18N.translate("&cYou cannot trade with yourself."));
             return;
@@ -165,10 +208,10 @@ public class MerchantUtil {
                 }
 
                 if(!ItemUtil.doesPlayerHaveItem(merchant, is, set.getLong("id"))){
-                    String outOfStockBehaviour = SmileyPlayerTrader.getInstance().getConfig().getString("outOfStockBehaviour", "showByDefault");
-                    if(outOfStockBehaviour.equalsIgnoreCase("hide"))
+                    SPTConfiguration.EnumOutOfStockBehaviour outOfStockBehaviour = SmileyPlayerTrader.getInstance().getConfiguration().getOutOfStockBehaviour();
+                    if(outOfStockBehaviour == SPTConfiguration.EnumOutOfStockBehaviour.HIDE)
                         continue;
-                    if(!outOfStockBehaviour.equalsIgnoreCase("show") && set.getBoolean("hide_on_out_of_stock"))
+                    if(outOfStockBehaviour != SPTConfiguration.EnumOutOfStockBehaviour.SHOW && set.getBoolean("hide_on_out_of_stock"))
                         continue;
                     mr.setUses(Integer.MAX_VALUE);
                 }

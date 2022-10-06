@@ -23,7 +23,7 @@ public class CollectCommand implements ICommand{
             return;
         }
 
-        if(!SmileyPlayerTrader.getInstance().getConfig().getBoolean("itemStorage.enable", false)){
+        if(!SmileyPlayerTrader.getInstance().getConfiguration().getItemStorageEnabled()){
             sender.sendMessage(I18N.translate("&cItem storage is not enabled."));
             return;
         }

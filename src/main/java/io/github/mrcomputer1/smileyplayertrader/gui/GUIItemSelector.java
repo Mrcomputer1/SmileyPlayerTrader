@@ -80,12 +80,12 @@ public class GUIItemSelector extends AbstractGUI {
         this.getInventory().setItem((5 * 9) + 8, NEXT_BTN.clone());
         this.getInventory().setItem((5 * 9) + 4, CANCEL_BTN.clone());
 
-        List<String> hiddenItems = (List<String>) SmileyPlayerTrader.getInstance().getConfig().getList("priceSelectorMenu.hiddenItems", new ArrayList<>());
+        List<String> hiddenItems = SmileyPlayerTrader.getInstance().getConfiguration().getPriceSelectorMenuHiddenItems();
         if(itemStacks == null){
             itemStacks = new ArrayList<>();
 
             if(filter != EnumItemSelectorFilter.FEATURED) {
-                if (SmileyPlayerTrader.getInstance().getConfig().getBoolean("priceSelectorMenu.automaticAdd.vanilla", true)) {
+                if (SmileyPlayerTrader.getInstance().getConfiguration().getPriceSelectorMenuAutomaticAddVanilla()) {
                     // Vanilla Items
                     for (Material m : Material.values()) {
                         if (ItemUtil.isHiddenItem(hiddenItems, m)) {
@@ -103,9 +103,9 @@ public class GUIItemSelector extends AbstractGUI {
                 }
 
                 // Extra Items
-                List<LinkedHashMap<String, Object>> extraItems = (List<LinkedHashMap<String, Object>>) SmileyPlayerTrader.getInstance().getConfig().getList("priceSelectorMenu.extraItems", new ArrayList<>());
-                for (LinkedHashMap<String, Object> item : extraItems) {
-                    ItemStack is = prepareItemStack(ItemUtil.buildConfigurationItem(item));
+                List<ItemStack> extraItems = SmileyPlayerTrader.getInstance().getConfiguration().getPriceSelectorMenuExtraItems();
+                for (ItemStack item : extraItems) {
+                    ItemStack is = prepareItemStack(item);
 
                     if (is == null)
                         continue;
@@ -129,9 +129,9 @@ public class GUIItemSelector extends AbstractGUI {
                 // End Integration Filters
             }else{
                 // Featured Items
-                List<LinkedHashMap<String, Object>> featuredItems = (List<LinkedHashMap<String, Object>>) SmileyPlayerTrader.getInstance().getConfig().getList("priceSelectorMenu.featuredItems", new ArrayList<>());
-                for(LinkedHashMap<String, Object> item : featuredItems){
-                    ItemStack is = prepareItemStack(ItemUtil.buildConfigurationItem(item));
+                List<ItemStack> featuredItems = SmileyPlayerTrader.getInstance().getConfiguration().getPriceSelectorMenuFeaturedItems();
+                for(ItemStack item : featuredItems){
+                    ItemStack is = prepareItemStack(item);
 
                     if(is == null)
                         continue;

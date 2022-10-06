@@ -28,7 +28,7 @@ public class PlayerConfig {
         }
     }
 
-    private int LOCK_PERIOD = SmileyPlayerTrader.getInstance().getConfig().getInt("autoCombatLock.combatLockLength", 30) * 1000;
+    private int LOCK_PERIOD = SmileyPlayerTrader.getInstance().getConfiguration().getAutoCombatLockLength() * 1000;
     private Map<String, Config> playerConfigs = new HashMap<>();
     private Map<String, Long> playerCombatLock = new HashMap<>();
 
@@ -85,7 +85,7 @@ public class PlayerConfig {
     }
 
     public void lockPlayer(Player player){
-        if(!SmileyPlayerTrader.getInstance().getConfig().getBoolean("autoCombatLock.neverShowNotice", false)
+        if(!SmileyPlayerTrader.getInstance().getConfiguration().getAutoCombatLockNeverShowNotice()
                 && !isLocked(player) && getPlayer(player).combatNoticeToggle){
             player.sendMessage(I18N.translate("&7Player trading has been temporarily disabled while you are in combat. Use &f/spt releasecombatlock &7to re-enable trading early."));
 
