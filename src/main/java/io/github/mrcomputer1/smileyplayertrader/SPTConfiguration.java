@@ -270,4 +270,8 @@ public class SPTConfiguration {
         return this.config.getBoolean("debugSelfTrading", false);
     }
 
+    public boolean getDebugI18NAlerts(){
+        return this.config.getBoolean("debugI18NAlerts", false);
+    }
+
 }

@@ -64,17 +64,22 @@ public class I18N {
     }
 
     public static String translate(String str, Object... args){
+        boolean isDebug = SmileyPlayerTrader.getInstance().getConfiguration().getDebugI18NAlerts();
+
         String s;
         if(SmileyPlayerTrader.getInstance().getI18N().language.has(str)) {
             s = SmileyPlayerTrader.getInstance().getI18N().language.get(str).getAsString();
         }else{
             SmileyPlayerTrader.getInstance().getLogger().warning("Key '" + str + "' was not found in translation file!");
             s = str;
+            if(isDebug)
+                s = ChatColor.DARK_RED.toString() + ChatColor.BOLD + "! " + ChatColor.RESET + s;
         }
         for(int i = 0; i < args.length; i++){
             s = s.replace("%" + i + "%", "" + args[i]);
         }
         s = ChatColor.translateAlternateColorCodes('&', s);
+
         return s;
     }
 
