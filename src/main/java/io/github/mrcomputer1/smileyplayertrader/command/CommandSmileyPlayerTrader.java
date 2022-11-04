@@ -1,9 +1,10 @@
 package io.github.mrcomputer1.smileyplayertrader.command;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
-import io.github.mrcomputer1.smileyplayertrader.gui.GUIListItems;
-import io.github.mrcomputer1.smileyplayertrader.gui.GUIManager;
+import io.github.mrcomputer1.smileyplayertrader.gui.GUIProductList;
+import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -52,7 +53,7 @@ public class CommandSmileyPlayerTrader implements TabExecutor {
                     sender.sendMessage(I18N.translate("&cYou must be running this command from a player."));
                     return true;
                 }
-                GUIManager.getInstance().openGUI((Player)sender, new GUIListItems(0));
+                GUIManager.getInstance().openGui((Player) sender, new GUIProductList((OfflinePlayer) sender, 0, true));
             }else {
                 sender.sendMessage(I18N.translate("&bSmiley Player Trader by Mrcomputer1 and Semisol. Version %0%.",
                         SmileyPlayerTrader.getInstance().getDescription().getVersion()));

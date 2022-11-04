@@ -17,7 +17,7 @@ public class GenericStatementHandler implements StatementHandler {
         statements.put(StatementType.CREATE_META_TABLE, "CREATE TABLE IF NOT EXISTS $prefix$meta (" +
                 "sptversion INTEGER NOT NULL" +
                 ")");
-        statements.put(StatementType.ADD_PRODUCT, "INSERT INTO $prefix$products (merchant, product, cost1, cost2, enabled, available, special_price, hide_on_out_of_stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        statements.put(StatementType.ADD_PRODUCT, "INSERT INTO $prefix$products (merchant, product, cost1, cost2, enabled, available, special_price, priority, hide_on_out_of_stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         statements.put(StatementType.FIND_PRODUCTS, "SELECT * FROM $prefix$products WHERE merchant=? ORDER BY priority DESC");
         statements.put(StatementType.DELETE_PRODUCT, "DELETE FROM $prefix$products WHERE id=?");
         statements.put(StatementType.SET_COST, "UPDATE $prefix$products SET cost1=?, special_price=0 WHERE id=?");

@@ -17,6 +17,7 @@ public interface StatementHandler {
          * enabled (boolean),
          * available (boolean),
          * special_price (int),
+         * priority (int),
          * hide_on_out_of_stock (boolean)
          */
         ADD_PRODUCT,
