@@ -79,7 +79,25 @@ public class MerchantUtil {
                     }
                 }
 
-                Bukkit.broadcastMessage(message);
+                switch(SmileyPlayerTrader.getInstance().getConfiguration().getAutoThanksMessageTarget()){
+                    case EVERYONE:
+                        Bukkit.broadcastMessage(message);
+                        break;
+                    case CUSTOMER:
+                        customer.sendMessage(message);
+                        break;
+                    case MERCHANT:
+                        if(merchant.isOnline())
+                            //noinspection ConstantConditions
+                            merchant.getPlayer().sendMessage(message);
+                        break;
+                    case INVOLVED:
+                        customer.sendMessage(message);
+                        if(merchant.isOnline())
+                            //noinspection ConstantConditions
+                            merchant.getPlayer().sendMessage(message);
+                        break;
+                }
         }
     }
 
