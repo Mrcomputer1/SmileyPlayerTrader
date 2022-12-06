@@ -194,5 +194,10 @@
   "&a[%0%]: Thanks for your purchase, %1%": "&a[%0%]: Thanks for your purchase, %1%",
   "&2%0%'s Products (Page %1%)": "&2%0%'s Products (Page %1%)",
   "&cSomething went wrong (&f%0%&c)!": "&cSomething went wrong (&f%0%&c)!",
-  "&aSelected": "&aSelected"
+  "&aSelected": "&aSelected",
+  "&2All Products (Page %0%)": "&2All Products (Page %0%)",
+  "&eSeller: ": "&eSeller: ",
+  "&eCost: ": "&eCost: ",
+  "&bClick to &lPurchase": "&bClick to &lPurchase",
+  "&f/spt all &e- See all available trades": "&f/spt all &e- See all available trades"
 }

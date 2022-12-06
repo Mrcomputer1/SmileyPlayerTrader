@@ -165,7 +165,12 @@ public interface StatementHandler {
          * hide_on_out_of_stock (boolean),
          * id (int)
          */
-        SET_HIDE_ON_OUT_OF_STOCK
+        SET_HIDE_ON_OUT_OF_STOCK,
+
+        /**
+         * LIMIT, OFFSET
+         */
+        FIND_ALL_PRODUCTS_IN_PAGES,
     }
 
     void run(StatementType type, Object... objs);
