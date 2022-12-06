@@ -86,6 +86,12 @@ public class GUIAllProducts extends GUI {
                 if(!ItemUtil.doesPlayerHaveItem(seller, is, set.getLong("id")))
                     continue;
 
+                // Purchase Count Check
+                int purchaseLimit = set.getInt("purchase_limit");
+                int purchaseCount = set.getInt("purchase_count");
+                if(purchaseLimit != -1 && purchaseCount >= purchaseLimit)
+                    continue;
+
                 // Item Meta
                 ItemMeta im = is.getItemMeta();
                 assert im != null;

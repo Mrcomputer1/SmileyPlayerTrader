@@ -129,9 +129,9 @@ public class GUIProduct extends GUI {
                 );
             }else{
                 SmileyPlayerTrader.getInstance().getStatementHandler().run(
-                        StatementHandler.StatementType.SET_PRODUCT_COST_COST2_SPECIALPRICE_PRIORITY_HIDEOUTOFSTOCK,
+                        StatementHandler.StatementType.SET_PRODUCT_COST_COST2_SPECIALPRICE_PRIORITY_HIDEOUTOFSTOCK_PURCHASELIMIT,
                         stackBytes, costBytes, cost2Bytes,
-                        state.discount, state.priority, state.hideOnOutOfStock,
+                        state.discount, state.priority, state.hideOnOutOfStock, state.purchaseLimit,
                         state.id
                 );
             }

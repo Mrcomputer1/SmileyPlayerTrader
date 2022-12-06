@@ -199,5 +199,21 @@
   "&eSeller: ": "&eSeller: ",
   "&eCost: ": "&eCost: ",
   "&bClick to &lPurchase": "&bClick to &lPurchase",
-  "&f/spt all &e- See all available trades": "&f/spt all &e- See all available trades"
+  "&f/spt all &e- See all available trades": "&f/spt all &e- See all available trades",
+  "&cBad Syntax! &f/spt purchaselimit <id> [limit]": "&cBad Syntax! &f/spt purchaselimit <id> [limit]",
+  "&cYou cannot have a negative purchase limit.": "&cYou cannot have a negative purchase limit.",
+  "&aSet purchase limit.": "&aSet purchase limit.",
+  "&f/spt purchaselimit <id> [limit] &e- Set purchase limit": "&f/spt purchaselimit <id> [limit] &e- Set purchase limit",
+  "&aReset purchase count.": "&aReset purchase count.",
+  "&cBad Syntax! &f/spt purchasereset <id>": "&cBad Syntax! &f/spt purchasereset <id>",
+  "&f/spt purchasereset <id> &e- Resets purchase count for purchase limit": "&f/spt purchasereset <id> &e- Resets purchase count for purchase limit",
+  "&2Set Purchase Limit": "&2Set Purchase Limit",
+  "&bPurchase Limit": "&bPurchase Limit",
+  "&cDisabled": "&cDisabled",
+  "&aIncrease Purchase Limit": "&aIncrease Purchase Limit",
+  "&cDecrease Purchase Limit": "&cDecrease Purchase Limit",
+  "&cReset Purchase Limit to Disabled": "&cReset Purchase Limit to Disabled",
+  "&cReset Purchase Count": "&cReset Purchase Count",
+  "&ePurchase Limit": "&ePurchase Limit",
+  "&bPurchase Limit: %0%": "&bPurchase Limit: %0%"
 }

@@ -78,9 +78,10 @@ public interface StatementHandler {
          * special_price (int)
          * priority (int)
          * hide_on_out_of_stock (boolean)
+         * purchase_limit (int)
          * id (int)
          */
-        SET_PRODUCT_COST_COST2_SPECIALPRICE_PRIORITY_HIDEOUTOFSTOCK,
+        SET_PRODUCT_COST_COST2_SPECIALPRICE_PRIORITY_HIDEOUTOFSTOCK_PURCHASELIMIT,
 
         /**
          * id (int)
@@ -171,6 +172,21 @@ public interface StatementHandler {
          * LIMIT, OFFSET
          */
         FIND_ALL_PRODUCTS_IN_PAGES,
+
+        /**
+         * id (int)
+         */
+        INCREMENT_PURCHASE_COUNT,
+
+        /**
+         * id (int)
+         */
+        RESET_PURCHASE_COUNT,
+
+        /**
+         * id (int), limit (int)
+         */
+        SET_PURCHASE_LIMIT
     }
 
     void run(StatementType type, Object... objs);

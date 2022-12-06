@@ -197,6 +197,13 @@ public class MerchantUtil {
             while (set.next()) {
                 if(!set.getBoolean("enabled"))
                     continue;
+
+                // Purchase Limit Check
+                int purchaseLimit = set.getInt("purchase_limit");
+                int purchaseCount = set.getInt("purchase_count");
+                if(purchaseLimit != -1 && purchaseCount >= purchaseLimit)
+                    continue;
+
                 byte[] productb = set.getBytes("product");
                 ItemStack is = null;
                 if(productb != null) {

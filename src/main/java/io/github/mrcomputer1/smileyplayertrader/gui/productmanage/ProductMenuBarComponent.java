@@ -23,7 +23,8 @@ public class ProductMenuBarComponent extends GUIComponent {
     public enum EnumProductEditPage{
         PRODUCT_SETTINGS,
         PRIORITY,
-        DISCOUNT
+        DISCOUNT,
+        PURCHASE_LIMIT
     }
 
     private static final ItemStack BACKGROUND = GUI.createItem(Material.IRON_BARS, 1, ChatColor.RESET.toString());
@@ -34,6 +35,7 @@ public class ProductMenuBarComponent extends GUIComponent {
             I18N.translate("&eHigher priorities appear higher in the trade list.")
     );
     private static final ItemStack DISCOUNT_SETTING = GUI.createItem(Material.IRON_INGOT, 1, I18N.translate("&eSet Optional Discount"));
+    private static final ItemStack PURCHASE_LIMIT = GUI.createItem(Material.LIGHT_BLUE_WOOL, 1, I18N.translate("&ePurchase Limit"));
     private static final ItemStack HIDE_ON_OUT_OF_STOCK = GUI.createItemWithLore(
             Material.YELLOW_WOOL, 1,
             I18N.translate("&eToggle hide on out of stock"),
@@ -109,13 +111,19 @@ public class ProductMenuBarComponent extends GUIComponent {
             renderSelected(discountSetting);
         inventory.setItem(GUI.toSlot(2, this.y), discountSetting);
 
+        // Purchase Limit
+        ItemStack purchaseLimit = PURCHASE_LIMIT.clone();
+        if(this.editPage == EnumProductEditPage.PURCHASE_LIMIT)
+            renderSelected(purchaseLimit);
+        inventory.setItem(GUI.toSlot(3, this.y), purchaseLimit);
+
         // Out of Stock Behaviour
         switch(SmileyPlayerTrader.getInstance().getConfiguration().getOutOfStockBehaviour()){
             case HIDE_BY_DEFAULT:
             case SHOW_BY_DEFAULT:
                 this.hideOnOutOfStock = HIDE_ON_OUT_OF_STOCK.clone();
                 this.updateHideOnOutOfStock();
-                inventory.setItem(GUI.toSlot(3, this.y), this.hideOnOutOfStock);
+                inventory.setItem(GUI.toSlot(4, this.y), this.hideOnOutOfStock);
         }
     }
 
@@ -125,9 +133,11 @@ public class ProductMenuBarComponent extends GUIComponent {
             GUIManager.getInstance().openGui(player, new GUIProduct(this.state));
         }else if(x == 1){ // Priority
             GUIManager.getInstance().openGui(player, new GUIPriority(this.state));
-        }else if(x == 2){ // Discount
+        }else if(x == 2) { // Discount
             GUIManager.getInstance().openGui(player, new GUIDiscount(this.state));
-        }else if(x == 3 && this.hideOnOutOfStock != null){ // Out of stock behaviour
+        }else if(x == 3) { // Purchase Limit
+            GUIManager.getInstance().openGui(player, new GUIPurchaseLimit(this.state));
+        }else if(x == 4 && this.hideOnOutOfStock != null){ // Out of stock behaviour
             this.state.hideOnOutOfStock = !this.state.hideOnOutOfStock;
             this.updateHideOnOutOfStock();
             this.inventory.setItem(GUI.toSlot(3, this.y), this.hideOnOutOfStock);

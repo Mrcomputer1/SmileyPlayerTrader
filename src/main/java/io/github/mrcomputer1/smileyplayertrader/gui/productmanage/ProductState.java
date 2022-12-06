@@ -27,6 +27,7 @@ public class ProductState {
     public int discount = 0;
     public int priority = 0;
     public boolean hideOnOutOfStock = false;
+    public int purchaseLimit = -1;
 
     // Storage
     public int storedProduct = 0;
@@ -81,6 +82,7 @@ public class ProductState {
                 this.discount = set.getInt("special_price");
                 this.priority = set.getInt("priority");
                 this.hideOnOutOfStock = set.getBoolean("hide_on_out_of_stock");
+                this.purchaseLimit = set.getInt("purchase_limit");
 
                 this.storedProduct = set.getInt("stored_product");
                 this.storedCost = set.getInt("stored_cost");

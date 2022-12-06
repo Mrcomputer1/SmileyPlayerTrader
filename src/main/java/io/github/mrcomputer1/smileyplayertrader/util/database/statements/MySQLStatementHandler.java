@@ -30,7 +30,9 @@ public class MySQLStatementHandler implements StatementHandler {
                 "stored_product INTEGER DEFAULT 0 NOT NULL," +
                 "stored_cost INTEGER DEFAULT 0 NOT NULL," +
                 "stored_cost2 INTEGER DEFAULT 0 NOT NULL," +
-                "hide_on_out_of_stock INTEGER DEFAULT 0 NOT NULL)");
+                "hide_on_out_of_stock INTEGER DEFAULT 0 NOT NULL," +
+                "purchase_limit INTEGER DEFAULT -1 NOT NULL," +
+                "purchase_count INTEGER DEFAULT 0 NOT NULL)");
         statements.put(StatementType.CREATE_SETTINGS_TABLE, "CREATE TABLE IF NOT EXISTS $prefix$settings (" +
                 "player VARCHAR(36) PRIMARY KEY NOT NULL," +
                 "trade_toggle BOOLEAN DEFAULT 1 NOT NULL," +
