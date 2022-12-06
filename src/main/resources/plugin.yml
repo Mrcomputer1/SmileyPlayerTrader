@@ -26,6 +26,7 @@ permissions:
       "smileyplayertrader.admin": true
       "smileyplayertrader.trade.remote": true
       "smileyplayertrader.guiothers": true
+      "smileyplayertrader.alltradeslist": true
   "smileyplayertrader.others":
     description: "Change other players"
     default: op
@@ -47,3 +48,6 @@ permissions:
   "smileyplayertrader.guiothers":
     description: "Open the GUI for other players"
     default: op
+  "smileyplayertrader.alltradeslist":
+    description: "Allows use of /spt all"
+    default: true
