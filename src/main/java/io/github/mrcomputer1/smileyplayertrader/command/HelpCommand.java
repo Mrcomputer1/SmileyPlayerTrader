@@ -25,6 +25,9 @@ public class HelpCommand implements ICommand {
         sender.sendMessage(I18N.translate("&f/spt withdraw <id> [limit] &e- Withdraw items from item storage"));
         sender.sendMessage(I18N.translate("&f/spt collect [id] &e- Collect earnings from item storage"));
         sender.sendMessage(I18N.translate("&f/spt hidewhenout <id> <yes|no|true|false> &e- Set hide when out of stock setting"));
+        sender.sendMessage(I18N.translate("&f/spt all &e- See all available trades"));
+        sender.sendMessage(I18N.translate("&f/spt purchaselimit <id> [limit] &e- Set purchase limit"));
+        sender.sendMessage(I18N.translate("&f/spt purchasereset <id> &e- Resets purchase count for purchase limit"));
         sender.sendMessage(I18N.translate("&f/spt version &e- Get version"));
         sender.sendMessage(I18N.translate("&e&lSmiley Player Trader - Help"));
     }

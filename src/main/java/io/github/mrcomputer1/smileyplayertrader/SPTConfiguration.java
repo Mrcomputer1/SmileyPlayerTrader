@@ -54,6 +54,38 @@ public class SPTConfiguration {
         }
     }
 
+    public enum EnumAutoThanksMessageTarget{
+        EVERYONE("everyone"),
+        CUSTOMER("customer"),
+        MERCHANT("merchant"),
+        INVOLVED("involved");
+
+        private static final Map<String, EnumAutoThanksMessageTarget> autoThanksTargets = new HashMap<>();
+
+        static{
+            for(EnumAutoThanksMessageTarget target : values()){
+                autoThanksTargets.put(target.id.toLowerCase(), target);
+            }
+        }
+
+        public static EnumAutoThanksMessageTarget getById(String id){
+            if(id == null)
+                return EnumAutoThanksMessageTarget.EVERYONE;
+            EnumAutoThanksMessageTarget target = autoThanksTargets.get(id.toLowerCase());
+            return target == null ? EVERYONE : target;
+        }
+
+        private final String id;
+
+        EnumAutoThanksMessageTarget(String id){
+            this.id = id;
+        }
+
+        public String getId() {
+            return id;
+        }
+    }
+
     public EnumAutoThanks getAutoThanksMode(){
         // Legacy config property support
         if(this.config.isBoolean("autoThanks"))
@@ -69,6 +101,10 @@ public class SPTConfiguration {
             return null;
         else
             return message;
+    }
+
+    public EnumAutoThanksMessageTarget getAutoThanksMessageTarget(){
+        return EnumAutoThanksMessageTarget.getById(this.config.getString("autoThanks.target", "everyone"));
     }
     // End Auto Thanks
 
@@ -268,6 +304,10 @@ public class SPTConfiguration {
 
     public boolean getDebugSelfTrading(){
         return this.config.getBoolean("debugSelfTrading", false);
+    }
+
+    public boolean getDebugI18NAlerts(){
+        return this.config.getBoolean("debugI18NAlerts", false);
     }
 
 }

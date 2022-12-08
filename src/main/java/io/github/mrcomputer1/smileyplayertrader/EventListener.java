@@ -127,6 +127,7 @@ public class EventListener implements Listener {
                             }
                         }
 
+                        // Check discount remains unchanged
                         int discount = -set.getInt("special_price");
                         if(discount != VersionSupport.getSpecialCountForRecipe(mi)){
                             e.getWhoClicked().sendMessage(I18N.translate("&cThis product has been changed, please reopen the trading UI."));
@@ -134,6 +135,14 @@ public class EventListener implements Listener {
                             return;
                         }
 
+                        // Check purchase count remains within purchase limit
+                        int purchaseLimit = set.getInt("purchase_limit");
+                        int purchaseCount = set.getInt("purchase_count");
+                        if(purchaseLimit != -1 && purchaseCount >= purchaseLimit){
+                            e.getWhoClicked().sendMessage(I18N.translate("&cThis product is no longer for sale."));
+                            e.setCancelled(true);
+                            return;
+                        }
                     } else {
                         e.getWhoClicked().sendMessage(I18N.translate("&cThis product is no longer for sale."));
                         e.setCancelled(true);
@@ -154,6 +163,7 @@ public class EventListener implements Listener {
                         SmileyPlayerTrader.getInstance().getLogger().severe("Something went wrong while attempting to give earnings to " + store.getName());
                     }
                     MerchantUtil.thankPurchaser(store, (Player) e.getWhoClicked());
+                    SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.INCREMENT_PURCHASE_COUNT, productId);
                     if(store.isOnline())
                         store.getPlayer().sendMessage(I18N.translate("&a%0% just purchased %1%!", e.getWhoClicked().getName(), mi.getSelectedRecipe().getResult().getType()));
                     try {

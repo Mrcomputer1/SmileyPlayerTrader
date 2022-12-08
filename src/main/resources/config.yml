@@ -30,6 +30,15 @@ autoThanks:
   # - player_chat: "&aThanks for your purchase, %CUSTOMER%"
   # - system_chat: "&a[%MERCHANT%]: Thanks for your purchase, %CUSTOMER%"
   message: "default"
+  # Choose who to send the message to.
+  # Options are:
+  # - everyone: All online players.
+  # - customer: Only send to the customer.
+  # - merchant: Only send to the merchant.
+  # - involved: Only send to the people involved in the transaction (the customer and the merchant).
+  # The following modes do not support the target option and will always use the specified default value:
+  # - player_chat: "everyone".
+  target: everyone
 
 # Selected language (see the languages folder for a list of languages (or make your own inside that folder))
 currentLanguage: en_us

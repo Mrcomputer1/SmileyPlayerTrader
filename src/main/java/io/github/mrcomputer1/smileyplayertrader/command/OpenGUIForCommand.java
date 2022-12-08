@@ -1,8 +1,8 @@
 package io.github.mrcomputer1.smileyplayertrader.command;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
-import io.github.mrcomputer1.smileyplayertrader.gui.GUIListItems;
-import io.github.mrcomputer1.smileyplayertrader.gui.GUIManager;
+import io.github.mrcomputer1.smileyplayertrader.gui.GUIProductList;
+import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -32,6 +32,6 @@ public class OpenGUIForCommand implements ICommand{
             return;
         }
 
-        GUIManager.getInstance().openGUI(op.getPlayer(), new GUIListItems(0));
+        GUIManager.getInstance().openGui(op.getPlayer(), new GUIProductList(op, 0, true));
     }
 }

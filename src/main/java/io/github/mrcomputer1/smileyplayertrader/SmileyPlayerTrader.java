@@ -1,7 +1,7 @@
 package io.github.mrcomputer1.smileyplayertrader;
 
 import io.github.mrcomputer1.smileyplayertrader.command.CommandSmileyPlayerTrader;
-import io.github.mrcomputer1.smileyplayertrader.gui.GUIEventListener;
+import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
 import io.github.mrcomputer1.smileyplayertrader.util.database.AbstractDatabase;
 import io.github.mrcomputer1.smileyplayertrader.util.database.DatabaseUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
@@ -30,6 +30,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
     private BugWarner bugWarner = null;
     private VersionSupport versionSupport = null;
     private SPTConfiguration configuration = null;
+    private GUIManager guiManager = null;
 
     private Metrics metrics = null;
 
@@ -118,7 +119,8 @@ public class SmileyPlayerTrader extends JavaPlugin {
         // GUIs
         Bukkit.getPluginManager().registerEvents(new EventListener(), this);
         if(getConfiguration().getUseGuiManager()){
-            Bukkit.getPluginManager().registerEvents(new GUIEventListener(), this);
+            this.guiManager = new GUIManager();
+            Bukkit.getPluginManager().registerEvents(this.guiManager, this);
         }
     }
 
@@ -160,4 +162,9 @@ public class SmileyPlayerTrader extends JavaPlugin {
     public SPTConfiguration getConfiguration() {
         return this.configuration;
     }
+
+    public GUIManager getGuiManager() {
+        return this.guiManager;
+    }
+
 }

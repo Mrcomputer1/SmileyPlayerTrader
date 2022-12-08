@@ -9,7 +9,7 @@ import java.io.*;
 public class I18N {
 
     private JsonObject language;
-    private static String[] languages = {"en_us"};
+    private static String[] languages = {"en_us", "ru_ru"};
 
     public void loadLanguages(){
         String lang = SmileyPlayerTrader.getInstance().getConfiguration().getCurrentLanguage();
@@ -56,25 +56,34 @@ public class I18N {
     public void createLanguages(){
         File langFolder = new File(SmileyPlayerTrader.getInstance().getDataFolder(), "languages");
         if(!langFolder.exists()) {
-            langFolder.mkdirs();
-            for (String lang : languages) {
-                SmileyPlayerTrader.getInstance().saveResource("languages/" + lang + ".json", false);
+            if(!langFolder.mkdirs()){
+                SmileyPlayerTrader.getInstance().getLogger().severe("Failed to create languages directory.");
             }
+        }
+        for (String lang : languages) {
+            File file = new File(SmileyPlayerTrader.getInstance().getDataFolder(), "languages/" + lang + ".json");
+            if(!file.exists())
+                SmileyPlayerTrader.getInstance().saveResource("languages/" + lang + ".json", false);
         }
     }
 
     public static String translate(String str, Object... args){
+        boolean isDebug = SmileyPlayerTrader.getInstance().getConfiguration().getDebugI18NAlerts();
+
         String s;
         if(SmileyPlayerTrader.getInstance().getI18N().language.has(str)) {
             s = SmileyPlayerTrader.getInstance().getI18N().language.get(str).getAsString();
         }else{
             SmileyPlayerTrader.getInstance().getLogger().warning("Key '" + str + "' was not found in translation file!");
             s = str;
+            if(isDebug)
+                s = ChatColor.DARK_RED.toString() + ChatColor.BOLD + "! " + ChatColor.RESET + s;
         }
         for(int i = 0; i < args.length; i++){
             s = s.replace("%" + i + "%", "" + args[i]);
         }
         s = ChatColor.translateAlternateColorCodes('&', s);
+
         return s;
     }
 

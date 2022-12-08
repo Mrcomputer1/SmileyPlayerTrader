@@ -17,7 +17,7 @@ public class GenericStatementHandler implements StatementHandler {
         statements.put(StatementType.CREATE_META_TABLE, "CREATE TABLE IF NOT EXISTS $prefix$meta (" +
                 "sptversion INTEGER NOT NULL" +
                 ")");
-        statements.put(StatementType.ADD_PRODUCT, "INSERT INTO $prefix$products (merchant, product, cost1, cost2, enabled, available, special_price, hide_on_out_of_stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        statements.put(StatementType.ADD_PRODUCT, "INSERT INTO $prefix$products (merchant, product, cost1, cost2, enabled, available, special_price, priority, hide_on_out_of_stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         statements.put(StatementType.FIND_PRODUCTS, "SELECT * FROM $prefix$products WHERE merchant=? ORDER BY priority DESC");
         statements.put(StatementType.DELETE_PRODUCT, "DELETE FROM $prefix$products WHERE id=?");
         statements.put(StatementType.SET_COST, "UPDATE $prefix$products SET cost1=?, special_price=0 WHERE id=?");
@@ -27,7 +27,7 @@ public class GenericStatementHandler implements StatementHandler {
         statements.put(StatementType.DISABLE_PRODUCT, "UPDATE $prefix$products SET available=0 WHERE id=?");
         statements.put(StatementType.GET_PRODUCT_BY_ID, "SELECT * FROM $prefix$products WHERE id=?");
         statements.put(StatementType.FIND_PRODUCTS_IN_PAGES, "SELECT id, product, enabled, available FROM $prefix$products WHERE merchant=? ORDER BY priority DESC LIMIT ? OFFSET ?");
-        statements.put(StatementType.SET_PRODUCT_COST_COST2_SPECIALPRICE_PRIORITY_HIDEOUTOFSTOCK, "UPDATE $prefix$products SET product=?, cost1=?, cost2=?, special_price=?, priority=?, hide_on_out_of_stock=? WHERE id=?");
+        statements.put(StatementType.SET_PRODUCT_COST_COST2_SPECIALPRICE_PRIORITY_HIDEOUTOFSTOCK_PURCHASELIMIT, "UPDATE $prefix$products SET product=?, cost1=?, cost2=?, special_price=?, priority=?, hide_on_out_of_stock=?, purchase_limit=? WHERE id=?");
         statements.put(StatementType.GET_ENABLED, "SELECT enabled, available FROM $prefix$products WHERE id=?");
         statements.put(StatementType.LOAD_PLAYER_CONFIG, "SELECT * FROM $prefix$settings WHERE player=?");
         statements.put(StatementType.CREATE_DEFAULT_PLAYER_CONFIG, "INSERT INTO $prefix$settings (player) VALUES (?)");
@@ -43,6 +43,10 @@ public class GenericStatementHandler implements StatementHandler {
         statements.put(StatementType.FIND_PRODUCTS_WITH_EARNINGS, "SELECT * FROM $prefix$products WHERE merchant=? AND stored_cost>0 OR stored_cost2>0");
         statements.put(StatementType.GET_UNCOLLECTED_EARNINGS, "SELECT COUNT(*) AS uncollected_earnings FROM $prefix$products WHERE merchant=? AND stored_cost>0 OR stored_cost2>0");
         statements.put(StatementType.SET_HIDE_ON_OUT_OF_STOCK, "UPDATE $prefix$products SET hide_on_out_of_stock=? WHERE id=?");
+        statements.put(StatementType.FIND_ALL_PRODUCTS_IN_PAGES, "SELECT * FROM $prefix$products WHERE product IS NOT NULL AND cost1 IS NOT NULL AND enabled=1 AND available=1 LIMIT ? OFFSET ?");
+        statements.put(StatementType.INCREMENT_PURCHASE_COUNT, "UPDATE $prefix$products SET purchase_count=purchase_count + 1 WHERE id=?");
+        statements.put(StatementType.RESET_PURCHASE_COUNT, "UPDATE $prefix$products SET purchase_count=0 WHERE id=?");
+        statements.put(StatementType.SET_PURCHASE_LIMIT, "UPDATE $prefix$products SET purchase_limit=? WHERE id=?");
     }
 
     @Override

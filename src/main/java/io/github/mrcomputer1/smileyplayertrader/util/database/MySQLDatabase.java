@@ -118,6 +118,9 @@ public class MySQLDatabase extends AbstractDatabase {
             run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN stored_cost INTEGER DEFAULT 0 NOT NULL");
             run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN stored_cost2 INTEGER DEFAULT 0 NOT NULL");
             run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN hide_on_out_of_stock INTEGER DEFAULT 0 NOT NULL");
+        }else if(version == 5){
+            run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN purchase_limit INTEGER DEFAULT -1 NOT NULL");
+            run("ALTER TABLE " + this.getDatabasePrefix() + "products ADD COLUMN purchase_count INTEGER DEFAULT 0 NOT NULL");
         }
     }
 

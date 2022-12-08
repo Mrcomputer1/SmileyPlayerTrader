@@ -79,7 +79,25 @@ public class MerchantUtil {
                     }
                 }
 
-                Bukkit.broadcastMessage(message);
+                switch(SmileyPlayerTrader.getInstance().getConfiguration().getAutoThanksMessageTarget()){
+                    case EVERYONE:
+                        Bukkit.broadcastMessage(message);
+                        break;
+                    case CUSTOMER:
+                        customer.sendMessage(message);
+                        break;
+                    case MERCHANT:
+                        if(merchant.isOnline())
+                            //noinspection ConstantConditions
+                            merchant.getPlayer().sendMessage(message);
+                        break;
+                    case INVOLVED:
+                        customer.sendMessage(message);
+                        if(merchant.isOnline())
+                            //noinspection ConstantConditions
+                            merchant.getPlayer().sendMessage(message);
+                        break;
+                }
         }
     }
 
@@ -179,6 +197,13 @@ public class MerchantUtil {
             while (set.next()) {
                 if(!set.getBoolean("enabled"))
                     continue;
+
+                // Purchase Limit Check
+                int purchaseLimit = set.getInt("purchase_limit");
+                int purchaseCount = set.getInt("purchase_count");
+                if(purchaseLimit != -1 && purchaseCount >= purchaseLimit)
+                    continue;
+
                 byte[] productb = set.getBytes("product");
                 ItemStack is = null;
                 if(productb != null) {
