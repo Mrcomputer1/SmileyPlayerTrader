@@ -215,5 +215,6 @@
   "&cReset Purchase Limit to Disabled": "&cReset Purchase Limit to Disabled",
   "&cReset Purchase Count": "&cReset Purchase Count",
   "&ePurchase Limit": "&ePurchase Limit",
-  "&bPurchase Limit: %0%": "&bPurchase Limit: %0%"
+  "&bPurchase Limit: %0%": "&bPurchase Limit: %0%",
+  "&eProduct Settings": "&eProduct Settings"
 }
