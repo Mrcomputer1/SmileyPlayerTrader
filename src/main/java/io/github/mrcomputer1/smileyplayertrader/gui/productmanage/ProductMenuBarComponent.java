@@ -140,7 +140,7 @@ public class ProductMenuBarComponent extends GUIComponent {
         }else if(x == 4 && this.hideOnOutOfStock != null){ // Out of stock behaviour
             this.state.hideOnOutOfStock = !this.state.hideOnOutOfStock;
             this.updateHideOnOutOfStock();
-            this.inventory.setItem(GUI.toSlot(3, this.y), this.hideOnOutOfStock);
+            this.inventory.setItem(GUI.toSlot(4, this.y), this.hideOnOutOfStock);
         }
         return false;
     }
