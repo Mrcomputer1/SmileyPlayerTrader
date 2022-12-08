@@ -81,10 +81,16 @@ public class VersionSupport {
                 MCVersion1_19.class
         );
 
-        // 1.19.1
+        // 1.19.1 - 1.19.2
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.19(\\.[1-9])?-").matcher(Bukkit.getBukkitVersion()).find(), // 1-0 in case further 1.19 versions are released
+                () -> Pattern.compile("^1\\.19\\.[12]-").matcher(Bukkit.getBukkitVersion()).find(),
                 MCVersion1_19_1.class
+        );
+
+        // 1.19.3
+        registerSupportedVersion(
+                () -> Pattern.compile("^1\\.19\\.[3-9]-").matcher(Bukkit.getBukkitVersion()).find(),
+                MCVersion1_19_R2.class
         );
     }
 
