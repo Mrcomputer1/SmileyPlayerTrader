@@ -1,8 +1,6 @@
 package io.github.mrcomputer1.smileyplayertrader;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import org.bukkit.Bukkit;
 
@@ -41,10 +39,14 @@ public class UpdateChecker {
                     if(!pluginVersion.contains("SNAPSHOT")){ // Ignore development versions
                         String latest = version.getAsJsonPrimitive("latest").getAsString();
                         if(!pluginVersion.equalsIgnoreCase(latest)){
-                            SmileyPlayerTrader.getInstance().getLogger().warning("Outdated Plugin! Latest version is " + latest + ".");
-                            Bukkit.broadcast(I18N.translate("&e[Smiley Player Trader] Plugin is outdated! Latest version is %0%. It is recommended to download the update.", latest), "smileyplayertrader.admin");
-                            isOutdated = true;
-                            upToDateVersion = latest;
+                            if(!this.isLanguageOnlyUpdate(obj, pluginVersion, SmileyPlayerTrader.getInstance().getConfiguration().getCurrentLanguage())) {
+                                SmileyPlayerTrader.getInstance().getLogger().warning("Outdated Plugin! Latest version is " + latest + ".");
+                                Bukkit.broadcast(I18N.translate("&e[Smiley Player Trader] Plugin is outdated! Latest version is %0%. It is recommended to download the update.", latest), "smileyplayertrader.admin");
+                                isOutdated = true;
+                                upToDateVersion = latest;
+                            }else{
+                                SmileyPlayerTrader.getInstance().getLogger().info("Plugin is up to date. Note: A newer version containing only translation updates that do not affect your current language is available.");
+                            }
                         }else{
                             SmileyPlayerTrader.getInstance().getLogger().info("Plugin is up to date.");
                         }
@@ -60,6 +62,37 @@ public class UpdateChecker {
             failed = true;
         }
 
+    }
+
+    private boolean isLanguageOnlyUpdate(JsonObject json, String currentVersion, String activeLanguage){
+        if(!json.has("_languageOverrides"))
+            return false;
+        JsonObject languageOverrides = json.getAsJsonObject("_languageOverrides");
+
+        if(languageOverrides.has(currentVersion)){
+            JsonObject override = languageOverrides.getAsJsonObject(currentVersion);
+            if(!override.has("languages"))
+                return false;
+            JsonArray languages = override.getAsJsonArray("languages");
+
+            for(int i = 0; i < languages.size(); i++){
+                JsonElement e = languages.get(i);
+                if(!e.isJsonPrimitive())
+                    continue;
+                if(!e.getAsJsonPrimitive().isString())
+                    continue;
+
+                // If the current language is listed, recommend the update.
+                if(e.getAsString().equalsIgnoreCase(activeLanguage))
+                    return false;
+            }
+
+            // If the current language wasn't found, don't recommend the update.
+            return true;
+        }
+
+        // If the current version has no language overrides, it should be recommended.
+        return false;
     }
 
 }
