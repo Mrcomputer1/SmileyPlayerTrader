@@ -6,7 +6,7 @@
 
     <groupId>io.github.mrcomputer1.smileyplayertrader</groupId>
     <artifactId>SmileyPlayerTrader</artifactId>
-    <version>1.6.2</version>
+    <version>1.6.2-SNAPSHOT</version>
     <build>
         <plugins>
             <plugin>
