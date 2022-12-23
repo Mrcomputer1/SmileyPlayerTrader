@@ -200,7 +200,7 @@ public class GUIProductList extends GUI {
                 if(set.next()) {
                     if(set.getInt("stored_product") > 0 || set.getInt("stored_cost") > 0 || set.getInt("stored_cost2") > 0){
                         this.getPlayer().sendMessage(I18N.translate("&cYou must withdraw all stored product and earnings before deleting the product."));
-                        return true;
+                        return false;
                     }
                     GUIManager.getInstance().openGui(this.getPlayer(), new GUIDeleteProduct(id, this.page, this.target, this.isMine));
                 }
