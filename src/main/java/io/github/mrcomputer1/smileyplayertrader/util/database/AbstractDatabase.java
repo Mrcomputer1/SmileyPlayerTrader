@@ -34,8 +34,7 @@ public abstract class AbstractDatabase {
     // The last FIVE versions will be upgradable. For example if you are on version 2 and using a version 1 database, that will upgrade.
     // However, if you are on version 6 and using a version 1 database, that will not upgrade and the plugin will not load.
     public void upgrade(){
-        ResultSet set = get("SELECT * FROM " + this.getDatabasePrefix() + "meta");
-        try {
+        try(ResultSet set = get("SELECT * FROM " + this.getDatabasePrefix() + "meta")) {
             if (set.next()) {
                 int ver = set.getInt("sptversion");
                 if(ver < dbVersion){ // if the db version is older than the supported db version

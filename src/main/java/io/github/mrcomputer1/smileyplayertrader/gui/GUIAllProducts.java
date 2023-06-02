@@ -155,8 +155,7 @@ public class GUIAllProducts extends GUI {
         int id = itemStack.getItemMeta().getPersistentDataContainer().get(PRODUCT_ID_KEY, PersistentDataType.INTEGER);
 
         // Open Purchase UI
-        ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id);
-        try {
+        try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)) {
             if(set.next()){
                 OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(set.getString("merchant")));
 
