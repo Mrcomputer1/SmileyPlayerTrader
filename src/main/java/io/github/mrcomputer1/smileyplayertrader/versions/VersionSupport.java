@@ -95,8 +95,14 @@ public class VersionSupport {
 
         // 1.19.4
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.19\\.[4-9]-").matcher(Bukkit.getBukkitVersion()).find(),
+                () -> Pattern.compile("^1\\.19\\.4-").matcher(Bukkit.getBukkitVersion()).find(),
                 MCVersion1_19_R3.class
+        );
+
+        // 1.20
+        registerSupportedVersion(
+                () -> Pattern.compile("^1\\.20(\\.[1-9])?-").matcher(Bukkit.getBukkitVersion()).find(),
+                MCVersion1_20.class
         );
     }
 
