@@ -8,6 +8,8 @@ authors:
 main: io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader
 softdepend:
   - Vault # for offline permissions checking
+  - Geyser-Spigot # for better experience on bedrock
+  - floodgate # for better experience on bedrock
 commands:
   smileyplayertrader:
     description: "Smiley Player Trader Command"

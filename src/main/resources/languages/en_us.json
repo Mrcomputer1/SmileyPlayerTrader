@@ -1,5 +1,5 @@
 {
-  "$$version$$": 10,
+  "$$version$$": 11,
   "&e%0% is now trading with you.": "&e%0% is now trading with you.",
   "&2Villager Store: ": "&2Villager Store: ",
   "&aThanks for your purchase, %0%": "&aThanks for your purchase, %0%",
@@ -216,5 +216,8 @@
   "&cReset Purchase Count": "&cReset Purchase Count",
   "&ePurchase Limit": "&ePurchase Limit",
   "&bPurchase Limit: %0%": "&bPurchase Limit: %0%",
-  "&eProduct Settings": "&eProduct Settings"
+  "&eProduct Settings": "&eProduct Settings",
+  "&aSecondary cost removed!": "&aSecondary cost removed!",
+  "Something went wrong!": "Something went wrong!",
+  "OK": "OK"
 }
