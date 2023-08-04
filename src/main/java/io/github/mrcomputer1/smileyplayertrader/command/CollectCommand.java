@@ -83,7 +83,11 @@ public class CollectCommand implements ICommand{
                 throw new RuntimeException(e);
             }
         }else{
-            ItemUtil.collectEarnings(p);
+            if(ItemUtil.collectEarnings(p)){
+                p.sendMessage(I18N.translate("&aCollected earnings."));
+            }else{
+                p.sendMessage(I18N.translate("&cYou have no earnings to collect."));
+            }
         }
     }
 }

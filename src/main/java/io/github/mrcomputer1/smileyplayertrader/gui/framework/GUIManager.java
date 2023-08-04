@@ -1,7 +1,10 @@
 package io.github.mrcomputer1.smileyplayertrader.gui.framework;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
+import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
+import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +23,19 @@ public class GUIManager implements Listener {
 
     public static GUIManager getInstance(){
         return SmileyPlayerTrader.getInstance().getGuiManager();
+    }
+
+    public static void sendErrorMessage(HumanEntity human, String message){
+        Player player = (Player) human;
+
+        if(GeyserUtil.isBedrockPlayer(player)){
+            player.closeInventory();
+            Bukkit.getScheduler().scheduleSyncDelayedTask(SmileyPlayerTrader.getInstance(), () -> {
+                GeyserUtil.showSimpleForm(player, I18N.translate("Something went wrong!"), message);
+            }, 20L);
+        }else{
+            player.sendMessage(message);
+        }
     }
 
     public void openGui(Player player, GUI gui){

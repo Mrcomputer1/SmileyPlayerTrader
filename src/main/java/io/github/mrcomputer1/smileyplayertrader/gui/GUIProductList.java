@@ -1,6 +1,7 @@
 package io.github.mrcomputer1.smileyplayertrader.gui;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
+import io.github.mrcomputer1.smileyplayertrader.gui.bedrock.BedrockGUIEditProduct;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUI;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.component.BackgroundComponent;
@@ -8,6 +9,7 @@ import io.github.mrcomputer1.smileyplayertrader.gui.framework.component.ButtonCo
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.component.ItemGridComponent;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.component.LabelComponent;
 import io.github.mrcomputer1.smileyplayertrader.gui.productmanage.*;
+import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
@@ -16,6 +18,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -36,13 +39,16 @@ public class GUIProductList extends GUI {
 
     private final ButtonComponent collectEarningsBtn;
 
-    public GUIProductList(OfflinePlayer target, int page, boolean isMine) {
+    public GUIProductList(Player uiPlayer, OfflinePlayer target, int page, boolean isMine) {
         super(
                 isMine
                         ? I18N.translate("&2My Products (Page %0%)", page + 1)
                         : I18N.translate("&2%0%'s Products (Page %1%)", target.getName(), page + 1),
                 6
         );
+
+        if(GeyserUtil.isBedrockPlayer(uiPlayer))
+            this.setBackgroundFillItem(GUI.BACKGROUND_BEDROCK);
 
         this.target = target;
         this.page = page;
@@ -57,7 +63,7 @@ public class GUIProductList extends GUI {
         // Item Grid
         ItemGridComponent itemGrid = new ItemGridComponent(1, 1, 7, 4);
         itemGrid.setOnClickEvent(this::onProductClick);
-        this.loadItems(itemGrid);
+        this.loadItems(itemGrid, uiPlayer);
         this.addChild(itemGrid);
 
         // Collect Earnings Button
@@ -126,7 +132,7 @@ public class GUIProductList extends GUI {
         this.addChild(createBtn);
     }
 
-    private void loadItems(ItemGridComponent grid){
+    private void loadItems(ItemGridComponent grid, Player uiPlayer){
         try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(
                 StatementHandler.StatementType.FIND_PRODUCTS_IN_PAGES, this.target.getUniqueId().toString(), 28, this.page * 28
         )){
@@ -159,17 +165,19 @@ public class GUIProductList extends GUI {
                 lore.add(I18N.translate("&eProduct ID: ") + set.getInt("id"));
                 lore.add(I18N.translate("&bClick to &lEdit"));
 
-                if(set.getBoolean("enabled") && set.getBoolean("available")){
-                    lore.add(I18N.translate("&bRight Click to &lDisable/Hide"));
-                }else{
-                    lore.add(I18N.translate("&bRight Click to &lEnable/Show"));
-                }
+                if(!GeyserUtil.isBedrockPlayer(uiPlayer)) {
+                    if (set.getBoolean("enabled") && set.getBoolean("available")) {
+                        lore.add(I18N.translate("&bRight Click to &lDisable/Hide"));
+                    } else {
+                        lore.add(I18N.translate("&bRight Click to &lEnable/Show"));
+                    }
 
-                if(SmileyPlayerTrader.getInstance().getConfiguration().getItemStorageEnabled()){
-                    lore.add(I18N.translate("&bShift Click to &lManage Stored Items"));
-                }
+                    if (SmileyPlayerTrader.getInstance().getConfiguration().getItemStorageEnabled()) {
+                        lore.add(I18N.translate("&bShift Click to &lManage Stored Items"));
+                    }
 
-                lore.add(I18N.translate("&bDrop to &lDelete"));
+                    lore.add(I18N.translate("&bDrop to &lDelete"));
+                }
 
                 // Complete Item
                 im.setLore(lore);
@@ -190,16 +198,27 @@ public class GUIProductList extends GUI {
 
         if(clickType == ClickType.LEFT){
 
-            // Edit
-            GUIManager.getInstance().openGui(this.getPlayer(), new GUIProduct(new ProductState(this.page, this.target, this.isMine, id)));
+            // Edit or Bedrock Multi Choice
+            ProductState state = new ProductState(this.page, this.target, this.isMine, id);
+            if(GeyserUtil.isBedrockPlayer(this.getPlayer())) {
+                // Bedrock Multi Choice
+                this.getPlayer().closeInventory();
+                GeyserUtil.showFormDelayed(this.getPlayer(), new BedrockGUIEditProduct(this.getPlayer(), state));
+            }else{
+                // Edit
+                GUIManager.getInstance().openGui(this.getPlayer(), new GUIProduct(this.getPlayer(), state));
+            }
 
         }else if(clickType == ClickType.DROP){
+
+            if(GeyserUtil.isBedrockPlayer(this.getPlayer()))
+                return false;
 
             // Delete
             try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)){
                 if(set.next()) {
                     if(set.getInt("stored_product") > 0 || set.getInt("stored_cost") > 0 || set.getInt("stored_cost2") > 0){
-                        this.getPlayer().sendMessage(I18N.translate("&cYou must withdraw all stored product and earnings before deleting the product."));
+                        GUIManager.sendErrorMessage(this.getPlayer(), I18N.translate("&cYou must withdraw all stored product and earnings before deleting the product."));
                         return false;
                     }
                     GUIManager.getInstance().openGui(this.getPlayer(), new GUIDeleteProduct(id, this.page, this.target, this.isMine));
@@ -209,6 +228,9 @@ public class GUIProductList extends GUI {
             }
 
         }else if(clickType == ClickType.RIGHT){
+
+            if(GeyserUtil.isBedrockPlayer(this.getPlayer()))
+                return false;
 
             // Enable/Disable/Hide
             try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_ENABLED, id)){
@@ -222,6 +244,9 @@ public class GUIProductList extends GUI {
 
         }else if(clickType == ClickType.SHIFT_LEFT || clickType == ClickType.SHIFT_RIGHT){
 
+            if(GeyserUtil.isBedrockPlayer(this.getPlayer()))
+                return false;
+
             // Manage Stored Items
             try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, id)){
                 if(set.next()) {
@@ -233,7 +258,7 @@ public class GUIProductList extends GUI {
                     }
                     ItemStack productStack = MerchantUtil.buildItem(productBytes);
 
-                    GUIManager.getInstance().openGui(this.getPlayer(), new GUIItemStorage(id, stored, productStack, this.page, this.target, this.isMine));
+                    GUIManager.getInstance().openGui(this.getPlayer(), new GUIItemStorage(this.getPlayer(), id, stored, productStack, this.page, this.target, this.isMine));
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -245,22 +270,28 @@ public class GUIProductList extends GUI {
     }
 
     private boolean onCreateClick(ClickType clickType) {
-        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProduct(new ProductState(this.page, this.target, this.isMine)));
+        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProduct(this.getPlayer(), new ProductState(this.page, this.target, this.isMine)));
         return false;
     }
 
     private boolean onNextClick(ClickType clickType) {
-        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.target, this.page + 1, this.isMine));
+        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.getPlayer(), this.target, this.page + 1, this.isMine));
         return false;
     }
 
     private boolean onPreviousClick(ClickType clickType) {
-        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.target, this.page - 1, this.isMine));
+        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.getPlayer(), this.target, this.page - 1, this.isMine));
         return false;
     }
 
     private boolean onCollectEarningsClick(ClickType clickType){
-        ItemUtil.collectEarnings(this.getPlayer());
+        if(ItemUtil.collectEarnings(this.getPlayer())){
+            if(!GeyserUtil.isBedrockPlayer(this.getPlayer()))
+                this.getPlayer().sendMessage(I18N.translate("&aCollected earnings."));
+        }else{
+            GUIManager.sendErrorMessage(this.getPlayer(), I18N.translate("&cYou have no earnings to collect."));
+        }
+
         this.collectEarningsBtn.getLore().clear();
         this.refreshComponent(this.collectEarningsBtn);
         return false;

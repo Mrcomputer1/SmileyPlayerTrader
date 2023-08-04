@@ -1,5 +1,6 @@
 package io.github.mrcomputer1.smileyplayertrader;
 
+import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
 import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
@@ -10,7 +11,6 @@ import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -54,19 +54,6 @@ public class EventListener implements Listener {
         }
     }
 
-    private void sendErrorMessage(HumanEntity human, String message){
-        Player player = (Player) human;
-
-        if(GeyserUtil.isBedrockPlayer(player)){
-            player.closeInventory();
-            Bukkit.getScheduler().scheduleSyncDelayedTask(SmileyPlayerTrader.getInstance(), () -> {
-                GeyserUtil.showSimpleForm(player, I18N.translate("Something went wrong!"), message);
-            }, 20L);
-        }else{
-            player.sendMessage(message);
-        }
-    }
-
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e){
         if(e.getView().getType() == InventoryType.MERCHANT){
@@ -81,7 +68,7 @@ public class EventListener implements Listener {
                 OfflinePlayer store = Bukkit.getOfflinePlayer(e.getView().getTitle().replace(I18N.translate("&2Villager Store: "), ""));
                 if(!store.isOnline() && !StockLocations.canTradeWithPlayer(store)){
                     e.setCancelled(true);
-                    this.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cYou cannot trade with offline players."));
+                    GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cYou cannot trade with offline players."));
                     return;
                 }
                 if(mi.getSelectedRecipe() == null){
@@ -95,7 +82,7 @@ public class EventListener implements Listener {
                         // Check hidden/disabled
                         if(!set.getBoolean("enabled") || !set.getBoolean("available")){
                             e.setCancelled(true);
-                            this.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product is no longer for sale."));
+                            GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product is no longer for sale."));
                             return;
                         }
 
@@ -103,13 +90,13 @@ public class EventListener implements Listener {
                         byte[] productBytes = set.getBytes("product");
                         if(productBytes == null){
                             e.setCancelled(true);
-                            this.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
+                            GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
                             return;
                         }
                         ItemStack product = VersionSupport.byteArrayToItemStack(productBytes);
                         if(product == null || !product.equals(mi.getSelectedRecipe().getResult())){
                             e.setCancelled(true);
-                            this.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
+                            GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
                             return;
                         }
 
@@ -117,14 +104,14 @@ public class EventListener implements Listener {
                         byte[] cost1Bytes = set.getBytes("cost1");
                         if(cost1Bytes == null){
                             e.setCancelled(true);
-                            this.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
+                            GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
                             return;
                         }
                         ItemStack cost1 = VersionSupport.byteArrayToItemStack(cost1Bytes);
                         ItemStack cost1InSlot = mi.getSelectedRecipe().getIngredients().get(0);
                         if(cost1 == null || !cost1.equals(cost1InSlot)){
                             e.setCancelled(true);
-                            this.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
+                            GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
                             return;
                         }
 
@@ -132,7 +119,7 @@ public class EventListener implements Listener {
                         byte[] cost2Bytes = set.getBytes("cost2");
                         if(cost2Bytes == null && mi.getSelectedRecipe().getIngredients().size() >= 2){ // if ingredients >= 2, cost2 can't have been null
                             e.setCancelled(true);
-                            this.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
+                            GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
                             return;
                         }
                         if(cost2Bytes != null){
@@ -141,7 +128,7 @@ public class EventListener implements Listener {
                                     mi.getSelectedRecipe().getIngredients().get(1) : null;
                             if(cost2 == null || !cost2.equals(cost2InSlot)){
                                 e.setCancelled(true);
-                                this.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
+                                GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
                                 return;
                             }
                         }
@@ -150,7 +137,7 @@ public class EventListener implements Listener {
                         int discount = -set.getInt("special_price");
                         if(discount != VersionSupport.getSpecialCountForRecipe(mi)){
                             e.setCancelled(true);
-                            this.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
+                            GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
                             return;
                         }
 
@@ -159,12 +146,12 @@ public class EventListener implements Listener {
                         int purchaseCount = set.getInt("purchase_count");
                         if(purchaseLimit != -1 && purchaseCount >= purchaseLimit){
                             e.setCancelled(true);
-                            this.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product is no longer for sale."));
+                            GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product is no longer for sale."));
                             return;
                         }
                     } else {
                         e.setCancelled(true);
-                        this.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product is no longer for sale."));
+                        GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product is no longer for sale."));
                         return;
                     }
                 } catch (SQLException | InvocationTargetException ex) {
@@ -231,7 +218,7 @@ public class EventListener implements Listener {
                     }
                 }else{
                     e.setCancelled(true);
-                    this.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis item is out of stock!"));
+                    GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis item is out of stock!"));
                 }
             } else if (e.getView().getTitle().startsWith(I18N.translate("&2Preview Store: ")) && e.getRawSlot() == 2){
                 e.setCancelled(true);
