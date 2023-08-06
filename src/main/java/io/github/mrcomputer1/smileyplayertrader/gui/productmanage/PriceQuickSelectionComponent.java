@@ -6,6 +6,7 @@ import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUI;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIComponent;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.component.SlotComponent;
+import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -32,13 +33,25 @@ public class PriceQuickSelectionComponent extends GUIComponent {
             I18N.translate("&eShift Right Click to decrease value")
     );
 
+    private static final ItemStack MORE_ITEMS_BEDROCK_BTN = GUI.createItemWithLoreAndModify(
+            Material.BEACON, 1, I18N.translate("&bMore Items..."),
+            null, (meta) -> {
+                meta.addEnchant(Enchantment.DURABILITY, 1, true);
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+    );
+
     private final List<ItemStack> itemStacks = new ArrayList<>();
     private final SlotComponent priceSlot;
     private final ProductState state;
     private final boolean isPrimary;
 
-    public PriceQuickSelectionComponent(int x, int y, SlotComponent priceSlot, ProductState state, boolean isPrimary) {
+    private final Player uiPlayer;
+
+    public PriceQuickSelectionComponent(Player uiPlayer, int x, int y, SlotComponent priceSlot, ProductState state, boolean isPrimary) {
         super(x, y, 7, 1);
+
+        this.uiPlayer = uiPlayer;
 
         this.priceSlot = priceSlot;
 
@@ -55,7 +68,9 @@ public class PriceQuickSelectionComponent extends GUIComponent {
                 this.itemStacks.add(stack);
         }
 
-        this.itemStacks.add(MORE_ITEMS_BTN);
+        if(GeyserUtil.isBedrockPlayer(this.uiPlayer)){
+            this.itemStacks.add(MORE_ITEMS_BEDROCK_BTN);
+        }else this.itemStacks.add(MORE_ITEMS_BTN);
 
         this.state = state;
         this.isPrimary = isPrimary;
@@ -65,24 +80,26 @@ public class PriceQuickSelectionComponent extends GUIComponent {
         if(is == null)
             return null;
 
-        ItemMeta im = is.getItemMeta();
-        assert im != null;
+        if(!GeyserUtil.isBedrockPlayer(this.uiPlayer)) {
+            ItemMeta im = is.getItemMeta();
+            assert im != null;
 
-        if(im.hasLore()){
-            List<String> lore = im.getLore();
-            assert lore != null;
-            lore.add("");
-            lore.add(I18N.translate("&eClick to increase value"));
-            lore.add(I18N.translate("&eRight Click to decrease value"));
-            im.setLore(lore);
-        }else{
-            im.setLore(Arrays.asList(
-                    I18N.translate("&eClick to increase value"),
-                    I18N.translate("&eRight Click to decrease value")
-            ));
+            if (im.hasLore()) {
+                List<String> lore = im.getLore();
+                assert lore != null;
+                lore.add("");
+                lore.add(I18N.translate("&eClick to increase value"));
+                lore.add(I18N.translate("&eRight Click to decrease value"));
+                im.setLore(lore);
+            } else {
+                im.setLore(Arrays.asList(
+                        I18N.translate("&eClick to increase value"),
+                        I18N.translate("&eRight Click to decrease value")
+                ));
+            }
+
+            is.setItemMeta(im);
         }
-
-        is.setItemMeta(im);
 
         return is;
     }
@@ -91,19 +108,22 @@ public class PriceQuickSelectionComponent extends GUIComponent {
         ItemMeta im = itemStack.getItemMeta();
         assert im != null;
 
-        List<String> lore = im.getLore();
-        if(lore.size() == 2){
-            im.setLore(new ArrayList<>());
-        }else{
-            // Remove three items from the end of "lore"
-            lore.remove(lore.size() - 1);
-            lore.remove(lore.size() - 1);
-            lore.remove(lore.size() - 1);
-            im.setLore(lore);
+        if(!GeyserUtil.isBedrockPlayer(this.uiPlayer)) {
+            List<String> lore = im.getLore();
+            if (lore.size() == 2) {
+                im.setLore(new ArrayList<>());
+            } else {
+                // Remove three items from the end of "lore"
+                lore.remove(lore.size() - 1);
+                lore.remove(lore.size() - 1);
+                lore.remove(lore.size() - 1);
+                im.setLore(lore);
+            }
         }
 
         ItemStack is = itemStack.clone();
         is.setItemMeta(im);
+
         return is;
     }
 
@@ -157,23 +177,24 @@ public class PriceQuickSelectionComponent extends GUIComponent {
                 throw new IllegalArgumentException("Unsupported amount of items");
         }
 
+        ItemStack background = GeyserUtil.isBedrockPlayer(this.uiPlayer) ? GUI.BACKGROUND_BEDROCK : GUI.BACKGROUND;
         for(int i = this.y * 9; i < (this.y + 1) * 9; i++){
             if(inventory.getItem(i) == null){
-                inventory.setItem(i, GUI.BACKGROUND.clone());
+                inventory.setItem(i, background.clone());
             }
         }
     }
 
     @Override
     public boolean onClick(ClickType type, int x, int y, Player player, ItemStack clickedStack) {
-        if(clickedStack.equals(GUI.BACKGROUND))
+        if(clickedStack.equals(GUI.BACKGROUND) || clickedStack.equals(GUI.BACKGROUND_BEDROCK))
             return false;
 
         // More Items...
-        if(clickedStack.equals(MORE_ITEMS_BTN)){
+        if(clickedStack.equals(MORE_ITEMS_BTN) || clickedStack.equals(MORE_ITEMS_BEDROCK_BTN)){
             if(type == ClickType.LEFT){
                 GUIManager.getInstance().openGui(player, new GUIItemSelector(
-                        this.state, this.isPrimary
+                        this.uiPlayer, this.state, this.isPrimary
                 ));
             }else if(type == ClickType.SHIFT_LEFT){
                 // If this is a custom item, you can't do this.

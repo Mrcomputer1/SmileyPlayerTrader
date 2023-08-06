@@ -56,7 +56,7 @@ public class CommandSmileyPlayerTrader implements TabExecutor {
                     sender.sendMessage(I18N.translate("&cYou must be running this command from a player."));
                     return true;
                 }
-                GUIManager.getInstance().openGui((Player) sender, new GUIProductList((OfflinePlayer) sender, 0, true));
+                GUIManager.getInstance().openGui((Player) sender, new GUIProductList((Player) sender, (OfflinePlayer) sender, 0, true));
             }else {
                 sender.sendMessage(I18N.translate("&bSmiley Player Trader by Mrcomputer1 and Semisol. Version %0%.",
                         SmileyPlayerTrader.getInstance().getDescription().getVersion()));

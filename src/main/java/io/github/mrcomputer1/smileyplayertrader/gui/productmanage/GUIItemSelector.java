@@ -5,9 +5,11 @@ import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUI;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.component.ButtonComponent;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.component.ItemGridComponent;
+import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -34,12 +36,15 @@ public class GUIItemSelector extends GUI {
     private int filterButtonIndex = 1;
     private final List<ItemStack> itemStacks;
 
-    public GUIItemSelector(ProductState state, boolean isPrimary) {
-        this(state, isPrimary, 1, EnumItemSelectorFilter.ALL, null);
+    public GUIItemSelector(Player uiPlayer, ProductState state, boolean isPrimary) {
+        this(uiPlayer, state, isPrimary, 1, EnumItemSelectorFilter.ALL, null);
     }
 
-    public GUIItemSelector(ProductState state, boolean isPrimary, int page, EnumItemSelectorFilter filter, List<ItemStack> itemStacks){
+    public GUIItemSelector(Player uiPlayer, ProductState state, boolean isPrimary, int page, EnumItemSelectorFilter filter, List<ItemStack> itemStacks){
         super(I18N.translate("&2Select an Item"), 6);
+
+        if(GeyserUtil.isBedrockPlayer(uiPlayer))
+            this.setBackgroundFillItem(GUI.BACKGROUND_BEDROCK);
 
         this.state = state;
         this.isPrimary = isPrimary;
@@ -81,14 +86,14 @@ public class GUIItemSelector extends GUI {
 
     private boolean onCancelClick(ClickType clickType) {
         GUIManager.getInstance().openGui(this.getPlayer(), new GUISetCost(
-                this.state, this.isPrimary
+                this.getPlayer(), this.state, this.isPrimary
         ));
         return false;
     }
 
     private boolean onNextClick(ClickType clickType) {
         GUIManager.getInstance().openGui(this.getPlayer(), new GUIItemSelector(
-                this.state, this.isPrimary, this.page + 1, this.filter, this.itemStacks
+                this.getPlayer(), this.state, this.isPrimary, this.page + 1, this.filter, this.itemStacks
         ));
         return false;
     }
@@ -97,7 +102,7 @@ public class GUIItemSelector extends GUI {
         if(this.page - 1 <= 0)
             return false;
         GUIManager.getInstance().openGui(this.getPlayer(), new GUIItemSelector(
-                this.state, this.isPrimary, this.page - 1, this.filter, this.itemStacks
+                this.getPlayer(), this.state, this.isPrimary, this.page - 1, this.filter, this.itemStacks
         ));
         return false;
     }
@@ -176,7 +181,7 @@ public class GUIItemSelector extends GUI {
             this.state.costStack2 = itemStack.clone();
         }
         GUIManager.getInstance().openGui(this.getPlayer(), new GUISetCost(
-                this.state, this.isPrimary
+                this.getPlayer(), this.state, this.isPrimary
         ));
         return false;
     }
@@ -201,7 +206,7 @@ public class GUIItemSelector extends GUI {
 
         btn.setOnClickEvent((clickType) -> {
             GUIManager.getInstance().openGui(this.getPlayer(), new GUIItemSelector(
-                    this.state, this.isPrimary, 1, filter, null
+                    this.getPlayer(), this.state, this.isPrimary, 1, filter, null
             ));
             return false;
         });

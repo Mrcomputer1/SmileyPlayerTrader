@@ -1,7 +1,8 @@
 package io.github.mrcomputer1.smileyplayertrader.gui.framework;
 
+import io.github.mrcomputer1.smileyplayertrader.gui.framework.bedrock.BedrockCustomGUI;
+import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public abstract class GUI {
@@ -73,6 +73,7 @@ public abstract class GUI {
     }
 
     public static final ItemStack BACKGROUND = GUI.createItem(Material.BLACK_STAINED_GLASS_PANE, 1, ChatColor.RESET.toString());
+    public static final ItemStack BACKGROUND_BEDROCK = GUI.createItem(Material.IRON_BARS, 1, ChatColor.RESET.toString());
     //</editor-fold>
 
     //<editor-fold desc="GUI Initial State">
@@ -87,6 +88,7 @@ public abstract class GUI {
     private final List<GUIComponent> children = new ArrayList<>();
     private final Map<Integer, GUIComponent> usedSlots = new HashMap<>();
 
+    private ItemStack backgroundFillItem = GUI.BACKGROUND;
     private boolean doBackgroundFill = true;
     private boolean allowInteractingWithPlayerInventory = false;
     //</editor-fold>
@@ -119,6 +121,10 @@ public abstract class GUI {
     //<editor-fold desc="Properties">
     public final void setDoBackgroundFill(boolean doBackgroundFill){
         this.doBackgroundFill = doBackgroundFill;
+    }
+
+    public final void setBackgroundFillItem(ItemStack backgroundFillItem) {
+        this.backgroundFillItem = backgroundFillItem;
     }
 
     public final void setAllowInteractingWithPlayerInventory(boolean allowInteractingWithPlayerInventory){
@@ -161,7 +167,7 @@ public abstract class GUI {
         if(this.doBackgroundFill){
             for(int i = 0; i < this.rows * 9; i++){
                 if(!this.usedSlots.containsKey(i))
-                    this.inventory.setItem(i, GUI.BACKGROUND.clone());
+                    this.inventory.setItem(i, this.backgroundFillItem.clone());
             }
         }
     }

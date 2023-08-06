@@ -59,13 +59,13 @@ public class GUIDeleteProduct extends GUI {
     }
 
     private boolean onDontDeleteClick(ClickType clickType) {
-        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.target, this.page, this.isMine));
+        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.getPlayer(), this.target, this.page, this.isMine));
         return false;
     }
 
     private boolean onDeleteClick(ClickType clickType) {
         SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.DELETE_PRODUCT, this.id);
-        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.target, this.page, this.isMine));
+        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.getPlayer(), this.target, this.page, this.isMine));
         return false;
     }
 

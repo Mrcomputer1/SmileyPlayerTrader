@@ -6,11 +6,13 @@ import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUI;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.component.ButtonComponent;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.component.LabelComponent;
+import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,8 +32,11 @@ public class GUIItemStorage extends GUI {
 
     private final LabelComponent infoLabel;
 
-    public GUIItemStorage(int id, int storedProduct, ItemStack product, int page, OfflinePlayer target, boolean isMine) {
+    public GUIItemStorage(Player uiPlayer, int id, int storedProduct, ItemStack product, int page, OfflinePlayer target, boolean isMine) {
         super(I18N.translate("&2Manage Stored Items"), 6);
+
+        if(GeyserUtil.isBedrockPlayer(uiPlayer))
+            this.setBackgroundFillItem(GUI.BACKGROUND_BEDROCK);
 
         this.id = id;
         this.page = page;
@@ -45,7 +50,9 @@ public class GUIItemStorage extends GUI {
 
         // Info Label
         this.infoLabel = new LabelComponent(
-                4, 1, Material.YELLOW_STAINED_GLASS_PANE, 1,
+                4, 1,
+                GeyserUtil.isBedrockPlayer(uiPlayer) ? Material.CHEST_MINECART : Material.YELLOW_STAINED_GLASS_PANE,
+                1,
                 I18N.translate("&eStored Product: %0%", this.storedProduct),
                 I18N.translate("&eClick on the product in your inventory to store it.")
         );
@@ -67,7 +74,7 @@ public class GUIItemStorage extends GUI {
 
         // Withdraw All
         ButtonComponent withdrawAll = new ButtonComponent(
-                6, 3, Material.CHEST, 64, I18N.translate("&eWithdraw All")
+                6, 3, Material.CHEST, 64, I18N.translate("&eWithdraw ALL")
         );
         withdrawAll.setOnClickEvent(this::onWithdrawAllClick);
         this.addChild(withdrawAll);
@@ -90,7 +97,7 @@ public class GUIItemStorage extends GUI {
         }
 
         if(limit <= 0){
-            this.getPlayer().sendMessage(I18N.translate("&cYou do not have enough of that product."));
+            GUIManager.sendErrorMessage(this.getPlayer(), I18N.translate("&cYou do not have enough of that product."));
             return;
         }
 
@@ -115,7 +122,7 @@ public class GUIItemStorage extends GUI {
     }
 
     private boolean onOkClick(ClickType clickType) {
-        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.target, this.page, this.isMine));
+        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.getPlayer(), this.target, this.page, this.isMine));
         return false;
     }
 
@@ -129,7 +136,7 @@ public class GUIItemStorage extends GUI {
 
             int limit = SmileyPlayerTrader.getInstance().getConfiguration().getItemStorageProductStorageLimit();
             if(limit != -1 && this.storedProduct + count > limit){
-                this.getPlayer().sendMessage(I18N.translate("&cYou cannot store more than %0% of a product.", limit));
+                GUIManager.sendErrorMessage(this.getPlayer(), I18N.translate("&cYou cannot store more than %0% of a product.", limit));
                 return false;
             }
 

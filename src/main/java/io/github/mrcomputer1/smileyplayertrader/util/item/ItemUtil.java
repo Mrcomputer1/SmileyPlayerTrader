@@ -165,7 +165,7 @@ public class ItemUtil {
         return false;
     }
 
-    public static void collectEarnings(Player p){
+    public static boolean collectEarnings(Player p){
         int collected = 0;
         try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.FIND_PRODUCTS_WITH_EARNINGS, p.getUniqueId().toString())) {
             while (set.next()) {
@@ -199,11 +199,7 @@ public class ItemUtil {
                 SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_STORED_COST2, 0, set.getLong("id"));
             }
 
-            if(collected > 0) {
-                p.sendMessage(I18N.translate("&aCollected earnings."));
-            }else{
-                p.sendMessage(I18N.translate("&cYou have no earnings to collect."));
-            }
+            return collected > 0;
         }catch (SQLException | InvocationTargetException e){
             throw new RuntimeException(e);
         }

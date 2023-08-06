@@ -121,8 +121,10 @@ public class GUIPurchaseLimit extends GUI {
     }
 
     private boolean onCountReset(ClickType clickType){
-        SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.RESET_PURCHASE_COUNT, this.state.id);
-        this.getPlayer().sendMessage(I18N.translate("&aReset purchase count."));
+        if(!this.state.isNew) {
+            SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.RESET_PURCHASE_COUNT, this.state.id);
+            this.getPlayer().sendMessage(I18N.translate("&aReset purchase count."));
+        }
         return false;
     }
 

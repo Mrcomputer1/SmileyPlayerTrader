@@ -7,6 +7,7 @@ import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.component.ButtonComponent;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.component.LabelComponent;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.component.SlotComponent;
+import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
@@ -22,11 +23,14 @@ public class GUIProduct extends GUI {
 
     private final SlotComponent productSlot;
 
-    public GUIProduct(ProductState state) {
+    public GUIProduct(Player uiPlayer, ProductState state) {
         super(
                 state.isNew ? I18N.translate("&2Creating Product") : I18N.translate("&2Editing Product %0%", state.id),
                 6
         );
+
+        if(GeyserUtil.isBedrockPlayer(uiPlayer))
+            this.setBackgroundFillItem(GUI.BACKGROUND_BEDROCK);
 
         this.state = state;
 
@@ -43,7 +47,9 @@ public class GUIProduct extends GUI {
 
         // Product Slot
         this.addChild(new LabelComponent(
-                4, 1, Material.LIGHT_BLUE_STAINED_GLASS_PANE, 1,
+                4, 1,
+                GeyserUtil.isBedrockPlayer(uiPlayer) ? Material.OAK_SIGN : Material.LIGHT_BLUE_STAINED_GLASS_PANE,
+                1,
                 I18N.translate("&bInsert Product")
         ));
 
@@ -96,7 +102,7 @@ public class GUIProduct extends GUI {
     }
 
     private boolean onCancelClick(ClickType clickType) {
-        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.state.target, this.state.page, this.state.isMine));
+        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.getPlayer(), this.state.target, this.state.page, this.state.isMine));
         return false;
     }
 
@@ -136,7 +142,7 @@ public class GUIProduct extends GUI {
                 );
             }
 
-            GUIManager.getInstance().openGui(player, new GUIProductList(state.target, state.page, state.isMine));
+            GUIManager.getInstance().openGui(player, new GUIProductList(player, state.target, state.page, state.isMine));
 
         } catch (InvocationTargetException e) {
             throw new RuntimeException(e);
@@ -149,7 +155,7 @@ public class GUIProduct extends GUI {
             this.getPlayer().sendMessage(I18N.translate("&cYou must collect all earnings before changing the cost."));
             return false;
         }
-        GUIManager.getInstance().openGui(this.getPlayer(), new GUISetCost(this.state, true));
+        GUIManager.getInstance().openGui(this.getPlayer(), new GUISetCost(this.getPlayer(), this.state, true));
         return false;
     }
 
@@ -158,7 +164,7 @@ public class GUIProduct extends GUI {
             this.getPlayer().sendMessage(I18N.translate("&cYou must collect all earnings before changing the cost."));
             return false;
         }
-        GUIManager.getInstance().openGui(this.getPlayer(), new GUISetCost(this.state, false));
+        GUIManager.getInstance().openGui(this.getPlayer(), new GUISetCost(this.getPlayer(), this.state, false));
         return false;
     }
 

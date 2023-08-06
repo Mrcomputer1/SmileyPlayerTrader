@@ -82,7 +82,7 @@ public class GUIEnableDisableProduct extends GUI {
             // Don't Disable/Hide Button
             ButtonComponent dontDisableHideBtn = new ButtonComponent(
                     6, 4, Material.REDSTONE_BLOCK, 1,
-                    I18N.translate("&cDon't Enable/Show Product")
+                    I18N.translate("&cDon't Disable/Hide Product")
             );
             dontDisableHideBtn.setOnClickEvent(this::onCancelClick);
             this.addChild(dontDisableHideBtn);
@@ -91,24 +91,24 @@ public class GUIEnableDisableProduct extends GUI {
 
     private boolean onDisableClick(ClickType clickType) {
         SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.DISABLE_PRODUCT, this.id);
-        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.target, this.page, this.isMine));
+        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.getPlayer(), this.target, this.page, this.isMine));
         return false;
     }
 
     private boolean onHideClick(ClickType clickType) {
         SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.HIDE_PRODUCT, this.id);
-        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.target, this.page, this.isMine));
+        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.getPlayer(), this.target, this.page, this.isMine));
         return false;
     }
 
     private boolean onCancelClick(ClickType clickType) {
-        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.target, this.page, this.isMine));
+        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.getPlayer(), this.target, this.page, this.isMine));
         return false;
     }
 
     private boolean onEnableClick(ClickType clickType) {
         SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.ENABLE_PRODUCT, this.id);
-        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.target, this.page, this.isMine));
+        GUIManager.getInstance().openGui(this.getPlayer(), new GUIProductList(this.getPlayer(), this.target, this.page, this.isMine));
         return false;
     }
 

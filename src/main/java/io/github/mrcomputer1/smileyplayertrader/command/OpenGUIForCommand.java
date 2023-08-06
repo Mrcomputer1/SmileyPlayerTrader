@@ -32,6 +32,6 @@ public class OpenGUIForCommand implements ICommand{
             return;
         }
 
-        GUIManager.getInstance().openGui(op.getPlayer(), new GUIProductList(op, 0, true));
+        GUIManager.getInstance().openGui(op.getPlayer(), new GUIProductList(op.getPlayer(), op, 0, true));
     }
 }

@@ -1,9 +1,13 @@
 package io.github.mrcomputer1.smileyplayertrader.gui.productmanage;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
+import io.github.mrcomputer1.smileyplayertrader.gui.bedrock.BedrockGUIDiscount;
+import io.github.mrcomputer1.smileyplayertrader.gui.bedrock.BedrockGUIPriority;
+import io.github.mrcomputer1.smileyplayertrader.gui.bedrock.BedrockGUIPurchaseLimit;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUI;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIComponent;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
+import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -130,13 +134,28 @@ public class ProductMenuBarComponent extends GUIComponent {
     @Override
     public boolean onClick(ClickType type, int x, int y, Player player, ItemStack clickedStack) {
         if(x == 0){ // Product Settings
-            GUIManager.getInstance().openGui(player, new GUIProduct(this.state));
+            GUIManager.getInstance().openGui(player, new GUIProduct(player, this.state));
         }else if(x == 1){ // Priority
-            GUIManager.getInstance().openGui(player, new GUIPriority(this.state));
+            if(GeyserUtil.isBedrockPlayer(player)) {
+                player.closeInventory();
+                GeyserUtil.showFormDelayed(player, new BedrockGUIPriority(player, this.state));
+            }else{
+                GUIManager.getInstance().openGui(player, new GUIPriority(this.state));
+            }
         }else if(x == 2) { // Discount
-            GUIManager.getInstance().openGui(player, new GUIDiscount(this.state));
+            if(GeyserUtil.isBedrockPlayer(player)){
+                player.closeInventory();
+                GeyserUtil.showFormDelayed(player, new BedrockGUIDiscount(player, this.state));
+            }else{
+                GUIManager.getInstance().openGui(player, new GUIDiscount(this.state));
+            }
         }else if(x == 3) { // Purchase Limit
-            GUIManager.getInstance().openGui(player, new GUIPurchaseLimit(this.state));
+            if(GeyserUtil.isBedrockPlayer(player)){
+                player.closeInventory();
+                GeyserUtil.showFormDelayed(player, new BedrockGUIPurchaseLimit(player, this.state));
+            }else {
+                GUIManager.getInstance().openGui(player, new GUIPurchaseLimit(this.state));
+            }
         }else if(x == 4 && this.hideOnOutOfStock != null){ // Out of stock behaviour
             this.state.hideOnOutOfStock = !this.state.hideOnOutOfStock;
             this.updateHideOnOutOfStock();
