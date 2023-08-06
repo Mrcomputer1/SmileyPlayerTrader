@@ -10,6 +10,7 @@ import io.github.mrcomputer1.smileyplayertrader.gui.framework.bedrock.component.
 import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -57,7 +58,9 @@ public class BedrockGUIDisableProduct extends BedrockCustomGUI {
             SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.DISABLE_PRODUCT, this.id);
         }
 
-        GUIManager.getInstance().openGui(this.player, new GUIProductList(this.player, this.target, this.page, this.isMine));
+        Bukkit.getScheduler().scheduleSyncDelayedTask(SmileyPlayerTrader.getInstance(), () ->
+                GUIManager.getInstance().openGui(this.player, new GUIProductList(this.player, this.target, this.page, this.isMine))
+        );
     }
 
 }

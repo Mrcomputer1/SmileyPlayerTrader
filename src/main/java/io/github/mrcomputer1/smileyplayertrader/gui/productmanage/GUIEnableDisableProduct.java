@@ -82,7 +82,7 @@ public class GUIEnableDisableProduct extends GUI {
             // Don't Disable/Hide Button
             ButtonComponent dontDisableHideBtn = new ButtonComponent(
                     6, 4, Material.REDSTONE_BLOCK, 1,
-                    I18N.translate("&cDon't Enable/Show Product")
+                    I18N.translate("&cDon't Disable/Hide Product")
             );
             dontDisableHideBtn.setOnClickEvent(this::onCancelClick);
             this.addChild(dontDisableHideBtn);

@@ -74,7 +74,7 @@ public class GUIItemStorage extends GUI {
 
         // Withdraw All
         ButtonComponent withdrawAll = new ButtonComponent(
-                6, 3, Material.CHEST, 64, I18N.translate("&eWithdraw All")
+                6, 3, Material.CHEST, 64, I18N.translate("&eWithdraw ALL")
         );
         withdrawAll.setOnClickEvent(this::onWithdrawAllClick);
         this.addChild(withdrawAll);

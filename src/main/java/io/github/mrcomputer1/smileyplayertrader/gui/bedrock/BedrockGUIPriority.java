@@ -1,5 +1,6 @@
 package io.github.mrcomputer1.smileyplayertrader.gui.bedrock;
 
+import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.bedrock.BedrockCustomGUI;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.bedrock.component.BedrockInputComponent;
@@ -7,6 +8,7 @@ import io.github.mrcomputer1.smileyplayertrader.gui.framework.bedrock.component.
 import io.github.mrcomputer1.smileyplayertrader.gui.productmanage.GUIProduct;
 import io.github.mrcomputer1.smileyplayertrader.gui.productmanage.ProductState;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class BedrockGUIPriority extends BedrockCustomGUI {
@@ -29,7 +31,9 @@ public class BedrockGUIPriority extends BedrockCustomGUI {
 
     @Override
     protected void onClose() {
-        GUIManager.getInstance().openGui(this.player, new GUIProduct(this.player, this.state));
+        Bukkit.getScheduler().scheduleSyncDelayedTask(SmileyPlayerTrader.getInstance(), () ->
+                GUIManager.getInstance().openGui(this.player, new GUIProduct(this.player, this.state))
+        );
     }
 
     @Override
@@ -47,7 +51,9 @@ public class BedrockGUIPriority extends BedrockCustomGUI {
             }
 
             this.state.priority = num;
-            GUIManager.getInstance().openGui(this.player, new GUIProduct(this.player, this.state));
+            Bukkit.getScheduler().scheduleSyncDelayedTask(SmileyPlayerTrader.getInstance(), () ->
+                    GUIManager.getInstance().openGui(this.player, new GUIProduct(this.player, this.state))
+            );
         }catch (NumberFormatException e){
             GUIManager.sendErrorMessage(this.player, I18N.translate("&cInvalid Number!"));
         }

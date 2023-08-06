@@ -2,6 +2,7 @@ package io.github.mrcomputer1.smileyplayertrader.util;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.bedrock.BedrockGUI;
+import io.github.mrcomputer1.smileyplayertrader.util.impl.bedrock.IBedrockImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.geysermc.cumulus.form.Form;
@@ -10,6 +11,7 @@ import org.geysermc.cumulus.form.SimpleForm;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.geysermc.geyser.api.GeyserApi;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -30,77 +32,66 @@ public class GeyserUtil {
         return isFloodgate() || isGeyser();
     }
 
-    public static boolean isBedrockPlayer(Player player){
-        UUID uuid = player.getUniqueId();
+    private static IBedrockImpl bedrockImpl;
 
-        if(isFloodgate()){
-            return FloodgateApi.getInstance().isFloodgatePlayer(uuid);
-        }else if(isGeyser()){
-            return GeyserApi.api().isBedrockPlayer(uuid);
-        }else{
+    private static boolean bindBedrockImplIfPossible(){
+        if(!isCumulusAvailable())
+            return false;
+
+        if(GeyserUtil.bedrockImpl != null)
+            return true;
+
+        try {
+            Class<?> clazz;
+            if (isFloodgate()) {
+                clazz = Class.forName("io.github.mrcomputer1.smileyplayertrader.util.impl.bedrock.FloodgateImpl");
+            }else if(isGeyser()){
+                clazz = Class.forName("io.github.mrcomputer1.smileyplayertrader.util.impl.bedrock.GeyserImpl");
+            }else{
+                return false;
+            }
+
+            GeyserUtil.bedrockImpl = (IBedrockImpl) clazz.getConstructor().newInstance();
+            return true;
+        }catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException |
+                InvocationTargetException e) {
             return false;
         }
     }
 
+    public static boolean isBedrockPlayer(Player player){
+        if(!bindBedrockImplIfPossible())
+            return false;
+
+        return GeyserUtil.bedrockImpl.isBedrockPlayer(player);
+    }
+
     public static void showSimpleForm(Player player, String title, String content){
-        if(!isCumulusAvailable())
+        if(!bindBedrockImplIfPossible())
             return;
 
-        SimpleForm form = SimpleForm.builder()
-                .title(title)
-                .content(content)
-                .button(I18N.translate("OK"))
-                .build();
-
-        UUID uuid = player.getUniqueId();
-
-        if(isFloodgate()){
-            FloodgateApi.getInstance().sendForm(uuid, form);
-        }else if(isGeyser()){
-            GeyserApi.api().sendForm(uuid, form);
-        }
+        GeyserUtil.bedrockImpl.showSimpleForm(player, title, content);
     }
 
     public static void showConfirmationForm(Player player, String title, String content, Consumer<Boolean> callback){
-        if(!isCumulusAvailable())
+        if(!bindBedrockImplIfPossible())
             return;
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(SmileyPlayerTrader.getInstance(), () -> {
-            ModalForm form = ModalForm.builder()
-                    .title(title)
-                    .content(content)
-                    .button1(I18N.translate("Yes"))
-                    .button2(I18N.translate("No"))
-                    .closedOrInvalidResultHandler(() -> callback.accept(false))
-                    .validResultHandler(result -> callback.accept(result.clickedFirst()))
-                    .build();
-
-            UUID uuid = player.getUniqueId();
-
-            if (isFloodgate()) {
-                FloodgateApi.getInstance().sendForm(uuid, form);
-            } else if (isGeyser()) {
-                GeyserApi.api().sendForm(uuid, form);
-            }
-        }, 20L);
+        GeyserUtil.bedrockImpl.showConfirmationForm(player, title, content, callback);
     }
 
     public static void showFormDelayed(Player player, BedrockGUI gui){
-        Bukkit.getScheduler().scheduleSyncDelayedTask(SmileyPlayerTrader.getInstance(), () -> showForm(player, gui), 20L);
+        if(!bindBedrockImplIfPossible())
+            return;
+
+        GeyserUtil.bedrockImpl.showFormDelayed(player, gui);
     }
 
     public static void showForm(Player player, BedrockGUI gui){
-        if(!isCumulusAvailable())
+        if(!bindBedrockImplIfPossible())
             return;
 
-        Form form = (Form) gui.buildForm();
-        UUID uuid = player.getUniqueId();
-
-        if(isFloodgate()){
-            FloodgateApi.getInstance().sendForm(uuid, form);
-        }else if(isGeyser()){
-            GeyserApi.api().sendForm(uuid, form);
-        }
+        GeyserUtil.bedrockImpl.showForm(player, gui);
     }
 
 }

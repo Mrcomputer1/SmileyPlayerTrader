@@ -1,6 +1,7 @@
 package io.github.mrcomputer1.smileyplayertrader.gui.bedrock;
 
 import com.google.common.primitives.Ints;
+import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.bedrock.BedrockCustomGUI;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.bedrock.component.BedrockSliderComponent;
@@ -8,6 +9,7 @@ import io.github.mrcomputer1.smileyplayertrader.gui.productmanage.GUIProduct;
 import io.github.mrcomputer1.smileyplayertrader.gui.productmanage.GUISetCost;
 import io.github.mrcomputer1.smileyplayertrader.gui.productmanage.ProductState;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class BedrockGUISetCostQuantity extends BedrockCustomGUI {
@@ -35,7 +37,9 @@ public class BedrockGUISetCostQuantity extends BedrockCustomGUI {
 
     @Override
     protected void onClose() {
-        GUIManager.getInstance().openGui(this.player, new GUISetCost(this.player, this.state, this.isPrimary));
+        Bukkit.getScheduler().scheduleSyncDelayedTask(SmileyPlayerTrader.getInstance(), () ->
+                GUIManager.getInstance().openGui(this.player, new GUISetCost(this.player, this.state, this.isPrimary))
+        );
     }
 
     @Override
@@ -53,7 +57,9 @@ public class BedrockGUISetCostQuantity extends BedrockCustomGUI {
             this.state.costStack2.setAmount(val);
         }
 
-        GUIManager.getInstance().openGui(this.player, new GUISetCost(this.player, this.state, this.isPrimary));
+        Bukkit.getScheduler().scheduleSyncDelayedTask(SmileyPlayerTrader.getInstance(), () ->
+                GUIManager.getInstance().openGui(this.player, new GUISetCost(this.player, this.state, this.isPrimary))
+        );
     }
 
 }

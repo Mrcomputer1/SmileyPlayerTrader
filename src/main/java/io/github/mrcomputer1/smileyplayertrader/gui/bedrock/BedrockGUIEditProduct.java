@@ -71,7 +71,9 @@ public class BedrockGUIEditProduct extends BedrockSimpleGUI {
         if(button == EDIT_BUTTON_ID){
 
             // Edit
-            GUIManager.getInstance().openGui(this.player, new GUIProduct(this.player, state));
+            Bukkit.getScheduler().scheduleSyncDelayedTask(SmileyPlayerTrader.getInstance(), () ->
+                    GUIManager.getInstance().openGui(this.player, new GUIProduct(this.player, state))
+            );
 
         }else if(button == VISIBILITY_BUTTON_ID){
 
@@ -87,7 +89,9 @@ public class BedrockGUIEditProduct extends BedrockSimpleGUI {
                                     if(result) {
                                         SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.ENABLE_PRODUCT, this.state.id);
                                     }
-                                    GUIManager.getInstance().openGui(this.player, new GUIProductList(this.player, this.state.target, this.state.page, this.state.isMine));
+                                    Bukkit.getScheduler().scheduleSyncDelayedTask(SmileyPlayerTrader.getInstance(), () ->
+                                            GUIManager.getInstance().openGui(this.player, new GUIProductList(this.player, this.state.target, this.state.page, this.state.isMine))
+                                    );
                                 }
                         );
                     }else{
@@ -103,10 +107,12 @@ public class BedrockGUIEditProduct extends BedrockSimpleGUI {
         }else if(button == MANAGE_STORED_ITEMS_BUTTON_ID){
 
             // Manage Stored Items
-            GUIManager.getInstance().openGui(this.player, new GUIItemStorage(
-                    this.player, this.state.id, this.state.storedProduct, this.state.stack, this.state.page,
-                    this.state.target, this.state.isMine
-            ));
+            Bukkit.getScheduler().scheduleSyncDelayedTask(SmileyPlayerTrader.getInstance(), () ->
+                    GUIManager.getInstance().openGui(this.player, new GUIItemStorage(
+                            this.player, this.state.id, this.state.storedProduct, this.state.stack, this.state.page,
+                            this.state.target, this.state.isMine
+                    ))
+            );
 
         }else if(button == DELETE_BUTTON_ID){
 
@@ -118,9 +124,13 @@ public class BedrockGUIEditProduct extends BedrockSimpleGUI {
                     result -> {
                         if(result){
                             SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.DELETE_PRODUCT, this.state.id);
-                            GUIManager.getInstance().openGui(this.player, new GUIProductList(this.player, this.state.target, this.state.page, this.state.isMine));
+                            Bukkit.getScheduler().scheduleSyncDelayedTask(SmileyPlayerTrader.getInstance(), () ->
+                                    GUIManager.getInstance().openGui(this.player, new GUIProductList(this.player, this.state.target, this.state.page, this.state.isMine))
+                            );
                         }else{
-                            GUIManager.getInstance().openGui(this.player, new GUIProductList(this.player, this.state.target, this.state.page, this.state.isMine));
+                            Bukkit.getScheduler().scheduleSyncDelayedTask(SmileyPlayerTrader.getInstance(), () ->
+                                    GUIManager.getInstance().openGui(this.player, new GUIProductList(this.player, this.state.target, this.state.page, this.state.isMine))
+                            );
                         }
                     }
             );

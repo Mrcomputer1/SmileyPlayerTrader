@@ -235,5 +235,8 @@
   "Discount": "Discount",
   "&eAdjust Quantity": "&eAdjust Quantity",
   "&2Set Item Quantity": "&2Set Item Quantity",
-  "Item Quantity": "Item Quantity"
+  "Item Quantity": "Item Quantity",
+  "Purchase Limit": "Purchase Limit",
+  "Disabled": "Disabled",
+  "Reset Purchase Count": "Reset Purchase Count"
 }
