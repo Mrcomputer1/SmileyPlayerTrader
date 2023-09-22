@@ -99,10 +99,16 @@ public class VersionSupport {
                 MCVersion1_19_R3.class
         );
 
-        // 1.20
+        // 1.20 - 1.20.1
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.20(\\.[1-9])?-").matcher(Bukkit.getBukkitVersion()).find(),
+                () -> Pattern.compile("^1\\.20(\\.1)?-").matcher(Bukkit.getBukkitVersion()).find(),
                 MCVersion1_20.class
+        );
+
+        // 1.20.2
+        registerSupportedVersion(
+                () -> Pattern.compile("^1\\.20(\\.[2-9])?-").matcher(Bukkit.getBukkitVersion()).find(),
+                MCVersion1_20_R2.class
         );
     }
 
