@@ -41,9 +41,11 @@ public class AddCommand implements ICommand {
                 break;
         }
 
-        SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.ADD_PRODUCT,
-                target.getUniqueId().toString(), null, null, null, true, true, 0, 0, hideOnOutOfStock);
+        long id = SmileyPlayerTrader.getInstance().getStatementHandler().runAndReturnInsertId(
+                StatementHandler.StatementType.ADD_PRODUCT,
+                target.getUniqueId().toString(), null, null, null, true, true, 0, 0, hideOnOutOfStock
+        );
 
-        sender.sendMessage(I18N.translate("&aAdded product %0%. Use &f/spt setcost <id> &aand &f/spt setproduct <id> &awhile holding items!", SmileyPlayerTrader.getInstance().getDatabase().getInsertId()));
+        sender.sendMessage(I18N.translate("&aAdded product %0%. Use &f/spt setcost <id> &aand &f/spt setproduct <id> &awhile holding items!", id));
     }
 }

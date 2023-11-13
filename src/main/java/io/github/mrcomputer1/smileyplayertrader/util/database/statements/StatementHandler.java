@@ -190,6 +190,7 @@ public interface StatementHandler {
     }
 
     void run(StatementType type, Object... objs);
+    long runAndReturnInsertId(StatementType type, Object... objs);
     ResultSet get(StatementType type, Object... objs);
 
 }

@@ -50,6 +50,16 @@ public class SQLiteStatementHandler implements StatementHandler {
     }
 
     @Override
+    public long runAndReturnInsertId(StatementType type, Object... objs) {
+        if(statements.containsKey(type)){
+            String statement = statements.get(type).replace("$prefix$", database.getDatabasePrefix());
+            return database.runAndReturnInsertId(statement, objs);
+        }else{
+            return this.generic.runAndReturnInsertId(type, objs);
+        }
+    }
+
+    @Override
     public ResultSet get(StatementType type, Object... objs) {
         if(statements.containsKey(type)){
             String statement = statements.get(type).replace("$prefix$", database.getDatabasePrefix());

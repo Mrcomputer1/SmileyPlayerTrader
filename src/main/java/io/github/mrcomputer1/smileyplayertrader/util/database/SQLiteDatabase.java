@@ -11,19 +11,17 @@ public class SQLiteDatabase extends AbstractDatabase {
     private Connection conn = null;
     private long insertId = -1;
 
+    private boolean useReturningRowId;
+
     public SQLiteDatabase(File name){
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:" + name.getAbsolutePath());
+            useReturningRowId = !conn.getMetaData().supportsGetGeneratedKeys();
         } catch (SQLException e) {
             SmileyPlayerTrader.getInstance().getLogger().severe("Failed to open/create SQLite3 database. Disabling...");
             Bukkit.getPluginManager().disablePlugin(SmileyPlayerTrader.getInstance());
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public long getInsertId(){
-        return this.insertId;
     }
 
     private void setValues(PreparedStatement stmt, Object... objs){
@@ -39,19 +37,38 @@ public class SQLiteDatabase extends AbstractDatabase {
 
     @Override
     public void run(String sql, Object... objs){
+        this.logSQLStatement("run", sql, objs);
+
         try {
             if (!isConnected()) {
                 SmileyPlayerTrader.getInstance().getLogger().severe("Failed to run statement as there is no database connection.");
                 return;
             }
-            PreparedStatement stmt = this.conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            PreparedStatement stmt;
+            if (useReturningRowId) {
+                stmt = this.conn.prepareStatement(sql);
+            } else {
+                stmt = this.conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            }
+
             setValues(stmt, objs);
             stmt.execute();
-            ResultSet s = stmt.getGeneratedKeys();
-            if(s.next()){
-                this.insertId = s.getLong(1);
+
+            if (useReturningRowId) {
+                ResultSet s = stmt.getResultSet();
+                if(s != null && s.next()){
+                    this.insertId = s.getLong(1);
+                }
+            } else {
+                ResultSet s = stmt.getGeneratedKeys();
+                if(s.next()){
+                    this.insertId = s.getLong(1);
+                }
             }
+
             stmt.close();
+
         }catch(SQLException e){
             SmileyPlayerTrader.getInstance().getLogger().severe("Failed to execute SQLite3 statement.");
             e.printStackTrace();
@@ -59,7 +76,19 @@ public class SQLiteDatabase extends AbstractDatabase {
     }
 
     @Override
+    public long runAndReturnInsertId(String sql, Object... objs) {
+        if(useReturningRowId) {
+            this.run(sql + " RETURNING rowid", objs);
+        } else {
+            this.run(sql, objs);
+        }
+        return this.insertId;
+    }
+
+    @Override
     public ResultSet get(String sql, Object... objs){
+        this.logSQLStatement("get", sql, objs);
+
         try{
             if(!isConnected()){
                 SmileyPlayerTrader.getInstance().getLogger().severe("Failed to run statement as there is no database connection.");

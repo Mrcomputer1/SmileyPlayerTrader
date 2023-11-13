@@ -20,11 +20,6 @@ public class MySQLDatabase extends AbstractDatabase {
         }
     }
 
-    @Override
-    public long getInsertId(){
-        return this.insertId;
-    }
-
     private void setValues(PreparedStatement stmt, Object... objs){
         for(int i = 0; i < objs.length; i++){
             try {
@@ -38,6 +33,8 @@ public class MySQLDatabase extends AbstractDatabase {
 
     @Override
     public void run(String sql, Object... objs){
+        this.logSQLStatement("run", sql, objs);
+
         try {
             if (!isConnected()) {
                 SmileyPlayerTrader.getInstance().getLogger().severe("Failed to run statement as there is no database connection.");
@@ -58,7 +55,15 @@ public class MySQLDatabase extends AbstractDatabase {
     }
 
     @Override
+    public long runAndReturnInsertId(String sql, Object... objs) {
+        this.run(sql, objs);
+        return this.insertId;
+    }
+
+    @Override
     public ResultSet get(String sql, Object... objs){
+        this.logSQLStatement("get", sql, objs);
+
         try{
             if(!isConnected()){
                 SmileyPlayerTrader.getInstance().getLogger().severe("Failed to run statement as there is no database connection.");

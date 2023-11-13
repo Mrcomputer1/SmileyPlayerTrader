@@ -56,6 +56,12 @@ public class GenericStatementHandler implements StatementHandler {
     }
 
     @Override
+    public long runAndReturnInsertId(StatementType type, Object... objs) {
+        String statement = statements.get(type).replace("$prefix$", database.getDatabasePrefix());
+        return database.runAndReturnInsertId(statement, objs);
+    }
+
+    @Override
     public ResultSet get(StatementType type, Object... objs) {
         String statement = statements.get(type).replace("$prefix$", database.getDatabasePrefix());
         return database.get(statement, objs);

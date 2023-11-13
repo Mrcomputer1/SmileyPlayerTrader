@@ -310,4 +310,8 @@ public class SPTConfiguration {
         return this.config.getBoolean("debugI18NAlerts", false);
     }
 
+    public boolean getDebugSQLStatements(){
+        return this.config.getBoolean("debugSQLStatements", false);
+    }
+
 }
