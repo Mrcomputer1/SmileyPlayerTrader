@@ -33,82 +33,90 @@ public class VersionSupport {
     private static final List<VersionSupportMeta> supportedVersions = new ArrayList<>();
 
     static {
+        String bukkitVersion = Bukkit.getBukkitVersion();
+
         // 1.15 - 1.15.2
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.15").matcher(Bukkit.getBukkitVersion()).find(),
+                () -> Pattern.compile("^1\\.15").matcher(bukkitVersion).find(),
                 MCVersion1_15.class
         );
 
         // 1.16 - 1.16.1
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.16(\\.1)?-").matcher(Bukkit.getBukkitVersion()).find(),
+                () -> Pattern.compile("^1\\.16(\\.1)?-").matcher(bukkitVersion).find(),
                 MCVersion1_16.class
         );
 
         // 1.16.2 - 1.16.3
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.16\\.[23]-").matcher(Bukkit.getBukkitVersion()).find(),
+                () -> Pattern.compile("^1\\.16\\.[23]-").matcher(bukkitVersion).find(),
                 MCVersion1_16_R2.class
         );
 
         // 1.16.4 - 1.16.5
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.16\\.[45]-").matcher(Bukkit.getBukkitVersion()).find(),
+                () -> Pattern.compile("^1\\.16\\.[45]-").matcher(bukkitVersion).find(),
                 MCVersion1_16_R3.class
         );
 
         // 1.17 - 1.17.1
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.17").matcher(Bukkit.getBukkitVersion()).find(),
+                () -> Pattern.compile("^1\\.17").matcher(bukkitVersion).find(),
                 MCVersion1_17.class
         );
 
         // 1.18 - 1.18.1
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.18(\\.1)?-").matcher(Bukkit.getBukkitVersion()).find(),
+                () -> Pattern.compile("^1\\.18(\\.1)?-").matcher(bukkitVersion).find(),
                 MCVersion1_18.class
         );
 
         // 1.18.2
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.18\\.2-").matcher(Bukkit.getBukkitVersion()).find(),
+                () -> Pattern.compile("^1\\.18\\.2-").matcher(bukkitVersion).find(),
                 MCVersion1_18_R2.class
         );
 
         // 1.19
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.19-").matcher(Bukkit.getBukkitVersion()).find(),
+                () -> Pattern.compile("^1\\.19-").matcher(bukkitVersion).find(),
                 MCVersion1_19.class
         );
 
         // 1.19.1 - 1.19.2
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.19\\.[12]-").matcher(Bukkit.getBukkitVersion()).find(),
+                () -> Pattern.compile("^1\\.19\\.[12]-").matcher(bukkitVersion).find(),
                 MCVersion1_19_1.class
         );
 
         // 1.19.3
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.19\\.3-").matcher(Bukkit.getBukkitVersion()).find(),
+                () -> Pattern.compile("^1\\.19\\.3-").matcher(bukkitVersion).find(),
                 MCVersion1_19_R2.class
         );
 
         // 1.19.4
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.19\\.4-").matcher(Bukkit.getBukkitVersion()).find(),
+                () -> Pattern.compile("^1\\.19\\.4-").matcher(bukkitVersion).find(),
                 MCVersion1_19_R3.class
         );
 
         // 1.20 - 1.20.1
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.20(\\.1)?-").matcher(Bukkit.getBukkitVersion()).find(),
+                () -> Pattern.compile("^1\\.20(\\.1)?-").matcher(bukkitVersion).find(),
                 MCVersion1_20.class
         );
 
         // 1.20.2
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.20(\\.[2-9])?-").matcher(Bukkit.getBukkitVersion()).find(),
+                () -> Pattern.compile("^1\\.20\\.2-").matcher(bukkitVersion).find(),
                 MCVersion1_20_R2.class
+        );
+
+        // 1.20.3
+        registerSupportedVersion(
+                () -> Pattern.compile("^1\\.20\\.[3-9]-").matcher(bukkitVersion).find(),
+                MCVersion1_20_R3.class
         );
     }
 
