@@ -314,4 +314,8 @@ public class SPTConfiguration {
         return this.config.getBoolean("debugSQLStatements", false);
     }
 
+    public int getDebugHiddenItemsExtraPagesLimit() {
+        return this.config.getInt("debugHiddenItemsExtraPagesLimit", -1);
+    }
+
 }

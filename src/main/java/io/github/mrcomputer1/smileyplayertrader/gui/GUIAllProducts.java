@@ -28,14 +28,23 @@ import java.util.UUID;
 public class GUIAllProducts extends GUI {
 
     private static final NamespacedKey PRODUCT_ID_KEY = new NamespacedKey(SmileyPlayerTrader.getInstance(), "product_id");
+    private static final int PAGE_SIZE = 28;
 
     private final int page;
+    private final long[] pageStartIds;
     private final boolean canPurchase;
 
+    private long lastItemId = -1;
+
     public GUIAllProducts(int page, boolean canPurchase) {
+        this(page, new long[] { 0 }, canPurchase);
+    }
+
+    public GUIAllProducts(int page, long[] pageStartIds, boolean canPurchase) {
         super(I18N.translate("&2All Products (Page %0%)", page + 1), 6);
 
         this.page = page;
+        this.pageStartIds = pageStartIds;
         this.canPurchase = canPurchase;
 
         // Item Grid
@@ -68,11 +77,34 @@ public class GUIAllProducts extends GUI {
         this.addChild(nextBtn);
     }
 
-    private void loadItems(ItemGridComponent grid){
+    private void loadItems(ItemGridComponent grid) {
+        this.loadItems(grid, 0, 0);
+    }
+
+    // Hidden Items are items that are skipped because it is out of stock.
+    // * Request page starting from the last entry in the pageStartIds array
+    // * Add non-hidden items to the grid, otherwise increment hiddenItems
+    // * If hiddenItems is greater than 0 and there were more than 28 (page size) items from query (indicating possible more items):
+    //   * Request another page
+    //   * Add non-hidden items to the grid and decrement hiddenItems, and stop once hiddenItems has reached zero.
+    //   * If hiddenItems is still non-zero, repeat.
+    private void loadItems(ItemGridComponent grid, int addPages, int hiddenItems){
+        int foundItems = 0;
+
         try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(
-                StatementHandler.StatementType.FIND_ALL_PRODUCTS_IN_PAGES, 28, this.page * 28
+                StatementHandler.StatementType.FIND_ALL_PRODUCTS_IN_PAGES,
+                pageStartIds[pageStartIds.length - 1], PAGE_SIZE, addPages * PAGE_SIZE
         )){
             while(set.next()){
+                foundItems++;
+
+                // If we aren't loading the initial page and no more items are needed to fill in for hidden items, break.
+                if(addPages != 0 && hiddenItems <= 0)
+                    break;
+
+                // Update Last Item ID
+                this.lastItemId = set.getLong("id");
+
                 // Seller
                 OfflinePlayer seller = Bukkit.getOfflinePlayer(UUID.fromString(set.getString("merchant")));
 
@@ -83,14 +115,15 @@ public class GUIAllProducts extends GUI {
                 assert is != null;
 
                 // Has Stock
-                if(!ItemUtil.doesPlayerHaveItem(seller, is, set.getLong("id")))
+                if(!ItemUtil.doesPlayerHaveItem(seller, is, set.getLong("id"))) {
+                    if(addPages == 0)
+                        hiddenItems++;
                     continue;
+                }
 
-                // Purchase Count Check
-                int purchaseLimit = set.getInt("purchase_limit");
-                int purchaseCount = set.getInt("purchase_count");
-                if(purchaseLimit != -1 && purchaseCount >= purchaseLimit)
-                    continue;
+                // Decrement Hidden Items
+                if(addPages != 0)
+                    hiddenItems--;
 
                 // Item Meta
                 ItemMeta im = is.getItemMeta();
@@ -142,6 +175,14 @@ public class GUIAllProducts extends GUI {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        // If there are hidden items and there is likely to be another page of items, load another page.
+        if(hiddenItems > 0 && foundItems >= PAGE_SIZE) {
+            // Option to add an upper bound to how many extra pages to load, just in case it is needed.
+            int pageLimit = SmileyPlayerTrader.getInstance().getConfiguration().getDebugHiddenItemsExtraPagesLimit();
+            if(pageLimit <= -1 || addPages < pageLimit)
+                this.loadItems(grid, addPages + 1, hiddenItems);
+        }
     }
 
     private boolean onProductClick(ClickType clickType, ItemStack itemStack){
@@ -171,12 +212,20 @@ public class GUIAllProducts extends GUI {
     }
 
     private boolean onPreviousClick(ClickType clickType){
-        GUIManager.getInstance().openGui(this.getPlayer(), new GUIAllProducts(this.page - 1, this.canPurchase));
+        long[] ids = new long[this.pageStartIds.length - 1];
+        System.arraycopy(this.pageStartIds, 0, ids, 0, this.pageStartIds.length - 1);
+
+        GUIManager.getInstance().openGui(this.getPlayer(), new GUIAllProducts(this.page - 1, ids, this.canPurchase));
         return false;
     }
 
     private boolean onNextClick(ClickType clickType){
-        GUIManager.getInstance().openGui(this.getPlayer(), new GUIAllProducts(this.page + 1, this.canPurchase));
+        long[] ids = new long[this.pageStartIds.length + 1];
+        System.arraycopy(this.pageStartIds, 0, ids, 0, this.pageStartIds.length);
+        ids[this.pageStartIds.length] = this.lastItemId == -1 ?
+                this.pageStartIds[this.pageStartIds.length - 1] : this.lastItemId;
+
+        GUIManager.getInstance().openGui(this.getPlayer(), new GUIAllProducts(this.page + 1, ids, this.canPurchase));
         return false;
     }
 

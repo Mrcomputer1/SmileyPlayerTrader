@@ -169,7 +169,7 @@ public interface StatementHandler {
         SET_HIDE_ON_OUT_OF_STOCK,
 
         /**
-         * LIMIT, OFFSET
+         * START_ID, LIMIT, OFFSET
          */
         FIND_ALL_PRODUCTS_IN_PAGES,
 
