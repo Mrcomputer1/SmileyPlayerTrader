@@ -11,20 +11,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 public class VersionSupport {
 
     private static class VersionSupportMeta {
         public final Callable<Boolean> isSupported;
-        public final Class<?> versionClass;
+        public final Supplier<? extends IMCVersion> versionSupplier;
 
-        public VersionSupportMeta(Callable<Boolean> isSupported, Class<?> versionClass){
+        public VersionSupportMeta(Callable<Boolean> isSupported, Supplier<? extends IMCVersion> versionSupplier){
             this.isSupported = isSupported;
-            this.versionClass = versionClass;
-
-            if(!IMCVersion.class.isAssignableFrom(versionClass))
-                throw new IllegalArgumentException("Version class does not implement IMCVersion.");
+            this.versionSupplier = versionSupplier;
         }
     }
 
@@ -38,90 +36,96 @@ public class VersionSupport {
         // 1.15 - 1.15.2
         registerSupportedVersion(
                 () -> Pattern.compile("^1\\.15").matcher(bukkitVersion).find(),
-                MCVersion1_15.class
+                MCVersion1_15::new
         );
 
         // 1.16 - 1.16.1
         registerSupportedVersion(
                 () -> Pattern.compile("^1\\.16(\\.1)?-").matcher(bukkitVersion).find(),
-                MCVersion1_16.class
+                MCVersion1_16::new
         );
 
         // 1.16.2 - 1.16.3
         registerSupportedVersion(
                 () -> Pattern.compile("^1\\.16\\.[23]-").matcher(bukkitVersion).find(),
-                MCVersion1_16_R2.class
+                MCVersion1_16_R2::new
         );
 
         // 1.16.4 - 1.16.5
         registerSupportedVersion(
                 () -> Pattern.compile("^1\\.16\\.[45]-").matcher(bukkitVersion).find(),
-                MCVersion1_16_R3.class
+                MCVersion1_16_R3::new
         );
 
         // 1.17 - 1.17.1
         registerSupportedVersion(
                 () -> Pattern.compile("^1\\.17").matcher(bukkitVersion).find(),
-                MCVersion1_17.class
+                MCVersion1_17::new
         );
 
         // 1.18 - 1.18.1
         registerSupportedVersion(
                 () -> Pattern.compile("^1\\.18(\\.1)?-").matcher(bukkitVersion).find(),
-                MCVersion1_18.class
+                MCVersion1_18::new
         );
 
         // 1.18.2
         registerSupportedVersion(
                 () -> Pattern.compile("^1\\.18\\.2-").matcher(bukkitVersion).find(),
-                MCVersion1_18_R2.class
+                MCVersion1_18_R2::new
         );
 
         // 1.19
         registerSupportedVersion(
                 () -> Pattern.compile("^1\\.19-").matcher(bukkitVersion).find(),
-                MCVersion1_19.class
+                MCVersion1_19::new
         );
 
         // 1.19.1 - 1.19.2
         registerSupportedVersion(
                 () -> Pattern.compile("^1\\.19\\.[12]-").matcher(bukkitVersion).find(),
-                MCVersion1_19_1.class
+                MCVersion1_19_1::new
         );
 
         // 1.19.3
         registerSupportedVersion(
                 () -> Pattern.compile("^1\\.19\\.3-").matcher(bukkitVersion).find(),
-                MCVersion1_19_R2.class
+                MCVersion1_19_R2::new
         );
 
         // 1.19.4
         registerSupportedVersion(
                 () -> Pattern.compile("^1\\.19\\.4-").matcher(bukkitVersion).find(),
-                MCVersion1_19_R3.class
+                MCVersion1_19_R3::new
         );
 
         // 1.20 - 1.20.1
         registerSupportedVersion(
                 () -> Pattern.compile("^1\\.20(\\.1)?-").matcher(bukkitVersion).find(),
-                MCVersion1_20.class
+                MCVersion1_20::new
         );
 
         // 1.20.2
         registerSupportedVersion(
                 () -> Pattern.compile("^1\\.20\\.2-").matcher(bukkitVersion).find(),
-                MCVersion1_20_R2.class
+                MCVersion1_20_R2::new
         );
 
-        // 1.20.3
+        // 1.20.3 - 1.20.4
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.20\\.[3-9]-").matcher(bukkitVersion).find(),
-                MCVersion1_20_R3.class
+                () -> Pattern.compile("^1\\.20\\.[34]-").matcher(bukkitVersion).find(),
+                MCVersion1_20_R3::new
+        );
+
+        // 1.20.5
+        registerSupportedVersion(
+                () -> Pattern.compile("^1\\.20\\.[5-9]-").matcher(bukkitVersion).find(),
+                () -> new MCVersion1_20_R4(Bukkit.getWorlds().get(0))
         );
     }
 
-    public static void registerSupportedVersion(Callable<Boolean> isSupported, Class<?> versionClass){
-        supportedVersions.add(new VersionSupportMeta(isSupported, versionClass));
+    public static void registerSupportedVersion(Callable<Boolean> isSupported, Supplier<? extends IMCVersion> versionSupplier){
+        supportedVersions.add(new VersionSupportMeta(isSupported, versionSupplier));
     }
 
     private static IMCVersion getBoundVersion(){
@@ -156,7 +160,7 @@ public class VersionSupport {
         for (VersionSupportMeta version : supportedVersions){
             try {
                 if (version.isSupported.call()) {
-                    this.version = (IMCVersion) version.versionClass.getConstructor().newInstance();
+                    this.version = version.versionSupplier.get();
                     return;
                 }
             } catch (Exception ex){
