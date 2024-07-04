@@ -76,7 +76,7 @@ public class EventListener implements Listener {
                 }
 
                 // Check if trade is still valid
-                long productId = MerchantUtil.getProductId((Player) e.getWhoClicked(), mi.getSelectedRecipe().getResult());
+                long productId = MerchantUtil.getProductId((Player) e.getWhoClicked(), VersionSupport.getMerchantRecipeOriginalResult(mi.getSelectedRecipe()));
                 try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, productId)) {
                     if (set.next()) {
                         // Check hidden/disabled

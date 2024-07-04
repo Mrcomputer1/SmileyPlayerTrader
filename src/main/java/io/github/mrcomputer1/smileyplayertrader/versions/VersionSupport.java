@@ -154,6 +154,10 @@ public class VersionSupport {
         return getBoundVersion().getSpecialCountForRecipe(inventory);
     }
 
+    public static ItemStack getMerchantRecipeOriginalResult(org.bukkit.inventory.MerchantRecipe merchantRecipe) {
+        return getBoundVersion().getMerchantRecipeOriginalResult(merchantRecipe);
+    }
+
     public void bindCompatibleVersion() throws IllegalStateException {
         if(this.version != null)
             throw new IllegalStateException("Already bound version.");

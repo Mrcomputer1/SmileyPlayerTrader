@@ -1,5 +1,6 @@
 package io.github.mrcomputer1.smileyplayertrader.util.merchant;
 
+import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.inventory.ItemStack;
 
 public class MerchantRecipe extends org.bukkit.inventory.MerchantRecipe{
@@ -29,4 +30,10 @@ public class MerchantRecipe extends org.bukkit.inventory.MerchantRecipe{
     public int getSpecialPrice() {
         return specialPrice;
     }
+
+    @Override
+    public ItemStack getResult() {
+        return VersionSupport.getMerchantRecipeOriginalResult(this);
+    }
+
 }

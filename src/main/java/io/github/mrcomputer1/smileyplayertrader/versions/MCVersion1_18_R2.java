@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -29,6 +30,7 @@ public class MCVersion1_18_R2 implements IMCVersion {
     private Method OBC_CraftItemStack_Static_asNMSCopy_ItemStack;
 
     // Merchant
+    private Field OB_MerchantRecipe_Instance_recipe;
     private Method OBC_CraftMerchant_Instance_getMerchant_;
     private Method NMS_IMerchant_Instance_getOffers_;
     private Method NMS_MerchantRecipe_Instance_setSpecialPrice_int;
@@ -60,6 +62,10 @@ public class MCVersion1_18_R2 implements IMCVersion {
             this.OBC_CraftItemStack_Static_asNMSCopy_ItemStack = OBC_CraftItemStack.getMethod("asNMSCopy", ItemStack.class);
 
             // Merchant
+            Class<?> OB_MerchantRecipe = Class.forName("org.bukkit.inventory.MerchantRecipe");
+            this.OB_MerchantRecipe_Instance_recipe = OB_MerchantRecipe.getDeclaredField("result");
+            this.OB_MerchantRecipe_Instance_recipe.setAccessible(true);
+
             Class<?> OBC_CraftMerchant = Class.forName("org.bukkit.craftbukkit.v1_18_R2.inventory.CraftMerchant");
             this.OBC_CraftMerchant_Instance_getMerchant_ = OBC_CraftMerchant.getMethod("getMerchant");
 
@@ -83,7 +89,7 @@ public class MCVersion1_18_R2 implements IMCVersion {
 
             Class<?> NMS_InventoryMerchant = Class.forName("net.minecraft.world.inventory.InventoryMerchant");
             this.NMS_InventoryMerchant_Instance_getRecipe_ = NMS_InventoryMerchant.getMethod("g");
-        } catch (ClassNotFoundException | NoSuchMethodException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | NoSuchFieldException e) {
             e.printStackTrace();
         }
     }
@@ -143,6 +149,15 @@ public class MCVersion1_18_R2 implements IMCVersion {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
             return 0;
+        }
+    }
+
+    @Override
+    public ItemStack getMerchantRecipeOriginalResult(org.bukkit.inventory.MerchantRecipe merchantRecipe) {
+        try {
+            return (ItemStack) OB_MerchantRecipe_Instance_recipe.get(merchantRecipe);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 

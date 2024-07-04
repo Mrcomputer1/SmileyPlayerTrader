@@ -16,4 +16,6 @@ public interface IMCVersion {
     void setRecipesOnMerchant(Merchant merchant, List<MerchantRecipe> recipes) throws InvocationTargetException;
     int getSpecialCountForRecipe(MerchantInventory inventory) throws InvocationTargetException;
 
+    ItemStack getMerchantRecipeOriginalResult(org.bukkit.inventory.MerchantRecipe merchantRecipe);
+
 }
