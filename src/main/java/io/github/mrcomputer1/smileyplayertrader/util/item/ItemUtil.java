@@ -131,6 +131,7 @@ public class ItemUtil {
             Object obj = item.get("meta");
             if(!(obj instanceof ItemMeta)){
                 SmileyPlayerTrader.getInstance().getLogger().severe("meta is not ItemMeta");
+                return null;
             }
             ItemMeta im = (ItemMeta) obj;
 
@@ -148,6 +149,17 @@ public class ItemUtil {
             }
 
             is.setItemMeta(im);
+        }
+
+        // Get amount
+        if(item.containsKey("amount")) {
+            Object amountObj = item.get("amount");
+            if(!(amountObj instanceof Integer)) {
+                SmileyPlayerTrader.getInstance().getLogger().severe("amount is not Integer");
+                return null;
+            }
+
+            is.setAmount((Integer) amountObj);
         }
 
         return is;
