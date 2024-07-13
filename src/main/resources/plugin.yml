@@ -29,6 +29,7 @@ permissions:
       "smileyplayertrader.trade.remote": true
       "smileyplayertrader.guiothers": true
       "smileyplayertrader.alltradeslist": true
+      "smileyplayertrader.unlimitedsupply": true
   "smileyplayertrader.others":
     description: "Change other players"
     default: op
@@ -53,3 +54,6 @@ permissions:
   "smileyplayertrader.alltradeslist":
     description: "Allows use of /spt all"
     default: true
+  "smileyplayertrader.unlimitedsupply":
+    description: "Allows use of /spt unlimitedsupply"
+    default: op

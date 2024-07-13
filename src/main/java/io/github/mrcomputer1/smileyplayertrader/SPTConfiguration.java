@@ -221,6 +221,10 @@ public class SPTConfiguration {
     }
     // End Out of Stock Behaviour
 
+    public boolean getDoesUnlimitedSupplyEarn() {
+        return this.config.getBoolean("doesUnlimitedSupplyEarn", true);
+    }
+
     // Start Auto Combat Lock
     public boolean getAutoCombatLockEnabled(){
         return this.config.getBoolean("autoCombatLock.enabled", true);

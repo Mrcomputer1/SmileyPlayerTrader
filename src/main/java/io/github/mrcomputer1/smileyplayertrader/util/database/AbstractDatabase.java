@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 public abstract class AbstractDatabase {
 
-    protected static int dbVersion = 6;
+    protected static int dbVersion = 7;
 
     public abstract void run(String sql, Object... objs);
     public abstract long runAndReturnInsertId(String sql, Object... objs);

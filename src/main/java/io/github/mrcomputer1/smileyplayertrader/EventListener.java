@@ -77,6 +77,7 @@ public class EventListener implements Listener {
 
                 // Check if trade is still valid
                 long productId = MerchantUtil.getProductId((Player) e.getWhoClicked(), VersionSupport.getMerchantRecipeOriginalResult(mi.getSelectedRecipe()));
+                boolean unlimitedSupply = false;
                 try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, productId)) {
                     if (set.next()) {
                         // Check hidden/disabled
@@ -149,6 +150,9 @@ public class EventListener implements Listener {
                             GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product is no longer for sale."));
                             return;
                         }
+
+                        // Retrieve unlimited supply
+                        unlimitedSupply = set.getBoolean("unlimited_supply");
                     } else {
                         e.setCancelled(true);
                         GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product is no longer for sale."));
@@ -161,11 +165,14 @@ public class EventListener implements Listener {
                 }
 
                 // Check if the player has the item
-                if(ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult(), productId)){
+                if(unlimitedSupply || ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult(), productId)){
                     // Remove the item from the store and give them their earnings.
-                    ItemUtil.removeStock(store, mi.getSelectedRecipe().getResult(), productId);
+                    if(!unlimitedSupply)
+                        ItemUtil.removeStock(store, mi.getSelectedRecipe().getResult(), productId);
+
                     try {
-                        ItemUtil.giveEarnings(store, mi.getSelectedRecipe(), VersionSupport.getSpecialCountForRecipe(mi), productId);
+                        if(!unlimitedSupply || SmileyPlayerTrader.getInstance().getConfiguration().getDoesUnlimitedSupplyEarn())
+                            ItemUtil.giveEarnings(store, mi.getSelectedRecipe(), VersionSupport.getSpecialCountForRecipe(mi), productId);
                     } catch (InvocationTargetException ex) {
                         ex.printStackTrace();
                         SmileyPlayerTrader.getInstance().getLogger().severe("Something went wrong while attempting to give earnings to " + store.getName());
@@ -181,7 +188,7 @@ public class EventListener implements Listener {
 
                     // Check if the store has run out of stock of that item.
                     try {
-                        if (!ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult(), productId)) {
+                        if (!unlimitedSupply && !ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult(), productId)) {
                             // If the store player is online, inform them the item is now out of stock.
                             if(store.isOnline())
                                 store.getPlayer().sendMessage(I18N.translate("&c%0% is now out of stock!", mi.getSelectedRecipe().getResult().getType()));

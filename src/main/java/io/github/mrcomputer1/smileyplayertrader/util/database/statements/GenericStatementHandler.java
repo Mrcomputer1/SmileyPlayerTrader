@@ -47,6 +47,7 @@ public class GenericStatementHandler implements StatementHandler {
         statements.put(StatementType.INCREMENT_PURCHASE_COUNT, "UPDATE $prefix$products SET purchase_count=purchase_count + 1 WHERE id=?");
         statements.put(StatementType.RESET_PURCHASE_COUNT, "UPDATE $prefix$products SET purchase_count=0 WHERE id=?");
         statements.put(StatementType.SET_PURCHASE_LIMIT, "UPDATE $prefix$products SET purchase_limit=? WHERE id=?");
+        statements.put(StatementType.TOGGLE_UNLIMITED_SUPPLY, "UPDATE $prefix$products SET unlimited_supply=(NOT unlimited_supply) WHERE id=?");
     }
 
     @Override

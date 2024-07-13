@@ -43,6 +43,7 @@ public class CommandSmileyPlayerTrader implements TabExecutor {
         this.commands.put("all", new AllCommand());
         this.commands.put("purchaselimit", new PurchaseLimitCommand());
         this.commands.put("purchasereset", new PurchaseResetCommand());
+        this.commands.put("unlimitedsupply", new UnlimitedSupplyCommand());
     }
 
     @Override

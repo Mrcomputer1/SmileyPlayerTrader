@@ -83,6 +83,9 @@ itemStorage:
 # hide: Always hide when out of stock.
 outOfStockBehaviour: showByDefault
 
+# Configures if earnings are given for an item with the admin option unlimited supply enabled.
+doesUnlimitedSupplyEarn: true
+
 # Automatically toggle off while in combat
 autoCombatLock:
   enabled: true # Enables/Disables auto combat toggling

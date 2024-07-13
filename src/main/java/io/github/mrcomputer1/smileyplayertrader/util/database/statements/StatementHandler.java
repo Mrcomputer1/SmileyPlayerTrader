@@ -186,7 +186,12 @@ public interface StatementHandler {
         /**
          * id (int), limit (int)
          */
-        SET_PURCHASE_LIMIT
+        SET_PURCHASE_LIMIT,
+
+        /**
+         * id (int)
+         */
+        TOGGLE_UNLIMITED_SUPPLY
     }
 
     void run(StatementType type, Object... objs);
