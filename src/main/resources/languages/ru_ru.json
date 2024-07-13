@@ -1,5 +1,5 @@
 {
-  "$$version$$": 13,
+  "$$version$$": 14,
   "&e%0% is now trading with you.": "&e%0% сейчас с тобой трейдится.",
   "&2Villager Store: ": "&2Магазин Жителей: ",
   "&aThanks for your purchase, %0%": "&aСпасибо за покупку, %0%",
@@ -241,5 +241,6 @@
   "Reset Purchase Count": "Сбросить количество покупок",
   "&cBad Syntax! &f/spt unlimitedsupply <id>": "&cBad Syntax! &f/spt unlimitedsupply <id>",
   "&cWhoops! You are not authorised to do that.": "&cWhoops! You are not authorised to do that.",
-  "&aToggled unlimited supply.": "&aToggled unlimited supply."
+  "&aToggled unlimited supply.": "&aToggled unlimited supply.",
+  "&e&lUnlimited Supply Enabled": "&e&lUnlimited Supply Enabled"
 }

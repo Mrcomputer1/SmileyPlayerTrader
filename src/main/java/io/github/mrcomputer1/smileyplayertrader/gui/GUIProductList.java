@@ -163,6 +163,8 @@ public class GUIProductList extends GUI {
                 List<String> lore = new ArrayList<>();
 
                 lore.add(I18N.translate("&eProduct ID: ") + set.getInt("id"));
+                if(set.getBoolean("unlimited_supply"))
+                    lore.add(I18N.translate("&e&lUnlimited Supply Enabled"));
                 lore.add(I18N.translate("&bClick to &lEdit"));
 
                 if(!GeyserUtil.isBedrockPlayer(uiPlayer)) {

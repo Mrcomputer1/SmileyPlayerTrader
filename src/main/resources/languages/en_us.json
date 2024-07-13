@@ -1,5 +1,5 @@
 {
-  "$$version$$": 12,
+  "$$version$$": 13,
   "&e%0% is now trading with you.": "&e%0% is now trading with you.",
   "&2Villager Store: ": "&2Villager Store: ",
   "&aThanks for your purchase, %0%": "&aThanks for your purchase, %0%",
@@ -241,5 +241,6 @@
   "Reset Purchase Count": "Reset Purchase Count",
   "&cBad Syntax! &f/spt unlimitedsupply <id>": "&cBad Syntax! &f/spt unlimitedsupply <id>",
   "&cWhoops! You are not authorised to do that.": "&cWhoops! You are not authorised to do that.",
-  "&aToggled unlimited supply.": "&aToggled unlimited supply."
+  "&aToggled unlimited supply.": "&aToggled unlimited supply.",
+  "&e&lUnlimited Supply Enabled": "&e&lUnlimited Supply Enabled"
 }
