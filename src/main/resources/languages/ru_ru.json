@@ -1,5 +1,5 @@
 {
-  "$$version$$": 14,
+  "$$version$$": 15,
   "&e%0% is now trading with you.": "&e%0% сейчас с тобой трейдится.",
   "&2Villager Store: ": "&2Магазин Жителей: ",
   "&aThanks for your purchase, %0%": "&aСпасибо за покупку, %0%",
@@ -48,7 +48,7 @@
   "&e[Smiley Player Trader] Plugin is outdated! Latest version is %0%. It is recommended to download the update.": "&e[Smiley Player Trader] Плагин устарел! Последняя версия %0%. Рекомендуется установить обновление.",
   "&e[Smiley Player Trader] Failed to check plugin version!": "&e[Smiley Player Trader] Ошибка чтения версии плагина!",
   "&cYou must be holding an item in your main hand!": "&cВы должны держать предмет в вашей главной руке.!",
-  "&2My Products (Page %0%)": "&2Мои товары (Page %0%)",
+  "&2My Products (Page %0%)": "&2Мои товары (Страница %0%)",
   "&cNo previous page.": "&cНет предыдущей страницы.",
   "&aCreate New Product": "&aСоздать новый товар",
   "&aPrevious Page": "&aПредыдущая страница",
@@ -239,8 +239,8 @@
   "Purchase Limit": "Лимит покупки",
   "Disabled": "Отключено",
   "Reset Purchase Count": "Сбросить количество покупок",
-  "&cBad Syntax! &f/spt unlimitedsupply <id>": "&cBad Syntax! &f/spt unlimitedsupply <id>",
-  "&cWhoops! You are not authorised to do that.": "&cWhoops! You are not authorised to do that.",
-  "&aToggled unlimited supply.": "&aToggled unlimited supply.",
-  "&e&lUnlimited Supply Enabled": "&e&lUnlimited Supply Enabled"
+  "&cBad Syntax! &f/spt unlimitedsupply <id>": "&cНеправильный синтаксис! &f/spt unlimitedsupply <id>",
+  "&cWhoops! You are not authorised to do that.": "&cУпс! У вас не достаточно прав для этого.",
+  "&aToggled unlimited supply.": "&aПереключён бесконечный запас.",
+  "&e&lUnlimited Supply Enabled": "&e&lБесконечный запас включён"
 }
