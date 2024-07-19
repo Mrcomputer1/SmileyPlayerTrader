@@ -1,5 +1,4 @@
 {
-  "$$version$$": 15,
   "$$version$$": 16,
   "$$credit$$": "",
   "&e%0% is now trading with you.": "&e%0% сейчас с тобой трейдится.",
@@ -167,7 +166,7 @@
   "&f/spt deposit <id> &e- Deposit items into item storage": "&f/spt deposit <id> &e- Поставить предметы на депозит в хранилище",
   "&cBad Syntax! &f/spt withdraw <id> [limit]": "&cНеправильный синтаксис! &f/spt withdraw <id> [лимит]",
   "&aWithdrew %0% of %1%.": "&aОтозвал %0% из %1%.",
-  "&f/spt withdraw <id> [limit] &e- Withdraw items from item storage": "&f/spt withdraw <id> [лимит] &e- Взять предметі из хранилища",
+  "&f/spt withdraw <id> [limit] &e- Withdraw items from item storage": "&f/spt withdraw <id> [лимит] &e- Взять предметы из хранилища",
   "&cThis item does not match the type of the product.": "&cДанный предмет не соответствует типу товара.",
   "&cYou do not have enough of that product.": "&cУ вас недостаточно данного товара.",
   "&cYou must withdraw all stored product before changing the product.": "&cВы должны изъять весь товар из хранилища перед его изменением.",
