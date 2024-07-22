@@ -9,7 +9,7 @@ import java.io.*;
 public class I18N {
 
     private JsonObject language;
-    private static String[] languages = {"en_us", "ru_ru", "pl_pl"};
+    private static String[] languages = {"en_us", "ru_ru", "pl_pl", "vi_vn"};
 
     public void loadLanguages(){
         String lang = SmileyPlayerTrader.getInstance().getConfiguration().getCurrentLanguage();
