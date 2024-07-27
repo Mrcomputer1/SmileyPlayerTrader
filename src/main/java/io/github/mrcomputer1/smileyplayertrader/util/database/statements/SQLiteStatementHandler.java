@@ -32,7 +32,8 @@ public class SQLiteStatementHandler implements StatementHandler {
                 "stored_cost2 INTEGER DEFAULT 0 NOT NULL," +
                 "hide_on_out_of_stock INTEGER DEFAULT 0 NOT NULL," +
                 "purchase_limit INTEGER DEFAULT -1 NOT NULL," +
-                "purchase_count INTEGER DEFAULT 0 NOT NULL)");
+                "purchase_count INTEGER DEFAULT 0 NOT NULL," +
+                "unlimited_supply BOOLEAN DEFAULT 0 NOT NULL)");
         statements.put(StatementType.CREATE_SETTINGS_TABLE, "CREATE TABLE IF NOT EXISTS $prefix$settings (" +
                 "player TEXT NOT NULL," +
                 "trade_toggle BOOLEAN DEFAULT 1 NOT NULL," +
