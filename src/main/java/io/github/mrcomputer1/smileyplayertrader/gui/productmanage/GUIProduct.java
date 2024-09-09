@@ -14,6 +14,7 @@ import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -166,6 +167,11 @@ public class GUIProduct extends GUI {
         }
         GUIManager.getInstance().openGui(this.getPlayer(), new GUISetCost(this.getPlayer(), this.state, false));
         return false;
+    }
+
+    @Override
+    protected boolean onPlayerInventoryClick(ClickType click, int clickSlot, ItemStack clickedStack) {
+        return click != ClickType.SHIFT_LEFT && click != ClickType.SHIFT_RIGHT && click != ClickType.DOUBLE_CLICK;
     }
 
 }

@@ -11,6 +11,7 @@ import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.ItemStack;
 
 public class GUISetCost extends GUI {
 
@@ -105,6 +106,11 @@ public class GUISetCost extends GUI {
         GeyserUtil.showFormDelayed(this.getPlayer(), new BedrockGUISetCostQuantity(this.getPlayer(), this.state, this.isPrimary));
 
         return false;
+    }
+
+    @Override
+    protected boolean onPlayerInventoryClick(ClickType click, int clickSlot, ItemStack clickedStack) {
+        return click != ClickType.SHIFT_LEFT && click != ClickType.SHIFT_RIGHT && click != ClickType.DOUBLE_CLICK;
     }
 
 }
