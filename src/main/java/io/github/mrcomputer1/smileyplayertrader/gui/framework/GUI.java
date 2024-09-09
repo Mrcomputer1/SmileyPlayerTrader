@@ -188,6 +188,14 @@ public abstract class GUI {
             return;
         }
 
+        boolean firstCondition = e.getClick().equals(ClickType.DOUBLE_CLICK) && e.getClickedInventory().getType().equals(InventoryType.PLAYER);
+        boolean secondCondition = e.getClick().equals(ClickType.SHIFT_LEFT) && e.getClickedInventory().getType().equals(InventoryType.PLAYER);
+        boolean thirdCondition = e.getClick().equals(ClickType.SHIFT_RIGHT) && e.getClickedInventory().getType().equals(InventoryType.PLAYER);
+        if (firstCondition || secondCondition|| thirdCondition) {
+            e.setCancelled(true);
+            return;
+        }
+
         try {
             if (!GUI.isInGUIArea(this.rows, e.getRawSlot())) {
                 if (this.allowInteractingWithPlayerInventory) {
