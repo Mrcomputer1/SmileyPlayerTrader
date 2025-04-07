@@ -48,6 +48,12 @@ public class GenericStatementHandler implements StatementHandler {
         statements.put(StatementType.RESET_PURCHASE_COUNT, "UPDATE $prefix$products SET purchase_count=0 WHERE id=?");
         statements.put(StatementType.SET_PURCHASE_LIMIT, "UPDATE $prefix$products SET purchase_limit=? WHERE id=?");
         statements.put(StatementType.TOGGLE_UNLIMITED_SUPPLY, "UPDATE $prefix$products SET unlimited_supply=(NOT unlimited_supply) WHERE id=?");
+        statements.put(StatementType.COUNT_PRODUCTS_FOR, "SELECT COUNT(*) AS count FROM $prefix$products WHERE merchant=? AND enabled=? AND available=?");
+        statements.put(StatementType.COUNT_PRODUCTS_GLOBAL, "SELECT COUNT(*) AS count FROM $prefix$products WHERE enabled=? AND available=?");
+        statements.put(StatementType.COUNT_INACTIVE_PRODUCTS_FOR, "SELECT COUNT(*) AS count FROM $prefix$products WHERE merchant=? AND (enabled=0 OR available=0)");
+        statements.put(StatementType.COUNT_INACTIVE_PRODUCTS_GLOBAL, "SELECT COUNT(*) AS count FROM $prefix$products WHERE enabled=0 OR available=0");
+        statements.put(StatementType.COUNT_ALL_PRODUCTS_FOR, "SELECT COUNT(*) AS count FROM $prefix$products WHERE merchant=?");
+        statements.put(StatementType.COUNT_ALL_PRODUCTS_GLOBAL, "SELECT COUNT(*) AS count FROM $prefix$products");
     }
 
     @Override

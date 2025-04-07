@@ -191,7 +191,31 @@ public interface StatementHandler {
         /**
          * id (int)
          */
-        TOGGLE_UNLIMITED_SUPPLY
+        TOGGLE_UNLIMITED_SUPPLY,
+
+        /**
+         * merchant (uuid), enabled (bool), available (bool)
+         */
+        COUNT_PRODUCTS_FOR,
+
+        /**
+         * enabled (bool), available (bool)
+         */
+        COUNT_PRODUCTS_GLOBAL,
+
+        /**
+         * merchant (uuid)
+         */
+        COUNT_INACTIVE_PRODUCTS_FOR,
+
+        COUNT_INACTIVE_PRODUCTS_GLOBAL,
+
+        /**
+         * merchant (uuid)
+         */
+        COUNT_ALL_PRODUCTS_FOR,
+
+        COUNT_ALL_PRODUCTS_GLOBAL
     }
 
     void run(StatementType type, Object... objs);
