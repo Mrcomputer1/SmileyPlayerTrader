@@ -45,7 +45,11 @@ public class EventListener implements Listener {
             return;
         if(!e.getPlayer().hasPermission("smileyplayertrader.trade"))
             return;
-        if(!SmileyPlayerTrader.getInstance().getPlayerConfig().getPlayer(e.getPlayer()).tradeToggle || SmileyPlayerTrader.getInstance().getPlayerConfig().isLocked(e.getPlayer()))
+
+        PlayerConfig.Config playerConfig = SmileyPlayerTrader.getInstance().getPlayerConfig().getPlayer(e.getPlayer());
+        if(playerConfig == null) // If playerConfig is null, assume player is offline.
+            return;
+        if(!playerConfig.tradeToggle || SmileyPlayerTrader.getInstance().getPlayerConfig().isLocked(e.getPlayer()))
             return;
 
         if(e.getRightClicked().getType() == EntityType.PLAYER){
