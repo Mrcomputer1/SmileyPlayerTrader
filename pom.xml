@@ -6,7 +6,7 @@
 
     <groupId>io.github.mrcomputer1.smileyplayertrader</groupId>
     <artifactId>SmileyPlayerTrader</artifactId>
-    <version>1.7.19-SNAPSHOT</version>
+    <version>1.7.20</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
