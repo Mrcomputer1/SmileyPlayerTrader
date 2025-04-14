@@ -1,5 +1,5 @@
 {
-  "$$version$$": 14,
+  "$$version$$": 15,
   "$$credit$$": "",
   "&e%0% is now trading with you.": "&e%0% is now trading with you.",
   "&2Villager Store: ": "&2Villager Store: ",
@@ -243,5 +243,6 @@
   "&cBad Syntax! &f/spt unlimitedsupply <id>": "&cBad Syntax! &f/spt unlimitedsupply <id>",
   "&cWhoops! You are not authorised to do that.": "&cWhoops! You are not authorised to do that.",
   "&aToggled unlimited supply.": "&aToggled unlimited supply.",
-  "&e&lUnlimited Supply Enabled": "&e&lUnlimited Supply Enabled"
+  "&e&lUnlimited Supply Enabled": "&e&lUnlimited Supply Enabled",
+  "&a%0% is now selling %1%.": "&a%0% is now selling %1%."
 }

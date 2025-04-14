@@ -1,5 +1,5 @@
 {
-  "$$version$$": 13,
+  "$$version$$": 14,
   "$$credit$$": "Polskie tłumaczenie wykonane przez gvvda21",
   "&e%0% is now trading with you.": "&e%0% przegląda twój sklep.",
   "&2Villager Store: ": "&2Sklep osadnika: ",
@@ -243,5 +243,6 @@
   "&cBad Syntax! &f/spt unlimitedsupply <id>": "&cZła składnia! &f/spt unlimitedsupply <id>",
   "&cWhoops! You are not authorised to do that.": "&cUps! Nie masz uprawnien żeby to zrobić.",
   "&aToggled unlimited supply.": "&aWłączono nielimitowane zaopatrzenie.",
-  "&e&lUnlimited Supply Enabled": "&e&lNielimitowane zaopatrzenie produktu włączone!"
+  "&e&lUnlimited Supply Enabled": "&e&lNielimitowane zaopatrzenie produktu włączone!",
+  "&a%0% is now selling %1%.": "&a%0% is now selling %1%."
 }

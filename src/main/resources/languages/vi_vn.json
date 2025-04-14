@@ -1,5 +1,5 @@
 {
-  "$$version$$": 14,
+  "$$version$$": 15,
   "$$credit$$": "Bản dịch tiếng Việt được dịch bởi CoPeBanSIMP",
   "&e%0% is now trading with you.": "&e%0% hiện tại đang mở shop của bạn.",
   "&2Villager Store: ": "&1Người bán: &4&l",
@@ -243,5 +243,6 @@
   "&cBad Syntax! &f/spt unlimitedsupply <id>": "&cLỗi cú pháp! &f/spt unlimitedsupply <id>",
   "&cWhoops! You are not authorised to do that.": "&cWhoops! Bạn không có quyền để dùng chức năng này.",
   "&aToggled unlimited supply.": "&aNguồn vật phẩm không giới hạn đã được cập nhập cho vật phẩm.",
-  "&e&lUnlimited Supply Enabled": "&d&oNguồn vật phẩm không giới hạn đã được kích hoạt"  
+  "&e&lUnlimited Supply Enabled": "&d&oNguồn vật phẩm không giới hạn đã được kích hoạt",
+  "&a%0% is now selling %1%.": "&a%0% is now selling %1%."
 }

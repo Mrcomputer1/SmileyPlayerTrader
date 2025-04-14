@@ -1,5 +1,5 @@
 {
-  "$$version$$": 16,
+  "$$version$$": 17,
   "$$credit$$": "",
   "&e%0% is now trading with you.": "&e%0% сейчас с тобой трейдится.",
   "&2Villager Store: ": "&2Магазин Жителей: ",
@@ -243,5 +243,6 @@
   "&cBad Syntax! &f/spt unlimitedsupply <id>": "&cНеправильный синтаксис! &f/spt unlimitedsupply <id>",
   "&cWhoops! You are not authorised to do that.": "&cУпс! У вас не достаточно прав для этого.",
   "&aToggled unlimited supply.": "&aПереключён бесконечный запас.",
-  "&e&lUnlimited Supply Enabled": "&e&lБесконечный запас включён"
+  "&e&lUnlimited Supply Enabled": "&e&lБесконечный запас включён",
+  "&a%0% is now selling %1%.": "&a%0% is now selling %1%."
 }
