@@ -221,6 +221,10 @@ public class SPTConfiguration {
     }
     // End Out of Stock Behaviour
 
+    public String getSendNotificationOnNewTrade() {
+        return this.config.getString("sendNotificationOnNewTrade", "false");
+    }
+
     public boolean getDoesUnlimitedSupplyEarn() {
         return this.config.getBoolean("doesUnlimitedSupplyEarn", true);
     }

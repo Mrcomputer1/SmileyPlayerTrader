@@ -85,6 +85,14 @@ outOfStockBehaviour: showByDefault
 # Configures if earnings are given for an item with the admin option unlimited supply enabled.
 doesUnlimitedSupplyEarn: true
 
+# Configures if a notification is sent to the server when a player creates a new trade.
+# - "false" indicates no message should be sent.
+# - "default" indicates the default message should be sent ("&a%MERCHANT% is now selling %ITEM_TYPE%.")
+# - Any other value indicates a custom message to be sent. You can use colour codes and these replacements:
+# -   * %MERCHANT% - The name of the player with the trade.
+# -   * %ITEM_TYPE% - The type of the item the player is selling.
+sendNotificationOnNewTrade: "false"
+
 # Configures if Vault is used to check permissions of offline players when attempting to trade with them.
 # Disable this if you have Vault but don't have a permission plugin or the one you have doesn't support offline players.
 # If disabled, the default permission value will be used instead. For "smileyplayertrader.merchant", this is "allow".

@@ -9,6 +9,7 @@ import io.github.mrcomputer1.smileyplayertrader.gui.framework.component.LabelCom
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.component.SlotComponent;
 import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import io.github.mrcomputer1.smileyplayertrader.util.TradeNotification;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.Material;
@@ -126,6 +127,13 @@ public class GUIProduct extends GUI {
                     (state.costStack == null || state.costStack.getType().isAir()) ? null : VersionSupport.itemStackToByteArray(state.costStack);
             byte[] cost2Bytes =
                     (state.costStack2 == null || state.costStack2.getType().isAir()) ? null : VersionSupport.itemStackToByteArray(state.costStack2);
+
+            if (!state.startedValid) {
+                if(stackBytes != null && costBytes != null) {
+                    // Send new trade notification
+                    TradeNotification.sendNewTradeNotification(state.target, state.stack);
+                }
+            }
 
             if(state.isNew){
                 SmileyPlayerTrader.getInstance().getStatementHandler().run(

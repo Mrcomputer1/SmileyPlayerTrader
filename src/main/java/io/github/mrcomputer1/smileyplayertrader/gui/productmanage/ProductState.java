@@ -17,6 +17,7 @@ public class ProductState {
     // Product Details
     public final boolean isNew;
     public final int id;
+    public final boolean startedValid; // product and cost were valid (not null) when editing started
 
     // Items
     public ItemStack stack = TEMPLATE_ITEM.clone();
@@ -46,6 +47,7 @@ public class ProductState {
 
         this.isNew = true;
         this.id = -1;
+        this.startedValid = false;
 
         switch(SmileyPlayerTrader.getInstance().getConfiguration().getOutOfStockBehaviour()){
             case HIDE_BY_DEFAULT:
@@ -87,6 +89,8 @@ public class ProductState {
                 this.storedProduct = set.getInt("stored_product");
                 this.storedCost = set.getInt("stored_cost");
                 this.storedCost2 = set.getInt("stored_cost2");
+
+                this.startedValid = productStackData != null && costStackData != null;
 
             }else throw new RuntimeException("Invalid ID.");
         } catch (SQLException e) {
