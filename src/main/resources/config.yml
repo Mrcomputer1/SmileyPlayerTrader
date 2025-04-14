@@ -69,7 +69,6 @@ useGuiManager: true
 disableRightClickTrading: false
 
 # Configure item storage, used for offline trading.
-# [BETA FEATURE]
 itemStorage:
   enable: false # Enables storing product items and earnings in the product for offline trading.
   productStorageLimit: -1 # Limits amount of an item that can be stored. -1 to disable.
@@ -85,6 +84,11 @@ outOfStockBehaviour: showByDefault
 
 # Configures if earnings are given for an item with the admin option unlimited supply enabled.
 doesUnlimitedSupplyEarn: true
+
+# Configures if Vault is used to check permissions of offline players when attempting to trade with them.
+# Disable this if you have Vault but don't have a permission plugin or the one you have doesn't support offline players.
+# If disabled, the default permission value will be used instead. For "smileyplayertrader.merchant", this is "allow".
+disableVaultOfflinePermissionChecking: false
 
 # Automatically toggle off while in combat
 autoCombatLock:

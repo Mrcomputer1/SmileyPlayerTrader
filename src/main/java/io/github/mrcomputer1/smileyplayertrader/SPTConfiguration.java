@@ -225,6 +225,10 @@ public class SPTConfiguration {
         return this.config.getBoolean("doesUnlimitedSupplyEarn", true);
     }
 
+    public boolean getDisableVaultOfflinePermissionChecking() {
+        return this.config.getBoolean("disableVaultOfflinePermissionChecking", false);
+    }
+
     // Start Auto Combat Lock
     public boolean getAutoCombatLockEnabled(){
         return this.config.getBoolean("autoCombatLock.enabled", true);
