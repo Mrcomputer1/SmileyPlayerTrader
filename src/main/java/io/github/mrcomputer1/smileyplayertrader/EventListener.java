@@ -3,6 +3,7 @@ package io.github.mrcomputer1.smileyplayertrader;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
 import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import io.github.mrcomputer1.smileyplayertrader.util.RegionUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import io.github.mrcomputer1.smileyplayertrader.util.item.stocklocations.StockLocations;
@@ -301,9 +302,15 @@ public class EventListener implements Listener {
 
         if(SmileyPlayerTrader.getInstance().getConfiguration().getAutoCombatLockEnabled()) {
             if (e.getDamager() instanceof Player) {
-                SmileyPlayerTrader.getInstance().getPlayerConfig().lockPlayer((Player) e.getDamager());
+                Player player = (Player) e.getDamager();
+                if(!RegionUtil.isAllowed(player))
+                    return;
+                SmileyPlayerTrader.getInstance().getPlayerConfig().lockPlayer(player);
             }
             if (e.getEntity() instanceof Player){
+                Player player = (Player) e.getEntity();
+                if(!RegionUtil.isAllowed(player))
+                    return;
                 SmileyPlayerTrader.getInstance().getPlayerConfig().lockPlayer((Player) e.getEntity());
             }
         }

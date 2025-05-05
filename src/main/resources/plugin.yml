@@ -11,6 +11,7 @@ softdepend:
   - Geyser-Spigot # for better experience on bedrock
   - floodgate # for better experience on bedrock
   - PlaceholderAPI # to create placeholder expansions
+  - WorldGuard # for region flag
 commands:
   smileyplayertrader:
     description: "Smiley Player Trader Command"

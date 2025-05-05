@@ -3,6 +3,7 @@ package io.github.mrcomputer1.smileyplayertrader.util.merchant;
 import io.github.mrcomputer1.smileyplayertrader.SPTConfiguration;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import io.github.mrcomputer1.smileyplayertrader.util.RegionUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.VaultUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
@@ -127,6 +128,12 @@ public class MerchantUtil {
 
                 break;
             }
+        }
+
+        if (!RegionUtil.isAllowed(player)) {
+            if (unsuccessfulFeedback)
+                player.sendMessage(I18N.translate("&cYou cannot trade here."));
+            return;
         }
 
         if(player.getUniqueId().equals(store.getUniqueId()) && !SmileyPlayerTrader.getInstance().getConfiguration().getDebugSelfTrading()){
