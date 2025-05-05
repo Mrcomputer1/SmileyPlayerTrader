@@ -108,10 +108,25 @@ public class MerchantUtil {
             return;
         }
 
-        if(SmileyPlayerTrader.getInstance().getConfiguration().getDisabledWorlds().contains(player.getWorld().getName())){
-            if(unsuccessfulFeedback)
-                player.sendMessage(I18N.translate("&cYou cannot trade in this world."));
-            return;
+        switch (SmileyPlayerTrader.getInstance().getConfiguration().getAllowedWorldsMode()) {
+            case WHITELIST: {
+                if (!SmileyPlayerTrader.getInstance().getConfiguration().getAllowedWorldsList().contains(player.getWorld().getName())){
+                    if(unsuccessfulFeedback)
+                        player.sendMessage(I18N.translate("&cYou cannot trade in this world."));
+                    return;
+                }
+
+                break;
+            }
+            case BLACKLIST: {
+                if (SmileyPlayerTrader.getInstance().getConfiguration().getAllowedWorldsList().contains(player.getWorld().getName())){
+                    if(unsuccessfulFeedback)
+                        player.sendMessage(I18N.translate("&cYou cannot trade in this world."));
+                    return;
+                }
+
+                break;
+            }
         }
 
         if(player.getUniqueId().equals(store.getUniqueId()) && !SmileyPlayerTrader.getInstance().getConfiguration().getDebugSelfTrading()){

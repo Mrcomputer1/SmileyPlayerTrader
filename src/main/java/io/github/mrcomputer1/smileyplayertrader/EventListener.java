@@ -284,8 +284,19 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onEntityTakeDamageByEntity(EntityDamageByEntityEvent e) {
-        if(SmileyPlayerTrader.getInstance().getConfiguration().getDisabledWorlds().contains(e.getEntity().getWorld().getName())){
-            return;
+        switch (SmileyPlayerTrader.getInstance().getConfiguration().getAllowedWorldsMode()) {
+            case WHITELIST: {
+                if (!SmileyPlayerTrader.getInstance().getConfiguration().getAllowedWorldsList().contains(e.getEntity().getWorld().getName()))
+                    return;
+
+                break;
+            }
+            case BLACKLIST: {
+                if (SmileyPlayerTrader.getInstance().getConfiguration().getAllowedWorldsList().contains(e.getEntity().getWorld().getName()))
+                    return;
+
+                break;
+            }
         }
 
         if(SmileyPlayerTrader.getInstance().getConfiguration().getAutoCombatLockEnabled()) {

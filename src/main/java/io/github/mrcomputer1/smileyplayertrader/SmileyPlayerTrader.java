@@ -41,6 +41,11 @@ public class SmileyPlayerTrader extends JavaPlugin {
         saveDefaultConfig();
         this.configuration = new SPTConfiguration(getConfig());
 
+        if(this.configuration.hasLegacyDisabledWorldsAndAllowedWorldsConfig())
+            getLogger().warning("The configuration file specifies both the legacy 'disabledWorlds' configuration setting " +
+                    "and the newer 'allowedWorlds' setting. The 'allowedWorlds.worlds' list will be prioritised over the " +
+                    "legacy 'disabledWorlds' setting.");
+
         // bStats
         if(!getDescription().getVersion().contains("-SNAPSHOT")) { // Disable bStats on development versions.
             this.metrics = new Metrics(this, BSTATS_PLUGIN_ID);
