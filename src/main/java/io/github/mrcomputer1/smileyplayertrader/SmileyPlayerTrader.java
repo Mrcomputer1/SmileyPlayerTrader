@@ -2,6 +2,7 @@ package io.github.mrcomputer1.smileyplayertrader;
 
 import io.github.mrcomputer1.smileyplayertrader.command.CommandSmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
+import io.github.mrcomputer1.smileyplayertrader.util.RegionUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.SPTPlaceholderExpansions;
 import io.github.mrcomputer1.smileyplayertrader.util.database.AbstractDatabase;
 import io.github.mrcomputer1.smileyplayertrader.util.database.DatabaseUtil;
@@ -133,6 +134,12 @@ public class SmileyPlayerTrader extends JavaPlugin {
         if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new SPTPlaceholderExpansions().register();
         }
+    }
+
+    @Override
+    public void onLoad() {
+        // Regions
+        RegionUtil.setup();
     }
 
     @Override
