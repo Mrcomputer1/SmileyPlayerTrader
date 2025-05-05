@@ -14,9 +14,53 @@ public class SPTConfiguration {
         this.config = config;
     }
 
-    public List<String> getDisabledWorlds(){
+    // Allowed Worlds
+    public enum EnumAllowedWorldsMode {
+        BLACKLIST("blacklist"),
+        WHITELIST("whitelist");
+
+        private static final Map<String, EnumAllowedWorldsMode> allowedWorldModes = new HashMap<>();
+
+        static {
+            for (EnumAllowedWorldsMode mode : values()) {
+                allowedWorldModes.put(mode.id.toLowerCase(), mode);
+            }
+        }
+
+        public static EnumAllowedWorldsMode getById(String id) {
+            if (id == null)
+                return BLACKLIST;
+            EnumAllowedWorldsMode mode = allowedWorldModes.get(id.toLowerCase());
+            return mode == null ? EnumAllowedWorldsMode.BLACKLIST : mode;
+        }
+
+        private final String id;
+
+        EnumAllowedWorldsMode(String id) {
+            this.id = id;
+        }
+
+        public String getId() {
+            return id;
+        }
+    }
+
+    public EnumAllowedWorldsMode getAllowedWorldsMode() {
+        return EnumAllowedWorldsMode.getById(this.config.getString("allowedWorlds.mode", EnumAllowedWorldsMode.BLACKLIST.getId()));
+    }
+
+    public List<String> getAllowedWorldsList() {
+        if (this.config.contains("allowedWorlds.worlds", true))
+            return this.config.getStringList("allowedWorlds.worlds");
+
+        // Legacy config property support
         return this.config.getStringList("disabledWorlds");
     }
+
+    public boolean hasLegacyDisabledWorldsAndAllowedWorldsConfig() {
+        return this.config.contains("disabledWorlds", true) && this.config.contains("allowedWorlds.worlds", true);
+    }
+    // End Allowed Worlds
 
     public List<String> getStockLocations(){
         return this.config.getStringList("stockLocations");

@@ -1,8 +1,12 @@
 # Smiley Player Trader Configuration
 # Configuration Documentation: https://github.com/Mrcomputer1/SmileyPlayerTrader/wiki/Configuration
 
-# A list of worlds where you cannot trade with players.
-disabledWorlds: []
+# Configures worlds that players can or can't trade in.
+allowedWorlds:
+  # Either blacklist (players must not be in this world to trade) or whitelist (players must be in this to trade).
+  mode: blacklist
+  # List of worlds.
+  worlds: []
 
 # A list of sources for products
 stockLocations:
