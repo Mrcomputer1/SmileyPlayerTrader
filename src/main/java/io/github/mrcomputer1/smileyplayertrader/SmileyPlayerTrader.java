@@ -10,6 +10,7 @@ import io.github.mrcomputer1.smileyplayertrader.util.database.statements.Stateme
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -51,7 +52,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
         if(!getDescription().getVersion().contains("-SNAPSHOT")) { // Disable bStats on development versions.
             this.metrics = new Metrics(this, BSTATS_PLUGIN_ID);
 
-            this.metrics.addCustomChart(new Metrics.SimplePie("database_system", new Callable<String>() {
+            this.metrics.addCustomChart(new SimplePie("database_system", new Callable<String>() {
                 @Override
                 public String call() {
                     switch(getConfiguration().getDatabaseType()){
