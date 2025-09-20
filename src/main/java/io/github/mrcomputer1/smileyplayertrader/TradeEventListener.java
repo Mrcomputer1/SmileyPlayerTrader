@@ -58,13 +58,13 @@ public class TradeEventListener implements Listener {
         }
     }
 
-    private void verifyTradeStillValid(InventoryClickEvent e, MerchantInventory mi, ResultSet set)
+    private boolean verifyTradeStillValid(InventoryClickEvent e, MerchantInventory mi, ResultSet set)
             throws SQLException, InvocationTargetException {
         // Check hidden/disabled
         if (!set.getBoolean("enabled") || !set.getBoolean("available")) {
             e.setCancelled(true);
             GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product is no longer for sale."));
-            return;
+            return false;
         }
 
         // Check product remains unchanged
@@ -72,13 +72,13 @@ public class TradeEventListener implements Listener {
         if (productBytes == null) {
             e.setCancelled(true);
             GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
-            return;
+            return false;
         }
         ItemStack product = VersionSupport.byteArrayToItemStack(productBytes);
         if (product == null || !product.equals(mi.getSelectedRecipe().getResult())) {
             e.setCancelled(true);
             GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
-            return;
+            return false;
         }
 
         // Check cost 1 remains unchanged
@@ -86,14 +86,14 @@ public class TradeEventListener implements Listener {
         if (cost1Bytes == null) {
             e.setCancelled(true);
             GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
-            return;
+            return false;
         }
         ItemStack cost1 = VersionSupport.byteArrayToItemStack(cost1Bytes);
         ItemStack cost1InSlot = mi.getSelectedRecipe().getIngredients().get(0);
         if (cost1 == null || !cost1.equals(cost1InSlot)) {
             e.setCancelled(true);
             GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
-            return;
+            return false;
         }
 
         // Check cost 2 remains unchanged
@@ -101,7 +101,7 @@ public class TradeEventListener implements Listener {
         if (cost2Bytes == null && mi.getSelectedRecipe().getIngredients().size() >= 2) { // if ingredients >= 2, cost2 can't have been null
             e.setCancelled(true);
             GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
-            return;
+            return false;
         }
         if (cost2Bytes != null) {
             ItemStack cost2 = VersionSupport.byteArrayToItemStack(cost2Bytes);
@@ -110,7 +110,7 @@ public class TradeEventListener implements Listener {
             if (cost2 == null || !cost2.equals(cost2InSlot)) {
                 e.setCancelled(true);
                 GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
-                return;
+                return false;
             }
         }
 
@@ -119,7 +119,7 @@ public class TradeEventListener implements Listener {
         if (discount != VersionSupport.getSpecialCountForRecipe(mi)) {
             e.setCancelled(true);
             GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product has been changed, please reopen the trading UI."));
-            return;
+            return false;
         }
 
         // Check purchase count remains within purchase limit
@@ -128,8 +128,10 @@ public class TradeEventListener implements Listener {
         if (purchaseLimit != -1 && purchaseCount >= purchaseLimit) {
             e.setCancelled(true);
             GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThis product is no longer for sale."));
-            return;
+            return false;
         }
+
+        return true;
     }
 
     private void handleItemRanOutOfStockAfterPurchase(InventoryClickEvent e, MerchantInventory mi, OfflinePlayer store, long productId, boolean unlimitedSupply)
@@ -204,6 +206,31 @@ public class TradeEventListener implements Listener {
         }
     }
 
+    private boolean ensureCostMatchs(InventoryClickEvent e, MerchantInventory mi) {
+        ItemStack cost1 = e.getInventory().getItem(INPUT_SLOT_1);
+        ItemStack cost2 = e.getInventory().getItem(INPUT_SLOT_2);
+        if(cost1 == null) {
+            cost1 = cost2;
+            cost2 = null;
+        }
+
+        if (!cost1.isSimilar(mi.getSelectedRecipe().getIngredients().get(0))) {
+            e.setCancelled(true);
+            GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThe item you are using to pay doesn't match the cost."));
+            return false;
+        }
+
+        if (mi.getSelectedRecipe().getIngredients().size() >= 2) {
+            if (!cost2.isSimilar(mi.getSelectedRecipe().getIngredients().get(1))) {
+                e.setCancelled(true);
+                GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cThe item you are using to pay doesn't match the cost."));
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private void onTradeSlotClick(InventoryClickEvent e) {
         if (e.getClick() == ClickType.SHIFT_LEFT || e.getClick() == ClickType.SHIFT_RIGHT) {
             e.setCancelled(true);
@@ -231,7 +258,8 @@ public class TradeEventListener implements Listener {
         try (ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.GET_PRODUCT_BY_ID, productId)) {
             if (set.next()) {
                 // Verify the trade is still valid.
-                verifyTradeStillValid(e, mi, set);
+                if (!verifyTradeStillValid(e, mi, set))
+                    return;
 
                 // Retrieve unlimited supply
                 unlimitedSupply = set.getBoolean("unlimited_supply");
@@ -244,6 +272,11 @@ public class TradeEventListener implements Listener {
             ex.printStackTrace();
             e.setCancelled(true);
             return;
+        }
+
+        if (SmileyPlayerTrader.getInstance().getConfiguration().getPurchaseCostComparison() == SPTConfiguration.EnumPurchaseCostComparison.STRICT) {
+            if (!ensureCostMatchs(e, mi))
+                return;
         }
 
         // Check if the player has the item

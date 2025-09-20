@@ -1,5 +1,5 @@
 {
-  "$$version$$": 15,
+  "$$version$$": 16,
   "$$credit$$": "Polskie tłumaczenie wykonane przez gvvda21",
   "&e%0% is now trading with you.": "&e%0% przegląda twój sklep.",
   "&2Villager Store: ": "&2Sklep osadnika: ",
@@ -245,5 +245,6 @@
   "&aToggled unlimited supply.": "&aWłączono nielimitowane zaopatrzenie.",
   "&e&lUnlimited Supply Enabled": "&e&lNielimitowane zaopatrzenie produktu włączone!",
   "&a%0% is now selling %1%.": "&a%0% is now selling %1%.",
-  "&cYou cannot trade here.": "&cYou cannot trade here."
+  "&cYou cannot trade here.": "&cYou cannot trade here.",
+  "&cThe item you are using to pay doesn't match the cost.": "&cThe item you are using to pay doesn't match the cost."
 }

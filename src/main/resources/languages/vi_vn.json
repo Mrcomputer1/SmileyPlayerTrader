@@ -1,5 +1,5 @@
 {
-  "$$version$$": 16,
+  "$$version$$": 17,
   "$$credit$$": "Bản dịch tiếng Việt được dịch bởi CoPeBanSIMP",
   "&e%0% is now trading with you.": "&e%0% hiện tại đang mở shop của bạn.",
   "&2Villager Store: ": "&1Người bán: &4&l",
@@ -245,5 +245,6 @@
   "&aToggled unlimited supply.": "&aNguồn vật phẩm không giới hạn đã được cập nhập cho vật phẩm.",
   "&e&lUnlimited Supply Enabled": "&d&oNguồn vật phẩm không giới hạn đã được kích hoạt",
   "&a%0% is now selling %1%.": "&a%0% is now selling %1%.",
-  "&cYou cannot trade here.": "&cYou cannot trade here."
+  "&cYou cannot trade here.": "&cYou cannot trade here.",
+  "&cThe item you are using to pay doesn't match the cost.": "&cThe item you are using to pay doesn't match the cost."
 }

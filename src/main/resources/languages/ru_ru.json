@@ -1,5 +1,5 @@
 {
-  "$$version$$": 20,
+  "$$version$$": 21,
   "$$credit$$": "",
   "&e%0% is now trading with you.": "&e%0% сейчас с тобой трейдится.",
   "&2Villager Store: ": "&2Магазин Жителей: ",
@@ -245,5 +245,6 @@
   "&aToggled unlimited supply.": "&aПереключён бесконечный запас.",
   "&e&lUnlimited Supply Enabled": "&e&lБесконечный запас включён",
   "&a%0% is now selling %1%.": "&aУ игрока %0% появился в продаже товар %1%.",
-  "&cYou cannot trade here.": "&cВы не можете здесь торговать."
+  "&cYou cannot trade here.": "&cВы не можете здесь торговать.",
+  "&cThe item you are using to pay doesn't match the cost.": "&cThe item you are using to pay doesn't match the cost."
 }

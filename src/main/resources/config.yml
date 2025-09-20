@@ -89,6 +89,12 @@ outOfStockBehaviour: showByDefault
 # Configures if earnings are given for an item with the admin option unlimited supply enabled.
 doesUnlimitedSupplyEarn: true
 
+# Configures how the cost items are compared when purchasing.
+# Supported options are:
+# strict - The cost item must match the item provided by the player exactly.
+# vanilla - Item data is ignored on the item provided by the player when the cost item has no item data. This matches vanilla's trading behaviour.
+purchaseCostComparison: strict
+
 # Configures if a notification is sent to the server when a player creates a new trade.
 # - "false" indicates no message should be sent.
 # - "default" indicates the default message should be sent ("&a%MERCHANT% is now selling %ITEM_TYPE%.")

@@ -273,6 +273,42 @@ public class SPTConfiguration {
         return this.config.getBoolean("doesUnlimitedSupplyEarn", true);
     }
 
+    // Start Purchase Cost Comparison
+    public enum EnumPurchaseCostComparison {
+        STRICT("strict"),
+        VANILLA("vanilla");
+
+        private static final Map<String, EnumPurchaseCostComparison> methods = new HashMap<>();
+
+        static {
+            for (EnumPurchaseCostComparison method : values()) {
+                methods.put(method.id.toLowerCase(), method);
+            }
+        }
+
+        public static EnumPurchaseCostComparison getById(String id){
+            if(id == null)
+                return EnumPurchaseCostComparison.STRICT;
+            EnumPurchaseCostComparison behaviour = methods.get(id.toLowerCase());
+            return behaviour == null ? EnumPurchaseCostComparison.STRICT : behaviour;
+        }
+
+        private final String id;
+
+        EnumPurchaseCostComparison(String id){
+            this.id = id;
+        }
+
+        public String getId() {
+            return id;
+        }
+    }
+
+    public EnumPurchaseCostComparison getPurchaseCostComparison() {
+        return EnumPurchaseCostComparison.getById(this.config.getString("purchaseCostComparison", EnumPurchaseCostComparison.STRICT.getId()));
+    }
+    // End Purchase Cost Comparison
+
     public boolean getDisableVaultOfflinePermissionChecking() {
         return this.config.getBoolean("disableVaultOfflinePermissionChecking", false);
     }

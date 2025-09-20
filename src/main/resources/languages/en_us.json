@@ -1,5 +1,5 @@
 {
-  "$$version$$": 16,
+  "$$version$$": 17,
   "$$credit$$": "",
   "&e%0% is now trading with you.": "&e%0% is now trading with you.",
   "&2Villager Store: ": "&2Villager Store: ",
@@ -245,5 +245,6 @@
   "&aToggled unlimited supply.": "&aToggled unlimited supply.",
   "&e&lUnlimited Supply Enabled": "&e&lUnlimited Supply Enabled",
   "&a%0% is now selling %1%.": "&a%0% is now selling %1%.",
-  "&cYou cannot trade here.": "&cYou cannot trade here."
+  "&cYou cannot trade here.": "&cYou cannot trade here.",
+  "&cThe item you are using to pay doesn't match the cost.": "&cThe item you are using to pay doesn't match the cost."
 }
