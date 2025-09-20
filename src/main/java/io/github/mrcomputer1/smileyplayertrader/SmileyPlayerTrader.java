@@ -126,6 +126,7 @@ public class SmileyPlayerTrader extends JavaPlugin {
 
         // GUIs
         Bukkit.getPluginManager().registerEvents(new EventListener(), this);
+        Bukkit.getPluginManager().registerEvents(new TradeEventListener(), this);
         if(getConfiguration().getUseGuiManager()){
             this.guiManager = new GUIManager();
             Bukkit.getPluginManager().registerEvents(this.guiManager, this);
