@@ -30,6 +30,8 @@ import java.sql.SQLException;
 
 public class TradeEventListener implements Listener {
 
+    private static final int INPUT_SLOT_1 = 0;
+    private static final int INPUT_SLOT_2 = 1;
     private static final int TRADE_SLOT = 2;
 
     @EventHandler
@@ -139,8 +141,13 @@ public class TradeEventListener implements Listener {
 
             // Manually handle the purchase in the trade window.
             e.setCancelled(true);
-            ItemStack cost1 = e.getInventory().getItem(0);
-            ItemStack cost2 = e.getInventory().getItem(1);
+            ItemStack cost1 = e.getInventory().getItem(INPUT_SLOT_1);
+            ItemStack cost2 = e.getInventory().getItem(INPUT_SLOT_2);
+            if(cost1 == null) {
+                cost1 = cost2;
+                cost2 = null;
+            }
+
             cost1.setAmount(cost1.getAmount() - ItemUtil.computeAdjustedPrice(mi.getSelectedRecipe(), VersionSupport.getSpecialCountForRecipe(mi)));
             if (mi.getSelectedRecipe().getIngredients().size() >= 2) {
                 cost2.setAmount(cost2.getAmount() - mi.getSelectedRecipe().getIngredients().get(1).getAmount());
