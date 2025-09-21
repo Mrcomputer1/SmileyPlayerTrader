@@ -4,6 +4,7 @@ import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -17,5 +18,7 @@ public interface IMCVersion {
     int getSpecialCountForRecipe(MerchantInventory inventory) throws InvocationTargetException;
 
     ItemStack getMerchantRecipeOriginalResult(org.bukkit.inventory.MerchantRecipe merchantRecipe);
+
+    String getPreferredItemName(ItemMeta itemMeta);
 
 }

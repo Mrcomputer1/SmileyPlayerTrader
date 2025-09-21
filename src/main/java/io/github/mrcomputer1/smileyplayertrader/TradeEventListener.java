@@ -139,7 +139,9 @@ public class TradeEventListener implements Listener {
         if (!unlimitedSupply && !ItemUtil.doesPlayerHaveItem(store, mi.getSelectedRecipe().getResult(), productId)) {
             // If the store player is online, inform them the item is now out of stock.
             if (store.isOnline())
-                store.getPlayer().sendMessage(I18N.translate("&c%0% is now out of stock!", mi.getSelectedRecipe().getResult().getType()));
+                store.getPlayer().spigot().sendMessage(I18N.translateComponents(
+                        "&c%0% is now out of stock!", ItemUtil.getItemTextComponent(mi.getSelectedRecipe().getResult())
+                ));
 
             // Manually handle the purchase in the trade window.
             e.setCancelled(true);

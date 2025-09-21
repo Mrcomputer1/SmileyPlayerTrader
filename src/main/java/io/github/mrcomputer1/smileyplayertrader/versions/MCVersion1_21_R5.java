@@ -5,6 +5,7 @@ import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -74,6 +75,10 @@ public class MCVersion1_21_R5 implements IMCVersion {
     // NMS: net.minecraft.world.inventory.MerchantContainer -> InventoryMerchant
     private Method NMS_MerchantContainer_Instance_getActiveOffer_;
 
+    // OB: org.bukkit.inventory.meta.ItemMeta
+    private Method OB_ItemMeta_Instance_hasItemName_;
+    private Method OB_ItemMeta_Instance_getItemName_;
+
     public MCVersion1_21_R5(World world){
         try {
             /*
@@ -95,6 +100,7 @@ public class MCVersion1_21_R5 implements IMCVersion {
             Class<?> NMS_MerchantContainer = Class.forName("net.minecraft.world.inventory.InventoryMerchant");
 
             Class<?> OB_MerchantRecipe = Class.forName("org.bukkit.inventory.MerchantRecipe");
+            Class<?> OB_ItemMeta = Class.forName("org.bukkit.inventory.meta.ItemMeta");
             Class<?> OBC_CraftWorld = Class.forName("org.bukkit.craftbukkit.v1_21_R5.CraftWorld");
             Class<?> OBC_CraftItemStack = Class.forName("org.bukkit.craftbukkit.v1_21_R5.inventory.CraftItemStack");
             Class<?> OBC_CraftMerchant = Class.forName("org.bukkit.craftbukkit.v1_21_R5.inventory.CraftMerchant");
@@ -200,6 +206,13 @@ public class MCVersion1_21_R5 implements IMCVersion {
             // net.minecraft.world.inventory.MerchantContainer
             // Instance Method: NMS: MerchantContainer.getActiveOffer()
             this.NMS_MerchantContainer_Instance_getActiveOffer_ = NMS_MerchantContainer.getMethod("g");
+
+            // org.bukkit.inventory.meta.ItemMeta
+            // Instance Method: OB: ItemMeta.hasItemName()
+            //noinspection JavaReflectionMemberAccess
+            this.OB_ItemMeta_Instance_hasItemName_ = OB_ItemMeta.getMethod("hasItemName");
+            //noinspection JavaReflectionMemberAccess
+            this.OB_ItemMeta_Instance_getItemName_ = OB_ItemMeta.getMethod("getItemName");
 
             /*
              * Constants
@@ -323,6 +336,21 @@ public class MCVersion1_21_R5 implements IMCVersion {
             // return (ItemStack) merchantRecipe.recipe
             return (ItemStack) OB_MerchantRecipe_Instance_recipe.get(merchantRecipe);
         } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String getPreferredItemName(ItemMeta itemMeta) {
+        try {
+            if (itemMeta.hasDisplayName()) {
+                return itemMeta.getDisplayName();
+            } else if ((boolean) OB_ItemMeta_Instance_hasItemName_.invoke(itemMeta)) {
+                return (String) OB_ItemMeta_Instance_getItemName_.invoke(itemMeta);
+            } else {
+                return null;
+            }
+        } catch (InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }

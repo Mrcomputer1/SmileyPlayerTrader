@@ -4,7 +4,9 @@ import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.CommandUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
+import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -80,7 +82,10 @@ public class WithdrawCommand implements ICommand{
 
                 SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.CHANGE_STORED_PRODUCT, -limit, id);
 
-                sender.sendMessage(I18N.translate("&aWithdrew %0% of %1%.", limit, stack.getType()));
+                sender.spigot().sendMessage(I18N.translateComponents(
+                        "&aWithdrew %0% of %1%.",
+                        new TextComponent(String.valueOf(limit)), ItemUtil.getItemTextComponent(stack)
+                ));
             }
         } catch (SQLException | InvocationTargetException e) {
             throw new RuntimeException(e);

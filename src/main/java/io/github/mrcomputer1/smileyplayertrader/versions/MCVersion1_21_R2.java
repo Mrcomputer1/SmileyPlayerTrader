@@ -5,6 +5,7 @@ import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -30,6 +31,8 @@ public class MCVersion1_21_R2 implements IMCVersion {
     private Method NMS_ItemStack_Static_a_NBTTagCompound;
     private Method OBC_CraftItemStack_Static_asCraftMirror_ItemStack;
     private Method OBC_CraftItemStack_Static_asNMSCopy_ItemStack;
+    private Method OB_ItemMeta_Instance_hasItemName_;
+    private Method OB_ItemMeta_Instance_getItemName_;
 
     // Merchant
     private Field OB_MerchantRecipe_Instance_recipe;
@@ -80,6 +83,12 @@ public class MCVersion1_21_R2 implements IMCVersion {
             Class<?> OBC_CraftItemStack = Class.forName("org.bukkit.craftbukkit.v1_21_R2.inventory.CraftItemStack");
             this.OBC_CraftItemStack_Static_asCraftMirror_ItemStack = OBC_CraftItemStack.getMethod("asCraftMirror", NMS_ItemStack);
             this.OBC_CraftItemStack_Static_asNMSCopy_ItemStack = OBC_CraftItemStack.getMethod("asNMSCopy", ItemStack.class);
+
+            Class<?> OB_ItemMeta = Class.forName("org.bukkit.inventory.meta.ItemMeta");
+            //noinspection JavaReflectionMemberAccess
+            this.OB_ItemMeta_Instance_hasItemName_ = OB_ItemMeta.getMethod("hasItemName");
+            //noinspection JavaReflectionMemberAccess
+            this.OB_ItemMeta_Instance_getItemName_ = OB_ItemMeta.getMethod("getItemName");
 
             // Merchant
             Class<?> OB_MerchantRecipe = Class.forName("org.bukkit.inventory.MerchantRecipe");
@@ -178,6 +187,21 @@ public class MCVersion1_21_R2 implements IMCVersion {
         try {
             return (ItemStack) OB_MerchantRecipe_Instance_recipe.get(merchantRecipe);
         } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String getPreferredItemName(ItemMeta itemMeta) {
+        try {
+            if (itemMeta.hasDisplayName()) {
+                return itemMeta.getDisplayName();
+            } else if ((boolean) OB_ItemMeta_Instance_hasItemName_.invoke(itemMeta)) {
+                return (String) OB_ItemMeta_Instance_getItemName_.invoke(itemMeta);
+            } else {
+                return null;
+            }
+        } catch (InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }

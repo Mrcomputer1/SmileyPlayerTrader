@@ -5,6 +5,7 @@ import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
+import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -43,8 +44,10 @@ public class ListCommand implements ICommand{
                     if(target.isOnline() && !ItemUtil.doesPlayerHaveItem(target.getPlayer(), product, set.getLong("id"))){
                         isStocked = false;
                     }
-                    if(product.getItemMeta().hasDisplayName()) {
-                        products = I18N.translate(", Product: %0%x %1%", product.getAmount(), product.getItemMeta().getDisplayName());
+
+                    String preferredItemName = VersionSupport.getPreferredItemName(product.getItemMeta());
+                    if(preferredItemName != null) {
+                        products = I18N.translate(", Product: %0%x %1%", product.getAmount(), preferredItemName);
                     }else{
                         products = I18N.translate(", Product: %0%x %1%", product.getAmount(), product.getType());
                     }
@@ -54,8 +57,10 @@ public class ListCommand implements ICommand{
                 String cost1s = I18N.translate(", Cost 1: UNSET");
                 if(cost1b != null){
                     ItemStack cost1 = MerchantUtil.buildItem(cost1b);
-                    if(cost1.getItemMeta().hasDisplayName()) {
-                        cost1s = I18N.translate(", Cost 1: %0%x %1%", cost1.getAmount(), cost1.getItemMeta().getDisplayName());
+
+                    String preferredItemName = VersionSupport.getPreferredItemName(cost1.getItemMeta());
+                    if(preferredItemName != null) {
+                        cost1s = I18N.translate(", Cost 1: %0%x %1%", cost1.getAmount(), preferredItemName);
                     }else{
                         cost1s = I18N.translate(", Cost 1: %0%x %1%", cost1.getAmount(), cost1.getType());
                     }
@@ -65,8 +70,10 @@ public class ListCommand implements ICommand{
                 String cost2s = I18N.translate(", Cost 2: UNSET");
                 if(cost2b != null) {
                     ItemStack cost2 = MerchantUtil.buildItem(cost2b);
-                    if(cost2.getItemMeta().hasDisplayName()) {
-                        cost2s = I18N.translate(", Cost 2: %0%x %1%", cost2.getAmount(), cost2.getItemMeta().getDisplayName());
+
+                    String preferredItemName = VersionSupport.getPreferredItemName(cost2.getItemMeta());
+                    if(preferredItemName != null) {
+                        cost2s = I18N.translate(", Cost 2: %0%x %1%", cost2.getAmount(), preferredItemName);
                     }else{
                         cost2s = I18N.translate(", Cost 2: %0%x %1%", cost2.getAmount(), cost2.getType());
                     }

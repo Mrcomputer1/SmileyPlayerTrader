@@ -4,6 +4,7 @@ import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -158,6 +159,15 @@ public class MCVersion1_18 implements IMCVersion {
             return (ItemStack) OB_MerchantRecipe_Instance_recipe.get(merchantRecipe);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String getPreferredItemName(ItemMeta itemMeta) {
+        if (itemMeta.hasDisplayName()) {
+            return itemMeta.getDisplayName();
+        } else {
+            return null;
         }
     }
 

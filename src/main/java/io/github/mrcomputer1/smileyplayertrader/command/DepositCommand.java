@@ -4,7 +4,9 @@ import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.CommandUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
+import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -80,7 +82,10 @@ public class DepositCommand implements ICommand{
                     // Remove from hand
                     hand.setAmount(hand.getAmount() - count);
 
-                    sender.sendMessage(I18N.translate("&aDeposited %0% of %1%.", count, product.getType()));
+                    sender.spigot().sendMessage(I18N.translateComponents(
+                            "&aDeposited %0% of %1%.",
+                            new TextComponent(String.valueOf(count)), ItemUtil.getItemTextComponent(product)
+                    ));
                 }else{
                     sender.sendMessage(I18N.translate("&cThis item does not match the type of the product."));
                 }

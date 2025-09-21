@@ -6,9 +6,11 @@ import io.github.mrcomputer1.smileyplayertrader.util.database.statements.Stateme
 import io.github.mrcomputer1.smileyplayertrader.util.item.stocklocations.IStockLocation;
 import io.github.mrcomputer1.smileyplayertrader.util.item.stocklocations.StockLocations;
 import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.TranslatableComponent;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
@@ -215,6 +217,24 @@ public class ItemUtil {
         }catch (SQLException | InvocationTargetException e){
             throw new RuntimeException(e);
         }
+    }
+
+    public static BaseComponent getItemTextComponent(ItemStack stack) {
+        ItemMeta itemMeta = stack.getItemMeta();
+        if (itemMeta == null) {
+            return new TextComponent(stack.getType().toString());
+        }
+
+        BaseComponent itemName;
+        String preferredItemName = VersionSupport.getPreferredItemName(itemMeta);
+        if (preferredItemName != null) {
+            itemName = new TextComponent(preferredItemName);
+        } else {
+            NamespacedKey key = stack.getType().getKey();
+            itemName = new TranslatableComponent((stack.getType().isBlock() ? "block." : "item.") + key.getNamespace() + "." + key.getKey());
+        }
+
+        return itemName;
     }
 
 }

@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -180,6 +181,10 @@ public class VersionSupport {
 
     public static ItemStack getMerchantRecipeOriginalResult(org.bukkit.inventory.MerchantRecipe merchantRecipe) {
         return getBoundVersion().getMerchantRecipeOriginalResult(merchantRecipe);
+    }
+
+    public static String getPreferredItemName(ItemMeta itemMeta) {
+        return getBoundVersion().getPreferredItemName(itemMeta);
     }
 
     public void bindCompatibleVersion() throws IllegalStateException {
