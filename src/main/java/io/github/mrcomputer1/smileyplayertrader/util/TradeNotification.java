@@ -3,6 +3,7 @@ package io.github.mrcomputer1.smileyplayertrader.util;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,8 +32,6 @@ public class TradeNotification {
                 );
                 Bukkit.spigot().broadcast(component);
             } else {
-                messageText = ChatColor.translateAlternateColorCodes('&', messageText);
-
                 //noinspection DataFlowIssue
                 messageText = messageText.replace("%MERCHANT%", merchant.getName());
                 messageText = messageText.replace("%ITEM_TYPE%", item.getType().toString());

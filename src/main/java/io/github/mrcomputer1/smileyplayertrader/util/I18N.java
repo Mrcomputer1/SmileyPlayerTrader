@@ -149,7 +149,7 @@ public class I18N {
 
                     i = chrIndex;
                 }
-            } else if (chr == '&') {
+            } else if (chr == '&' || chr == '§') {
                 // Process colour/formatting code.
                 chr = Character.toLowerCase(chrArray[++i]);
 
