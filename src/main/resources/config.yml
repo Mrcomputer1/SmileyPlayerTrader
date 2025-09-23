@@ -152,6 +152,8 @@ priceSelectorMenu:
     - ENCHANTED_BOOK
     - WRITTEN_BOOK
     - FILLED_MAP
+    - TEST_BLOCK
+    - TEST_INSTANCE_BLOCK
     - "%SPAWN_EGGS%" # All spawn eggs.
   # Additional items that should be added to the main list
   extraItems: []
