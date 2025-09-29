@@ -3,6 +3,7 @@ package io.github.mrcomputer1.smileyplayertrader.util.item;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
+import io.github.mrcomputer1.smileyplayertrader.util.impl.itemintegration.IItemIntegrationImpl;
 import io.github.mrcomputer1.smileyplayertrader.util.item.stocklocations.IStockLocation;
 import io.github.mrcomputer1.smileyplayertrader.util.item.stocklocations.StockLocations;
 import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
@@ -122,6 +123,16 @@ public class ItemUtil {
         }else {
             // Other/integration handlers
             String itemIs = (String) item.get("is");
+
+            if (ItemIntegration.hasItemIntegration(itemIs)) {
+                IItemIntegrationImpl impl = ItemIntegration.getItemIntegration(itemIs);
+                if (impl == null) {
+                    SmileyPlayerTrader.getInstance().getLogger().severe(itemIs + " is not available (is the plugin installed?)");
+                    return null;
+                }
+
+                return impl.getItem(item);
+            }
 
             // Invalid integration
             SmileyPlayerTrader.getInstance().getLogger().severe("Bad item type.");

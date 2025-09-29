@@ -8,6 +8,7 @@ import io.github.mrcomputer1.smileyplayertrader.util.database.AbstractDatabase;
 import io.github.mrcomputer1.smileyplayertrader.util.database.DatabaseUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import io.github.mrcomputer1.smileyplayertrader.util.item.ItemIntegration;
 import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
@@ -136,6 +137,9 @@ public class SmileyPlayerTrader extends JavaPlugin {
         if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new SPTPlaceholderExpansions().register();
         }
+
+        // Item Integrations
+        ItemIntegration.addBuiltinItemIntegrations();
     }
 
     @Override

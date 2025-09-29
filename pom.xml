@@ -94,6 +94,16 @@
             <id>sk89q-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
+
+        <!-- Item Integrations -->
+        <repository>
+            <id>nexo-repo</id>
+            <url>https://repo.nexomc.com/releases</url>
+        </repository>
+        <repository>
+            <id>valhallammo-repo</id>
+            <url>https://repo.repsy.io/mvn/athlaeos/valhallammo</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -140,6 +150,32 @@
             <artifactId>worldguard-bukkit</artifactId>
             <version>7.0.13</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- Item Integrations -->
+        <dependency>
+            <groupId>com.nexomc</groupId>
+            <artifactId>nexo</artifactId>
+            <version>1.8.0</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>me.athlaeos</groupId>
+            <artifactId>valhallammo-dist</artifactId>
+            <version>premium_1.0</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>

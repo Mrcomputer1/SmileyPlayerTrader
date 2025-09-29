@@ -12,6 +12,9 @@ softdepend:
   - floodgate # for better experience on bedrock
   - PlaceholderAPI # to create placeholder expansions
   - WorldGuard # for region flag
+  # Item Integrations
+  - Nexo
+  - ValhallaMMO
 commands:
   smileyplayertrader:
     description: "Smiley Player Trader Command"
