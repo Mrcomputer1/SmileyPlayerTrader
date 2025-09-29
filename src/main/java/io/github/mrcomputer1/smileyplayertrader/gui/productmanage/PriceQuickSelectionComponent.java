@@ -204,13 +204,13 @@ public class PriceQuickSelectionComponent extends GUIComponent {
                         this.uiPlayer, this.state, this.isPrimary
                 ));
             }else if(type == ClickType.SHIFT_LEFT){
-                // If this is a custom item, you can't do this.
-                if(this.priceSlot.isChanged())
-                    return false;
-
                 // If item slot is empty, ignore.
                 if(this.priceSlot.getItem() == null || this.priceSlot.getItem().getType().isAir())
                     return false;
+
+                // If this is a custom item, return original.
+                if(this.priceSlot.isChanged())
+                    this.priceSlot.updateItem(this.uiPlayer, true);
 
                 // Increase amount
                 this.priceSlot.getItem().setAmount(
@@ -218,13 +218,13 @@ public class PriceQuickSelectionComponent extends GUIComponent {
                 );
                 this.priceSlot.updateItem(player, false);
             }else if(type == ClickType.SHIFT_RIGHT){
-                // If this is a custom item, you can't do this.
-                if(this.priceSlot.isChanged())
-                    return false;
-
                 // If item slot is empty, ignore.
                 if(this.priceSlot.getItem() == null || this.priceSlot.getItem().getType().isAir())
                     return false;
+
+                // If this is a custom item, return original.
+                if(this.priceSlot.isChanged())
+                    this.priceSlot.updateItem(this.uiPlayer, true);
 
                 // Increase amount
                 this.priceSlot.getItem().setAmount(
