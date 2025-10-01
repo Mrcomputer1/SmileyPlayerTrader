@@ -148,10 +148,16 @@ public class VersionSupport {
                 () -> new MCVersion1_21_R4(Bukkit.getWorlds().get(0))
         );
 
-        // 1.21.6
+        // 1.21.6 - 1.21.8
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.21\\.[6-9]-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.21\\.[678]-").matcher(bukkitVersion).find(),
                 () -> new MCVersion1_21_R5(Bukkit.getWorlds().get(0))
+        );
+
+        // 1.21.9
+        registerSupportedVersion(
+                () -> Pattern.compile("^1\\.21\\.(9|1[0-9]+)-").matcher(bukkitVersion).find(),
+                () -> new MCVersion1_21_R6(Bukkit.getWorlds().get(0))
         );
     }
 
