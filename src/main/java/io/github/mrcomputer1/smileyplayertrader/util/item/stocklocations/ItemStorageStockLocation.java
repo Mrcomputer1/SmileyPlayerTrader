@@ -2,11 +2,9 @@ package io.github.mrcomputer1.smileyplayertrader.util.item.stocklocations;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
-import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -24,8 +22,18 @@ public class ItemStorageStockLocation implements IStockLocation{
 
     @Override
     public ItemStack removeStock(OfflinePlayer player, ItemStack stack, long id) {
-        SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.CHANGE_STORED_PRODUCT, -stack.getAmount(), id);
-        return null;
+        int amount = doesPlayerHaveItem(player, stack, id);
+
+        SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.CHANGE_STORED_PRODUCT, -amount, id);
+
+        int remainingNeeded = stack.getAmount() - amount;
+        if (remainingNeeded <= 0) {
+            return null;
+        } else {
+            stack = stack.clone();
+            stack.setAmount(remainingNeeded);
+            return stack;
+        }
     }
 
     @Override

@@ -1,14 +1,12 @@
 package io.github.mrcomputer1.smileyplayertrader.util.item;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
-import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import io.github.mrcomputer1.smileyplayertrader.util.impl.itemintegration.IItemIntegrationImpl;
 import io.github.mrcomputer1.smileyplayertrader.util.item.stocklocations.IStockLocation;
 import io.github.mrcomputer1.smileyplayertrader.util.item.stocklocations.StockLocations;
 import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.*;
@@ -20,7 +18,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,8 +72,6 @@ public class ItemUtil {
     }
 
     public static boolean doesPlayerHaveItem(OfflinePlayer player, ItemStack item, long productId){
-        item = item.clone();
-
         int found = 0;
 
         List<IStockLocation> stockLocations = StockLocations.getActiveStockLocations();
@@ -85,8 +80,6 @@ public class ItemUtil {
                 found += location.doesPlayerHaveItem(player, item, productId);
                 if(found >= item.getAmount()){
                     return true;
-                }else{
-                    item.setAmount(item.getAmount() - found);
                 }
             }
         }
