@@ -64,6 +64,13 @@ public class ItemUtil {
         List<IStockLocation> stockLocations = StockLocations.getActiveStockLocations();
         for(IStockLocation location : stockLocations){
             if(location.isAvailable(player)){
+                if (SmileyPlayerTrader.getInstance().getConfiguration().isUseOnlyOneStockLocation()) {
+                    int count = location.doesPlayerHaveItem(player, item, productId);
+                    if (count < item.getAmount()) {
+                        continue;
+                    }
+                }
+
                 item = location.removeStock(player, item, productId);
                 if(item == null)
                     return;
@@ -80,6 +87,12 @@ public class ItemUtil {
                 found += location.doesPlayerHaveItem(player, item, productId);
                 if(found >= item.getAmount()){
                     return true;
+                }
+
+                if (SmileyPlayerTrader.getInstance().getConfiguration().isUseOnlyOneStockLocation()) {
+                    if (found < item.getAmount()) {
+                        found = 0;
+                    }
                 }
             }
         }

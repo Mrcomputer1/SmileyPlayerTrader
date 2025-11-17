@@ -14,6 +14,9 @@ stockLocations:
   - enderchest
   - itemstorage # Requires item storage to be enabled, otherwise ignored.
 
+# Require that the stock be retrieved from only one location, and not spread out across many locations.
+useOnlyOneStockLocation: false
+
 # Automatically thank a player for a purchase
 autoThanks:
   # Supported modes are:

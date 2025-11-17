@@ -66,6 +66,10 @@ public class SPTConfiguration {
         return this.config.getStringList("stockLocations");
     }
 
+    public boolean isUseOnlyOneStockLocation() {
+        return this.config.getBoolean("useOnlyOneStockLocation", false);
+    }
+
     // Auto Thanks
     public enum EnumAutoThanks{
         PLAYER_CHAT("player_chat"),
