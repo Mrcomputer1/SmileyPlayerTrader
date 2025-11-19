@@ -44,11 +44,6 @@ public class SmileyPlayerTrader extends JavaPlugin {
         saveDefaultConfig();
         this.configuration = new SPTConfiguration(getConfig());
 
-        if(this.configuration.hasLegacyDisabledWorldsAndAllowedWorldsConfig())
-            getLogger().warning("The configuration file specifies both the legacy 'disabledWorlds' configuration setting " +
-                    "and the newer 'allowedWorlds' setting. The 'allowedWorlds.worlds' list will be prioritised over the " +
-                    "legacy 'disabledWorlds' setting.");
-
         // bStats
         if(!getDescription().getVersion().contains("-SNAPSHOT")) { // Disable bStats on development versions.
             this.metrics = new Metrics(this, BSTATS_PLUGIN_ID);
@@ -68,6 +63,58 @@ public class SmileyPlayerTrader extends JavaPlugin {
             }));
         }
 
+        // Version Support
+        this.versionSupport = new VersionSupport();
+        try {
+            this.versionSupport.bindCompatibleVersion();
+        } catch (IllegalStateException ex) {
+            SmileyPlayerTrader.getInstance().getLogger().severe("MINECRAFT VERSION IS NOT SUPPORTED! DISABLING!");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        // Finish Configuration
+        loadConfig();
+
+        // Commands
+        CommandSmileyPlayerTrader cspt = new CommandSmileyPlayerTrader();
+        getCommand("smileyplayertrader").setExecutor(cspt);
+        getCommand("smileyplayertrader").setTabCompleter(cspt);
+
+        // GUIs
+        Bukkit.getPluginManager().registerEvents(new EventListener(), this);
+        Bukkit.getPluginManager().registerEvents(new TradeEventListener(), this);
+
+        // PlaceholderAPI
+        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new SPTPlaceholderExpansions().register();
+        }
+
+        // Item Integrations
+        ItemIntegration.addBuiltinItemIntegrations();
+    }
+
+    @Override
+    public void onLoad() {
+        // Regions
+        RegionUtil.setup();
+    }
+
+    @Override
+    public void onDisable() {
+        if(this.db != null) {
+            this.db.close();
+        }
+    }
+
+    private void loadConfig() {
+        this.configuration = new SPTConfiguration(getConfig());
+
+        if(this.configuration.hasLegacyDisabledWorldsAndAllowedWorldsConfig())
+            getLogger().warning("The configuration file specifies both the legacy 'disabledWorlds' configuration setting " +
+                    "and the newer 'allowedWorlds' setting. The 'allowedWorlds.worlds' list will be prioritised over the " +
+                    "legacy 'disabledWorlds' setting.");
+
         // I18N
         this.i18n = new I18N();
         this.i18n.createLanguages();
@@ -86,16 +133,6 @@ public class SmileyPlayerTrader extends JavaPlugin {
             boolean b = this.bugWarner.checkForBugs();
             if(b)
                 return;
-        }
-
-        // Version Support
-        this.versionSupport = new VersionSupport();
-        try {
-            this.versionSupport.bindCompatibleVersion();
-        } catch (IllegalStateException ex) {
-            SmileyPlayerTrader.getInstance().getLogger().severe("MINECRAFT VERSION IS NOT SUPPORTED! DISABLING!");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
         }
 
         // Database
@@ -120,39 +157,30 @@ public class SmileyPlayerTrader extends JavaPlugin {
         if(Bukkit.getOnlinePlayers().size() != 0)
             this.playerConfig.reloadPlayers();
 
-        // Commands
-        CommandSmileyPlayerTrader cspt = new CommandSmileyPlayerTrader();
-        getCommand("smileyplayertrader").setExecutor(cspt);
-        getCommand("smileyplayertrader").setTabCompleter(cspt);
-
         // GUIs
-        Bukkit.getPluginManager().registerEvents(new EventListener(), this);
-        Bukkit.getPluginManager().registerEvents(new TradeEventListener(), this);
         if(getConfiguration().getUseGuiManager()){
             this.guiManager = new GUIManager();
             Bukkit.getPluginManager().registerEvents(this.guiManager, this);
         }
-
-        // PlaceholderAPI
-        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new SPTPlaceholderExpansions().register();
-        }
-
-        // Item Integrations
-        ItemIntegration.addBuiltinItemIntegrations();
     }
 
-    @Override
-    public void onLoad() {
-        // Regions
-        RegionUtil.setup();
-    }
-
-    @Override
-    public void onDisable() {
-        if(this.db != null) {
+    public void reloadConfiguration() {
+        this.i18n = null;
+        this.updateChecker = null;
+        this.bugWarner = null;
+        if (this.db != null) {
             this.db.close();
+            this.db = null;
         }
+        this.statementHandler = null;
+        this.playerConfig = null;
+        if (this.guiManager != null) {
+            this.guiManager.unregisterEvents();
+            this.guiManager = null;
+        }
+
+        reloadConfig();
+        loadConfig();
     }
 
     public AbstractDatabase getDatabase(){

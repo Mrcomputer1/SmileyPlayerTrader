@@ -35,6 +35,7 @@ permissions:
       "smileyplayertrader.guiothers": true
       "smileyplayertrader.alltradeslist": true
       "smileyplayertrader.unlimitedsupply": true
+      "smileyplayertrader.reload": true
   "smileyplayertrader.others":
     description: "Change other players"
     default: op
@@ -61,4 +62,7 @@ permissions:
     default: true
   "smileyplayertrader.unlimitedsupply":
     description: "Allows use of /spt unlimitedsupply"
+    default: op
+  "smileyplayertrader.reload":
+    description: "Reload the configuration."
     default: op

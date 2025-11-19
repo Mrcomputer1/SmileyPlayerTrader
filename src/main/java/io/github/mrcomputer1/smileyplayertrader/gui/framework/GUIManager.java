@@ -38,6 +38,12 @@ public class GUIManager implements Listener {
         }
     }
 
+    public void unregisterEvents() {
+        InventoryClickEvent.getHandlerList().unregister(this);
+        InventoryCloseEvent.getHandlerList().unregister(this);
+        EntityPickupItemEvent.getHandlerList().unregister(this);
+    }
+
     public void openGui(Player player, GUI gui){
         GUI currentGui = getGuiFor(player.getOpenInventory().getTopInventory());
         if(currentGui != null){

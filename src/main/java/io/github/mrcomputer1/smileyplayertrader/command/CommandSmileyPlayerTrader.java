@@ -44,6 +44,7 @@ public class CommandSmileyPlayerTrader implements TabExecutor {
         this.commands.put("purchaselimit", new PurchaseLimitCommand());
         this.commands.put("purchasereset", new PurchaseResetCommand());
         this.commands.put("unlimitedsupply", new UnlimitedSupplyCommand());
+        this.commands.put("reload", new ReloadCommand());
     }
 
     @Override
@@ -83,6 +84,9 @@ public class CommandSmileyPlayerTrader implements TabExecutor {
             List<String> tab = new ArrayList<>();
             StringUtil.copyPartialMatches(args[0], this.commands.keySet(), tab);
             Collections.sort(tab);
+
+            
+
             return tab;
         }else{
             return new ArrayList<>();
