@@ -62,4 +62,9 @@ public class DiscountCommand implements ICommand{
             ex.printStackTrace();
         }
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return true;
+    }
 }

@@ -34,4 +34,9 @@ public class OpenGUIForCommand implements ICommand{
 
         GUIManager.getInstance().openGui(op.getPlayer(), new GUIProductList(op.getPlayer(), op, 0, true));
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return sender.hasPermission("smileyplayertrader.guiothers");
+    }
 }

@@ -31,4 +31,9 @@ public class HelpCommand implements ICommand {
         sender.sendMessage(I18N.translate("&f/spt version &e- Get version"));
         sender.sendMessage(I18N.translate("&e&lSmiley Player Trader - Help"));
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return true;
+    }
 }

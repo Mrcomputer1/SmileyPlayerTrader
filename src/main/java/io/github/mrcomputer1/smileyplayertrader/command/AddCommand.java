@@ -48,4 +48,9 @@ public class AddCommand implements ICommand {
 
         sender.sendMessage(I18N.translate("&aAdded product %0%. Use &f/spt setcost <id> &aand &f/spt setproduct <id> &awhile holding items!", id));
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return true;
+    }
 }

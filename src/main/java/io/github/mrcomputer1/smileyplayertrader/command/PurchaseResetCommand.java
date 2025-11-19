@@ -32,4 +32,9 @@ public class PurchaseResetCommand implements ICommand{
         sender.sendMessage(I18N.translate("&aReset purchase count."));
     }
 
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return true;
+    }
+
 }

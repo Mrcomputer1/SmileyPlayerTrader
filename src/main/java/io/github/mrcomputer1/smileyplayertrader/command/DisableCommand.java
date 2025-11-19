@@ -31,4 +31,9 @@ public class DisableCommand implements ICommand{
 
         sender.sendMessage(I18N.translate("&aDisabled product!"));
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return true;
+    }
 }

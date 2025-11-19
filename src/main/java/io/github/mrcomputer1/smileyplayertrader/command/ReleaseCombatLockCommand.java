@@ -22,4 +22,9 @@ public class ReleaseCombatLockCommand implements ICommand{
             sender.sendMessage(I18N.translate("&cYou are not currently combat locked."));
         }
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return sender instanceof Player;
+    }
 }

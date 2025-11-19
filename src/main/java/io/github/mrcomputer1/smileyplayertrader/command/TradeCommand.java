@@ -29,4 +29,9 @@ public class TradeCommand implements ICommand{
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
         MerchantUtil.openMerchant((Player) sender, target, true, false);
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return sender instanceof Player && sender.hasPermission("smileyplayertrader.trade.remote") && sender.hasPermission("smileyplayertrader.trade");
+    }
 }

@@ -17,4 +17,9 @@ public class PreviewCommand implements ICommand{
         MerchantUtil.openPreviewMerchant((Player) sender);
     }
 
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return true;
+    }
+
 }

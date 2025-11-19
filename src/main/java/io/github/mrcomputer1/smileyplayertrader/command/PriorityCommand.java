@@ -49,4 +49,9 @@ public class PriorityCommand implements ICommand{
         sender.sendMessage(I18N.translate("&aSet priority."));
     }
 
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return true;
+    }
+
 }

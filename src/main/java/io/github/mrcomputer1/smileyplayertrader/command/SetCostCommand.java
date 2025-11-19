@@ -138,4 +138,9 @@ public class SetCostCommand implements ICommand{
             e.printStackTrace();
         }
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return true;
+    }
 }

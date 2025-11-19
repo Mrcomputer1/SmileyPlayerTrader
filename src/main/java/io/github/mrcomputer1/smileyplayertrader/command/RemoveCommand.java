@@ -44,4 +44,9 @@ public class RemoveCommand implements ICommand{
         SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.DELETE_PRODUCT, id);
         sender.sendMessage(I18N.translate("&2Deleted product!"));
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return true;
+    }
 }

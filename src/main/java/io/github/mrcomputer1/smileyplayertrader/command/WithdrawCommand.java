@@ -91,4 +91,9 @@ public class WithdrawCommand implements ICommand{
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return sender instanceof Player;
+    }
 }

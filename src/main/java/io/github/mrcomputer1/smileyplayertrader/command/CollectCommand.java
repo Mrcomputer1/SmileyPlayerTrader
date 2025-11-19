@@ -90,4 +90,9 @@ public class CollectCommand implements ICommand{
             }
         }
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return sender instanceof Player && SmileyPlayerTrader.getInstance().getConfiguration().getItemStorageEnabled();
+    }
 }

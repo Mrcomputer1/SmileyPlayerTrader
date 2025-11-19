@@ -36,4 +36,9 @@ public class UnlimitedSupplyCommand implements ICommand{
 
         sender.sendMessage(I18N.translate("&aToggled unlimited supply."));
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return sender.hasPermission("smileyplayertrader.unlimitedsupply");
+    }
 }

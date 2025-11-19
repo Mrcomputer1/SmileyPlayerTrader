@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CommandSmileyPlayerTrader implements TabExecutor {
     private Map<String, ICommand> commands = new HashMap<>();
@@ -83,11 +84,11 @@ public class CommandSmileyPlayerTrader implements TabExecutor {
         if(args.length == 1){
             List<String> tab = new ArrayList<>();
             StringUtil.copyPartialMatches(args[0], this.commands.keySet(), tab);
-            Collections.sort(tab);
 
-            
-
-            return tab;
+            return tab.stream()
+                    .filter(cmd -> commands.get(cmd).isVisibleInTabComplete(sender))
+                    .sorted()
+                    .collect(Collectors.toList());
         }else{
             return new ArrayList<>();
         }

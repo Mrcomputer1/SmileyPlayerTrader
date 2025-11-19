@@ -94,4 +94,9 @@ public class DepositCommand implements ICommand{
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return sender instanceof Player && SmileyPlayerTrader.getInstance().getConfiguration().getItemStorageEnabled();
+    }
 }

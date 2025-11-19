@@ -17,4 +17,9 @@ public class ReloadCommand implements ICommand {
         sender.sendMessage(I18N.translate("&aConfiguration has been reloaded."));
     }
 
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return sender.hasPermission("smileyplayertrader.reload");
+    }
+
 }

@@ -55,4 +55,9 @@ public class PurchaseLimitCommand implements ICommand{
         sender.sendMessage(I18N.translate("&aSet purchase limit."));
     }
 
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return true;
+    }
+
 }

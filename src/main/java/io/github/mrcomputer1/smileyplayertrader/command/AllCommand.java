@@ -30,4 +30,10 @@ public class AllCommand implements ICommand{
         GUIManager.getInstance().openGui((Player) sender, new GUIAllProducts(0, canPurchase));
     }
 
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return sender instanceof Player && sender.hasPermission("smileyplayertrader.alltradeslist");
+    }
+
+
 }

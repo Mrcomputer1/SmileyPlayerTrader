@@ -15,4 +15,9 @@ public class VersionCommand implements ICommand{
         if(!credit.isEmpty())
             sender.sendMessage(ChatColor.AQUA + credit);
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return true;
+    }
 }

@@ -26,4 +26,9 @@ public class ToggleCommand implements ICommand {
             sender.sendMessage(I18N.translate("&aToggled trading &coff."));
         }
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return sender instanceof Player;
+    }
 }

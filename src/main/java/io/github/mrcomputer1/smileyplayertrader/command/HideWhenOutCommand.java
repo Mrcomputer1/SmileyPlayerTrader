@@ -45,4 +45,9 @@ public class HideWhenOutCommand implements ICommand{
         SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.SET_HIDE_ON_OUT_OF_STOCK, hide, id);
         sender.sendMessage(I18N.translate("&aUpdated hide on out of stock."));
     }
+
+    @Override
+    public boolean isVisibleInTabComplete(CommandSender sender) {
+        return true;
+    }
 }
