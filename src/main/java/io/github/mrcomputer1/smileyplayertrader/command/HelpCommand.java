@@ -7,6 +7,7 @@ public class HelpCommand implements ICommand {
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         sender.sendMessage(I18N.translate("&e&lSmiley Player Trader - Help"));
+        sender.sendMessage(I18N.translate("&f/spt create &e- Create a new product (run the command to see usage)"));
         sender.sendMessage(I18N.translate("&f/spt add [username] &e- Add a new product"));
         sender.sendMessage(I18N.translate("&f/spt list [username] &e- List all products"));
         sender.sendMessage(I18N.translate("&f/spt remove <id> &e- Remove a product"));
