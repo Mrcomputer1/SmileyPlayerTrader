@@ -14,6 +14,8 @@ public class StockLocations {
         registerStockLocation("inventory", new InventoryStockLocation());
         registerStockLocation("enderchest", new EnderChestStockLocation());
         registerStockLocation("itemstorage", new ItemStorageStockLocation());
+        registerStockLocation("shulkerbox", new ShulkerBoxStockLocation(false));
+        registerStockLocation("shulkerbox_enderchest", new ShulkerBoxStockLocation(true));
     }
 
     public static IStockLocation getStockLocation(String id){

@@ -13,6 +13,8 @@ stockLocations:
   - inventory
   - enderchest
   - itemstorage # Requires item storage to be enabled, otherwise ignored.
+#  - shulkerbox # Take items from Shulker Boxes in inventory. Doesn't receive earnings.
+#  - shulkerbox_enderchest # Take items from Shulker Boxes in ender chests. Doesn't receive earnings.
 
 # Require that the stock be retrieved from only one location, and not spread out across many locations.
 useOnlyOneStockLocation: false
