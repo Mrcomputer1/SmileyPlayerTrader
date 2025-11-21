@@ -92,6 +92,9 @@ outOfStockBehaviour: showByDefault
 # Configures if earnings are given for an item with the admin option unlimited supply enabled.
 doesUnlimitedSupplyEarn: true
 
+# When using the "/spt create" command, require the item be in the player's hand.
+requireItemInHandWhileUsingCreateCommand: false
+
 # Configures how the cost items are compared when purchasing.
 # Supported options are:
 # strict - The cost item must match the item provided by the player exactly.

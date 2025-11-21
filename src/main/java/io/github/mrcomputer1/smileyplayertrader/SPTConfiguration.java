@@ -277,6 +277,11 @@ public class SPTConfiguration {
         return this.config.getBoolean("doesUnlimitedSupplyEarn", true);
     }
 
+
+    public boolean getRequireItemInHandWhileUsingCreateCommand() {
+        return this.config.getBoolean("requireItemInHandWhileUsingCreateCommand", false);
+    }
+
     // Start Purchase Cost Comparison
     public enum EnumPurchaseCostComparison {
         STRICT("strict"),

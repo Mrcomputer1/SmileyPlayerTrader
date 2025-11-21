@@ -74,32 +74,54 @@ public class CreateCommand implements ICommand {
                 break;
         }
 
-        // Product
+        /*
+         * Product
+         */
         {
+            //
             // Material
+            //
             Material material = Material.matchMaterial(args.get(0));
-            if (material == null) {
-                if (sendingPlayer != null) {
+
+            if (material == null) { // Invalid material, use item in hand instead.
+                if (sendingPlayer != null) { // Only try to use the item in hand if the command is being executed by a player
                     ItemStack hand = sendingPlayer.getInventory().getItemInMainHand();
-                    if (hand.getType().isAir()) {
-                        sender.sendMessage(I18N.translate("&cYou must be holding an item in your main hand or specify a valid item!"));
+                    if (hand.getType().isAir()) { // No item in hand
+                        if (!SmileyPlayerTrader.getInstance().getConfiguration().getRequireItemInHandWhileUsingCreateCommand()) {
+                            sender.sendMessage(I18N.translate("&cYou must be holding an item in your main hand or specify a valid item!"));
+                        } else {
+                            sender.sendMessage(I18N.translate("&cYou must be holding an item in your main hand!"));
+                        }
                         return;
                     }
 
                     product = sendingPlayer.getInventory().getItemInMainHand().clone();
-                } else {
+                } else { // Can't use the item in the hand of something that doesn't have a hand.
                     sender.sendMessage(I18N.translate("&cYou must be running this command from a player."));
                     return;
                 }
-            } else if (!material.isItem() || material.isAir()) {
-                sender.sendMessage(I18N.translate("&c%0% isn't a valid item.", args.get(0)));
-                return;
-            } else {
+            } else { // Valid material
+                if (!material.isItem() || material.isAir()) { // Verify this is actually an item.
+                    sender.sendMessage(I18N.translate("&c%0% isn't a valid item.", args.get(0)));
+                    return;
+                }
+
                 product = new ItemStack(material);
+
+                // If the item is required to be in your hand to create the product:
+                if (SmileyPlayerTrader.getInstance().getConfiguration().getRequireItemInHandWhileUsingCreateCommand()) {
+                    if (sendingPlayer != null && !product.isSimilar(sendingPlayer.getInventory().getItemInMainHand())) {
+                        sender.sendMessage(I18N.translate("&cYou must be holding a matching item in your main hand!"));
+                        return;
+                    }
+                }
+
                 args.remove(0);
             }
 
+            //
             // Amount
+            //
             if (!args.isEmpty()) {
                 try {
                     int count = Integer.parseInt(args.get(0));
@@ -395,7 +417,7 @@ public class CreateCommand implements ICommand {
             );
 
             // Deposit hand (if enabled)
-            if (depositHand) {
+            if (depositHand && sendingPlayer != null) {
                 ItemStack hand = sendingPlayer.getInventory().getItemInMainHand();
 
                 if (hand.isSimilar(product)){
