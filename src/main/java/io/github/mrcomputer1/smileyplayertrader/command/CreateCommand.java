@@ -421,7 +421,10 @@ public class CreateCommand implements ICommand {
             }
 
             // Display confirmation
-            sender.sendMessage(I18N.translate("&aCreated product %0%.", id));
+            sender.spigot().sendMessage(I18N.translateComponents(
+                    "&aCreated product %0% with ID %1%.", ItemUtil.getItemTextComponent(product),
+                    new TextComponent(String.valueOf(id))
+            ));
         } catch (InvocationTargetException e) {
             throw new RuntimeException(e);
         }
