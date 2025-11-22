@@ -340,6 +340,11 @@ public class CreateCommand implements ICommand {
                  * Deposit hand
                  */
                 case "deposithand": {
+                    if (!SmileyPlayerTrader.getInstance().getConfiguration().getItemStorageEnabled()){
+                        sender.sendMessage(I18N.translate("&cItem storage is not enabled."));
+                        return;
+                    }
+
                     depositHand = true;
 
                     break;
