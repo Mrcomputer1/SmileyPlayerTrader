@@ -1,5 +1,5 @@
 {
-  "$$version$$": 1,
+  "$$version$$": 2,
   "$$credit$$": "",
   "&e%0% is now trading with you.": "&e%0% 正在与您交易。",
   "&2Villager Store: ": "&2村民商店：",
@@ -246,5 +246,15 @@
   "&e&lUnlimited Supply Enabled": "&e&l已启用无限供应",
   "&a%0% is now selling %1%.": "&a%0% 现在出售 %1%。",
   "&cYou cannot trade here.": "&c此处无法进行交易。",
-  "&cThe item you are using to pay doesn't match the cost.": "&c您用于支付的物品与价格不匹配。"
+  "&cThe item you are using to pay doesn't match the cost.": "&c您用于支付的物品与价格不匹配。",
+  "&aConfiguration has been reloaded.": "&aConfiguration has been reloaded.",
+  "&cBad Syntax! &f/spt create [product [amount]] (amount <amount>|cost1 <cost> [amount]|cost2 <cost> [amount]|hidden|disabled|discount <amount>|priority <priority>|purchaselimit <limit>|hideonoutofstock|deposithand|unlimitedsupply|player <player>)...": "&cBad Syntax! &f/spt create [product [amount]] (amount <amount>|cost1 <cost> [amount]|cost2 <cost> [amount]|hidden|disabled|discount <amount>|priority <priority>|purchaselimit <limit>|hideonoutofstock|deposithand|unlimitedsupply|player <player>)...",
+  "&cYou must be holding an item in your main hand or specify a valid item!": "&cYou must be holding an item in your main hand or specify a valid item!",
+  "&cNumber is either too large or too small.": "&cNumber is either too large or too small.",
+  "&cYou must specify primary cost first.": "&cYou must specify primary cost first.",
+  "&cInvalid option %0%.": "&cInvalid option %0%.",
+  "&cThis item does not match the type of the product so no items were deposited.": "&cThis item does not match the type of the product so no items were deposited.",
+  "&aCreated product %0% with ID %1%.": "&aCreated product %0% with ID %1%.",
+  "&f/spt create &e- Create a new product (run the command to see usage)": "&f/spt create &e- Create a new product (run the command to see usage)",
+  "&cYou must be holding a matching item in your main hand!": "&cYou must be holding a matching item in your main hand!"
 }
