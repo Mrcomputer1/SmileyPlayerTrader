@@ -386,8 +386,7 @@ public class CreateCommand implements ICommand {
 
                 default: {
                     sender.sendMessage(I18N.translate("&cInvalid option %0%.", command));
-
-                    break;
+                    return;
                 }
             }
         }
