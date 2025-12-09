@@ -112,6 +112,22 @@ purchaseCostComparison: strict
 # -   * %ITEM_NAME% - The name of the item the player is selling.
 sendNotificationOnNewTrade: "false"
 
+# Commands that are executed as the server when a player trades.
+# Supported replacements are these:
+#   * %MERCHANT%: The name of the player with the trade.
+#   * %CUSTOMER%: The name of the player that traded.
+#   * %PRODUCT_TYPE%: The type of the item the player is selling.
+#   * %PRODUCT_NAME%: The name of the item the player is selling, or the type if no custom name.
+#   * %PRODUCT_AMOUNT%: The amount of the item that the player is selling.
+#   * %COST_TYPE%: The type of the primary cost item.
+#   * %COST_NAME%: The name of the primary cost item, or the type if no custom name.
+#   * %COST_AMOUNT%: The amount of the primary cost item.
+#   * %ONLY_IF_NO_COST2%: Makes the command only run if there is no secondary cost, replaced with nothing.
+#   * %COST2_TYPE%: The type of the secondary cost item. (If no secondary cost, the command isn't executed.)
+#   * %COST2_NAME%: The name of the secondary cost item, or the type if no custom name. (If no secondary cost, the command isn't executed.)
+#   * %COST2_AMOUNT%: The amount of the secondary cost item. (If no secondary cost, the command isn't executed.)
+onTradeCompleteCommands: []
+
 # Configures if Vault is used to check permissions of offline players when attempting to trade with them.
 # Disable this if you have Vault but don't have a permission plugin or the one you have doesn't support offline players.
 # If disabled, the default permission value will be used instead. For "smileyplayertrader.merchant", this is "allow".
