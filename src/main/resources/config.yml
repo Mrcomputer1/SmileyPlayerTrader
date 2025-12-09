@@ -123,6 +123,11 @@ autoCombatLock:
   combatLockLength: 30 # Combat lock length (in seconds)
   neverShowNotice: false # Enables/Disables the toggle notice (if this is false, the players can choose for themselves)
 
+# Configures a cooldown period between trades
+cooldown:
+  enabled: false # Enable/Disables cooldown (by default, it is disabled)
+  seconds: 10 # Cooldown time between trades (in seconds)
+
 # Configure items in the quick selection on the Set Cost screen. You can have up to 6 items.
 priceQuickSelection:
   - type: EMERALD
