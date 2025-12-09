@@ -3,6 +3,7 @@ package io.github.mrcomputer1.smileyplayertrader;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
 import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import io.github.mrcomputer1.smileyplayertrader.util.TradeEventCommands;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.item.stocklocations.StockLocations;
@@ -195,6 +196,15 @@ public class TradeEventListener implements Listener {
         // Thank the purchaser and increase the purchase count
         MerchantUtil.thankPurchaser(store, (Player) e.getWhoClicked());
         SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.INCREMENT_PURCHASE_COUNT, productId);
+
+        // Execute trade commands
+        TradeEventCommands.executeCommands(
+                store,
+                (Player) e.getWhoClicked(),
+                mi.getSelectedRecipe().getResult(),
+                mi.getSelectedRecipe().getIngredients().get(0),
+                mi.getSelectedRecipe().getIngredients().size() >= 2 ? mi.getSelectedRecipe().getIngredients().get(1) : null
+        );
 
         // Set cooldown (if enabled)
         SmileyPlayerTrader.getInstance().getPlayerConfig().setTradeCooldown((Player) e.getWhoClicked());

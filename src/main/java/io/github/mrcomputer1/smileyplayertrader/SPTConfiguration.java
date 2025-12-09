@@ -322,6 +322,12 @@ public class SPTConfiguration {
         return this.config.getBoolean("disableVaultOfflinePermissionChecking", false);
     }
 
+    // Start On Trade Complete Commands
+    public List<String> getOnTradeCompleteCommands() {
+        return this.config.getStringList("onTradeCompleteCommands");
+    }
+    // End On Trade Complete Commands
+
     // Start Auto Combat Lock
     public boolean getAutoCombatLockEnabled(){
         return this.config.getBoolean("autoCombatLock.enabled", true);
