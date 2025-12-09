@@ -36,6 +36,7 @@ permissions:
       "smileyplayertrader.alltradeslist": true
       "smileyplayertrader.unlimitedsupply": true
       "smileyplayertrader.reload": true
+      "smileyplayertrader.bypasscooldown": true
   "smileyplayertrader.others":
     description: "Change other players"
     default: op
