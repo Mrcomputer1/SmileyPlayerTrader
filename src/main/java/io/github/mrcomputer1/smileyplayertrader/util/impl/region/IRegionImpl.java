@@ -4,7 +4,9 @@ import org.bukkit.entity.Player;
 
 public interface IRegionImpl {
 
-    boolean isAllowed(Player player);
-    void registerFlag();
+    boolean isAllowedOverall(Player player);
+    boolean isAllowedRightClick(Player player);
+    boolean isAllowedRemote(Player player);
+    void registerFlags();
 
 }

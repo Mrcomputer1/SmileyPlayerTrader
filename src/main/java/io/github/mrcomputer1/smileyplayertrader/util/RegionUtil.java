@@ -17,11 +17,19 @@ public class RegionUtil {
             impl = new NullRegionImpl();
         }
 
-        impl.registerFlag();
+        impl.registerFlags();
     }
 
-    public static boolean isAllowed(Player player) {
-        return impl.isAllowed(player);
+    public static boolean isAllowedOverall(Player player) {
+        return impl.isAllowedOverall(player);
+    }
+
+    public static boolean isAllowedRightClick(Player player) {
+        return impl.isAllowedRightClick(player);
+    }
+
+    public static boolean isAllowedRemote(Player player) {
+        return impl.isAllowedRemote(player);
     }
 
 }

@@ -5,12 +5,22 @@ import org.bukkit.entity.Player;
 public class NullRegionImpl implements IRegionImpl {
 
     @Override
-    public boolean isAllowed(Player player) {
+    public boolean isAllowedOverall(Player player) {
         return true;
     }
 
     @Override
-    public void registerFlag() {
+    public boolean isAllowedRightClick(Player player) {
+        return true;
+    }
+
+    @Override
+    public boolean isAllowedRemote(Player player) {
+        return true;
+    }
+
+    @Override
+    public void registerFlags() {
     }
 
 }

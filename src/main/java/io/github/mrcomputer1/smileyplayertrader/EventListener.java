@@ -1,34 +1,16 @@
 package io.github.mrcomputer1.smileyplayertrader;
 
-import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
-import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.RegionUtil;
-import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
-import io.github.mrcomputer1.smileyplayertrader.util.item.stocklocations.StockLocations;
 import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantUtil;
-import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.MerchantInventory;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -93,13 +75,13 @@ public class EventListener implements Listener {
         if(SmileyPlayerTrader.getInstance().getConfiguration().getAutoCombatLockEnabled()) {
             if (e.getDamager() instanceof Player) {
                 Player player = (Player) e.getDamager();
-                if(!RegionUtil.isAllowed(player))
+                if(!RegionUtil.isAllowedOverall(player))
                     return;
                 SmileyPlayerTrader.getInstance().getPlayerConfig().lockPlayer(player);
             }
             if (e.getEntity() instanceof Player){
                 Player player = (Player) e.getEntity();
-                if(!RegionUtil.isAllowed(player))
+                if(!RegionUtil.isAllowedOverall(player))
                     return;
                 SmileyPlayerTrader.getInstance().getPlayerConfig().lockPlayer((Player) e.getEntity());
             }
