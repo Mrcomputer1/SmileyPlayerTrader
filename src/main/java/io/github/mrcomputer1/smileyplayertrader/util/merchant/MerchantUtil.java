@@ -130,7 +130,7 @@ public class MerchantUtil {
             }
         }
 
-        if (!RegionUtil.isAllowed(player)) {
+        if (!RegionUtil.isAllowedOverall(player)) {
             if (unsuccessfulFeedback)
                 player.sendMessage(I18N.translate("&cYou cannot trade here."));
             return;

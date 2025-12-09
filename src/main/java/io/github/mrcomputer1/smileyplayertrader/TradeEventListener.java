@@ -3,6 +3,7 @@ package io.github.mrcomputer1.smileyplayertrader;
 import io.github.mrcomputer1.smileyplayertrader.gui.framework.GUIManager;
 import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import io.github.mrcomputer1.smileyplayertrader.util.RegionUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.TradeEventCommands;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
@@ -42,9 +43,13 @@ public class TradeEventListener implements Listener {
 
         if(SmileyPlayerTrader.getInstance().getConfiguration().getDisableRightClickTrading())
             return;
-        if(e.getRightClicked().hasMetadata("NPC")) // Citizens NPCs seem like players but they have different UUIDs and can't work.
+        if(e.getRightClicked().hasMetadata("NPC")) // Citizens NPCs seem like players, but they have different UUIDs and can't work.
             return;
         if(!e.getPlayer().hasPermission("smileyplayertrader.trade"))
+            return;
+        if(!e.getPlayer().hasPermission("smileyplayertrader.trade.rightclick"))
+            return;
+        if(!RegionUtil.isAllowedRightClick(e.getPlayer()) || !RegionUtil.isAllowedOverall(e.getPlayer()))
             return;
 
         PlayerConfig.Config playerConfig = SmileyPlayerTrader.getInstance().getPlayerConfig().getPlayer(e.getPlayer());

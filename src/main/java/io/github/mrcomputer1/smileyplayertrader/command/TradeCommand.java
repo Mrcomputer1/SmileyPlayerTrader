@@ -1,6 +1,7 @@
 package io.github.mrcomputer1.smileyplayertrader.command;
 
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import io.github.mrcomputer1.smileyplayertrader.util.RegionUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -17,6 +18,11 @@ public class TradeCommand implements ICommand{
 
         if(!sender.hasPermission("smileyplayertrader.trade.remote") || !sender.hasPermission("smileyplayertrader.trade")){
             sender.sendMessage(I18N.translate("&cYou don't have permission to remote trade."));
+            return;
+        }
+
+        if(!RegionUtil.isAllowedRemote((Player) sender)) {
+            sender.sendMessage(I18N.translate("&cYou cannot trade here."));
             return;
         }
 

@@ -13,10 +13,15 @@ import org.bukkit.entity.Player;
 
 public class WorldGuardRegionImpl implements IRegionImpl {
 
-    private StateFlag flag;
+    private StateFlag overallFlag;
+    private StateFlag rightClickFlag;
+    private StateFlag remoteFlag;
 
     @Override
-    public boolean isAllowed(Player player) {
+    public boolean isAllowedOverall(Player player) {
+        if (overallFlag == null)
+            return true;
+
         LocalPlayer localPlayer  = WorldGuardPlugin.inst().wrapPlayer(player);
 
         // Bypass
@@ -25,25 +30,64 @@ public class WorldGuardRegionImpl implements IRegionImpl {
 
         // Region
         RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
-        return query.testState(localPlayer.getLocation(), localPlayer, flag);
+        return query.testState(localPlayer.getLocation(), localPlayer, overallFlag);
     }
 
     @Override
-    public void registerFlag() {
+    public boolean isAllowedRightClick(Player player) {
+        if (rightClickFlag == null)
+            return true;
+
+        LocalPlayer localPlayer  = WorldGuardPlugin.inst().wrapPlayer(player);
+
+        // Bypass
+        if (WorldGuard.getInstance().getPlatform().getSessionManager().hasBypass(localPlayer, localPlayer.getWorld()))
+            return true;
+
+        // Region
+        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
+        return query.testState(localPlayer.getLocation(), localPlayer, rightClickFlag);
+    }
+
+    @Override
+    public boolean isAllowedRemote(Player player) {
+        if (remoteFlag == null)
+            return true;
+
+        LocalPlayer localPlayer  = WorldGuardPlugin.inst().wrapPlayer(player);
+
+        // Bypass
+        if (WorldGuard.getInstance().getPlatform().getSessionManager().hasBypass(localPlayer, localPlayer.getWorld()))
+            return true;
+
+        // Region
+        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
+        return query.testState(localPlayer.getLocation(), localPlayer, remoteFlag);
+    }
+
+    private StateFlag registerStateFlag(String name) {
         FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
 
         try {
-            StateFlag flag = new StateFlag("smiley-player-trader", true);
+            StateFlag flag = new StateFlag(name, true);
             registry.register(flag);
-            this.flag = flag;
+            return flag;
         } catch (FlagConflictException e) {
-            Flag<?> existing = registry.get("smiley-player-trader");
+            Flag<?> existing = registry.get(name);
             if (existing instanceof StateFlag) {
-                this.flag = (StateFlag) existing;
+                return (StateFlag) existing;
             } else {
-                SmileyPlayerTrader.getInstance().getLogger().warning("Failed to register WorldGuard flag due to incompatible conflicting flag from another plugin.");
+                SmileyPlayerTrader.getInstance().getLogger().warning("Failed to register WorldGuard flag '" + name + "' due to incompatible conflicting flag from another plugin.");
+                return null;
             }
         }
+    }
+
+    @Override
+    public void registerFlags() {
+        this.overallFlag = registerStateFlag("smiley-player-trader");
+        this.rightClickFlag = registerStateFlag("spt-right-click-trade");
+        this.remoteFlag = registerStateFlag("spt-remote-trade");
     }
 
 }

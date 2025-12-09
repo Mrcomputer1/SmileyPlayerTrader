@@ -37,6 +37,7 @@ permissions:
       "smileyplayertrader.unlimitedsupply": true
       "smileyplayertrader.reload": true
       "smileyplayertrader.bypasscooldown": true
+      "smileyplayertrader.trade.rightclick": true
   "smileyplayertrader.others":
     description: "Change other players"
     default: op
@@ -45,6 +46,9 @@ permissions:
     default: true
   "smileyplayertrader.trade.remote":
     description: "Trade with players via a command"
+    default: true
+  "smileyplayertrader.trade.rightclick":
+    description: "Trade with players by right clicking on them"
     default: true
   "smileyplayertrader.merchant":
     description: "Be able to trade with"
