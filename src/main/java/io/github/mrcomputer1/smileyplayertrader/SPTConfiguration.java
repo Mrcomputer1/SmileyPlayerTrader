@@ -336,6 +336,17 @@ public class SPTConfiguration {
     }
     // End Auto Combat Lock
 
+    // Start Cooldown
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public boolean getCooldownEnabled() {
+        return this.config.getBoolean("cooldown.enabled", false);
+    }
+
+    public int getCooldownLength() {
+        return this.config.getInt("cooldown.seconds", 10);
+    }
+    // End Cooldown
+
     public List<ItemStack> getPriceQuickSelection(){
         List<?> priceQuickSelection = SmileyPlayerTrader.getInstance().getConfig().getList("priceQuickSelection", new ArrayList<>());
         List<ItemStack> stacks = new ArrayList<>();

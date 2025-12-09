@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class PlayerConfig {
 
@@ -31,6 +32,7 @@ public class PlayerConfig {
     private int LOCK_PERIOD = SmileyPlayerTrader.getInstance().getConfiguration().getAutoCombatLockLength() * 1000;
     private Map<String, Config> playerConfigs = new HashMap<>();
     private Map<String, Long> playerCombatLock = new HashMap<>();
+    private Map<UUID, Long> playerTradeCooldown = new HashMap<>();
 
     public void loadPlayer(Player player){
         try(ResultSet set = SmileyPlayerTrader.getInstance().getStatementHandler().get(StatementHandler.StatementType.LOAD_PLAYER_CONFIG, player.getUniqueId().toString())) {
@@ -73,6 +75,7 @@ public class PlayerConfig {
     public void unloadPlayer(Player player){
         this.playerConfigs.remove(player.getName());
         this.playerCombatLock.remove(player.getName());
+        this.playerTradeCooldown.remove(player.getUniqueId());
     }
 
     public void updatePlayer(Player player, Config config){
@@ -111,6 +114,31 @@ public class PlayerConfig {
 
     public void releasePlayerLock(Player player){
         this.playerCombatLock.remove(player.getName());
+    }
+
+    public boolean isTradeOnCooldown(Player player) {
+        if (!SmileyPlayerTrader.getInstance().getConfiguration().getCooldownEnabled())
+            return false;
+        if (player.hasPermission("smileyplayertrader.bypasscooldown"))
+            return false;
+        if (!playerTradeCooldown.containsKey(player.getUniqueId()))
+            return false;
+        return playerTradeCooldown.get(player.getUniqueId()) > System.currentTimeMillis();
+    }
+
+    public int getCooldownTimeRemaining(Player player) {
+        if (!playerTradeCooldown.containsKey(player.getUniqueId()))
+            return -1;
+        return (int) ((playerTradeCooldown.get(player.getUniqueId()) - System.currentTimeMillis()) / 1000);
+    }
+
+    public void setTradeCooldown(Player player) {
+        if (!SmileyPlayerTrader.getInstance().getConfiguration().getCooldownEnabled())
+            return;
+        if (player.hasPermission("smileyplayertrader.bypasscooldown"))
+            return;
+        playerTradeCooldown.put(player.getUniqueId(),
+                System.currentTimeMillis() + (SmileyPlayerTrader.getInstance().getConfiguration().getCooldownLength() * 1000L));
     }
 
 }

@@ -196,6 +196,9 @@ public class TradeEventListener implements Listener {
         MerchantUtil.thankPurchaser(store, (Player) e.getWhoClicked());
         SmileyPlayerTrader.getInstance().getStatementHandler().run(StatementHandler.StatementType.INCREMENT_PURCHASE_COUNT, productId);
 
+        // Set cooldown (if enabled)
+        SmileyPlayerTrader.getInstance().getPlayerConfig().setTradeCooldown((Player) e.getWhoClicked());
+
         // If the store player is online, inform them of the purchase.
         if (store.isOnline())
             store.getPlayer().sendMessage(I18N.translate("&a%0% just purchased %1%!", e.getWhoClicked().getName(), mi.getSelectedRecipe().getResult().getType()));
@@ -240,6 +243,14 @@ public class TradeEventListener implements Listener {
         }
 
         MerchantInventory mi = (MerchantInventory) e.getInventory();
+
+        // Check if on cooldown
+        if (SmileyPlayerTrader.getInstance().getPlayerConfig().isTradeOnCooldown((Player) e.getWhoClicked())) {
+            e.setCancelled(true);
+            GUIManager.sendErrorMessage(e.getWhoClicked(), I18N.translate("&cYou are currently on cooldown for %0% more seconds.",
+                    SmileyPlayerTrader.getInstance().getPlayerConfig().getCooldownTimeRemaining((Player) e.getWhoClicked())));
+            return;
+        }
 
         // Get player and ensure player can be traded with.
         //noinspection deprecation

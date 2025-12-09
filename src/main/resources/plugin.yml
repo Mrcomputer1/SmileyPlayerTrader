@@ -66,3 +66,6 @@ permissions:
   "smileyplayertrader.reload":
     description: "Reload the configuration."
     default: op
+  "smileyplayertrader.bypasscooldown":
+    description: "Bypass trade cooldown (if enabled)."
+    default: op
