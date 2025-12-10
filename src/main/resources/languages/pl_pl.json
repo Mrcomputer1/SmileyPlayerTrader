@@ -1,5 +1,5 @@
 {
-  "$$version$$": 17,
+  "$$version$$": 18,
   "$$credit$$": "Polskie tłumaczenie wykonane przez gvvda21",
   "&e%0% is now trading with you.": "&e%0% przegląda twój sklep.",
   "&2Villager Store: ": "&2Sklep osadnika: ",
@@ -256,5 +256,6 @@
   "&cThis item does not match the type of the product so no items were deposited.": "&cThis item does not match the type of the product so no items were deposited.",
   "&aCreated product %0% with ID %1%.": "&aCreated product %0% with ID %1%.",
   "&f/spt create &e- Create a new product (run the command to see usage)": "&f/spt create &e- Create a new product (run the command to see usage)",
-  "&cYou must be holding a matching item in your main hand!": "&cYou must be holding a matching item in your main hand!"
+  "&cYou must be holding a matching item in your main hand!": "&cYou must be holding a matching item in your main hand!",
+  "&cYou are currently on cooldown for %0% more seconds.": "&cYou are currently on cooldown for %0% more seconds."
 }
