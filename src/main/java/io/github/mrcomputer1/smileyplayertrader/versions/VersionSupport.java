@@ -166,9 +166,9 @@ public class VersionSupport {
                 () -> new MCVersion1_21_R7(Bukkit.getWorlds().get(0))
         );
 
-        // 26.1
+        // 26.1 - 26.1.2, 26.2
         registerSupportedVersion(
-                () -> Pattern.compile("^26\\.[1-9](\\.[0-9]+)?-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^26\\.[1-9](\\.\\d+)?(\\.build\\.\\d+)?-").matcher(bukkitVersion).find(),
                 () -> new MCVersion26_1(Bukkit.getWorlds().get(0))
         );
     }
