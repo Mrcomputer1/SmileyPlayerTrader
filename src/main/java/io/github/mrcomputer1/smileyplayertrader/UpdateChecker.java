@@ -2,6 +2,7 @@ package io.github.mrcomputer1.smileyplayertrader;
 
 import com.google.gson.*;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
+import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.Bukkit;
 
 import java.io.IOException;
@@ -27,9 +28,9 @@ public class UpdateChecker {
             if(obj.has("versions")){
                 JsonObject versions = obj.getAsJsonObject("versions");
 
-                String currentMCVersion = Bukkit.getBukkitVersion().split("-")[0];
+                String currentMCVersion = VersionSupport.getMinecraftVersion();
                 String pluginVersion = SmileyPlayerTrader.getInstance().getDescription().getVersion();
-                if(versions.has(currentMCVersion)){
+                if(versions.has(currentMCVersion)){ // Check if version is known.
                     JsonObject version = versions.get(currentMCVersion).getAsJsonObject();
                     if(version.has("unsupported")){
                         SmileyPlayerTrader.getInstance().getLogger().warning("This Minecraft version is no longer supported and therefore no support will be given for this version.");
@@ -51,7 +52,7 @@ public class UpdateChecker {
                             SmileyPlayerTrader.getInstance().getLogger().info("Plugin is up to date.");
                         }
                     }
-                }else{
+                }else{ // Unknown version
                     SmileyPlayerTrader.getInstance().getLogger().warning("This version of Minecraft is not currently supported. This could be due to it being an old version or a new version that hasn't been tested yet.");
                 }
             }

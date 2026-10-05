@@ -32,149 +32,175 @@ public class VersionSupport {
     private static final List<VersionSupportMeta> supportedVersions = new ArrayList<>();
 
     static {
-        String bukkitVersion = Bukkit.getBukkitVersion();
+        String minecraftVersion = getMinecraftVersion();
+        boolean isPaperBased = isPaperBased();
 
         // 1.15 - 1.15.2
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.15").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.15").matcher(minecraftVersion).find(),
                 MCVersion1_15::new
         );
 
         // 1.16 - 1.16.1
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.16(\\.1)?-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.16(\\.1)?").matcher(minecraftVersion).find(),
                 MCVersion1_16::new
         );
 
         // 1.16.2 - 1.16.3
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.16\\.[23]-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.16\\.[23]").matcher(minecraftVersion).find(),
                 MCVersion1_16_R2::new
         );
 
         // 1.16.4 - 1.16.5
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.16\\.[45]-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.16\\.[45]").matcher(minecraftVersion).find(),
                 MCVersion1_16_R3::new
         );
 
         // 1.17 - 1.17.1
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.17").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.17").matcher(minecraftVersion).find(),
                 MCVersion1_17::new
         );
 
         // 1.18 - 1.18.1
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.18(\\.1)?-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.18(\\.1)?").matcher(minecraftVersion).find(),
                 MCVersion1_18::new
         );
 
         // 1.18.2
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.18\\.2-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.18\\.2").matcher(minecraftVersion).find(),
                 MCVersion1_18_R2::new
         );
 
         // 1.19
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.19-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.19").matcher(minecraftVersion).find(),
                 MCVersion1_19::new
         );
 
         // 1.19.1 - 1.19.2
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.19\\.[12]-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.19\\.[12]").matcher(minecraftVersion).find(),
                 MCVersion1_19_1::new
         );
 
         // 1.19.3
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.19\\.3-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.19\\.3").matcher(minecraftVersion).find(),
                 MCVersion1_19_R2::new
         );
 
         // 1.19.4
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.19\\.4-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.19\\.4").matcher(minecraftVersion).find(),
                 MCVersion1_19_R3::new
         );
 
         // 1.20 - 1.20.1
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.20(\\.1)?-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.20(\\.1)?").matcher(minecraftVersion).find(),
                 MCVersion1_20::new
         );
 
         // 1.20.2
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.20\\.2-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.20\\.2").matcher(minecraftVersion).find(),
                 MCVersion1_20_R2::new
         );
 
         // 1.20.3 - 1.20.4
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.20\\.[34]-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.20\\.[34]").matcher(minecraftVersion).find(),
                 MCVersion1_20_R3::new
         );
 
         // 1.20.5 - 1.20.6
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.20\\.[56]-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.20\\.[56]").matcher(minecraftVersion).find(),
                 () -> new MCVersion1_20_R4(Bukkit.getWorlds().get(0))
         );
 
         // 1.21 - 1.21.1
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.21(\\.[1])?-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.21(\\.1)?").matcher(minecraftVersion).find(),
                 () -> new MCVersion1_21(Bukkit.getWorlds().get(0))
         );
 
         // 1.21.2 - 1.21.3
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.21\\.[23]-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.21\\.[23]").matcher(minecraftVersion).find(),
                 () -> new MCVersion1_21_R2(Bukkit.getWorlds().get(0))
         );
 
         // 1.21.4
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.21\\.4-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.21\\.4").matcher(minecraftVersion).find(),
                 () -> new MCVersion1_21_R3(Bukkit.getWorlds().get(0))
         );
 
         // 1.21.5
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.21\\.5-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.21\\.5").matcher(minecraftVersion).find(),
                 () -> new MCVersion1_21_R4(Bukkit.getWorlds().get(0))
         );
 
         // 1.21.6 - 1.21.8
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.21\\.[678]-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.21\\.[678]").matcher(minecraftVersion).find(),
                 () -> new MCVersion1_21_R5(Bukkit.getWorlds().get(0))
         );
 
         // 1.21.9 - 1.21.10
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.21\\.(9|10)-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.21\\.(9|10)").matcher(minecraftVersion).find(),
                 () -> new MCVersion1_21_R6(Bukkit.getWorlds().get(0))
         );
 
         // 1.21.11
         registerSupportedVersion(
-                () -> Pattern.compile("^1\\.21\\.11-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^1\\.21\\.11").matcher(minecraftVersion).find(),
                 () -> new MCVersion1_21_R7(Bukkit.getWorlds().get(0))
         );
 
         // 26.1 - 26.1.2, 26.2
         registerSupportedVersion(
-                () -> Pattern.compile("^26\\.[1-9](\\.\\d+)?(\\.build\\.\\d+)?-").matcher(bukkitVersion).find(),
+                () -> Pattern.compile("^26\\.(1(\\.[1-2])?|2)").matcher(minecraftVersion).find(),
                 () -> new MCVersion26_1(Bukkit.getWorlds().get(0))
+        );
+
+        // 26.3 (Spigot-based)
+        registerSupportedVersion(
+                () -> !isPaperBased && Pattern.compile("^26\\.[3-9](\\.\\d+)?").matcher(minecraftVersion).find(),
+                () -> new MCVersion26_1(Bukkit.getWorlds().get(0)) // Spigot 26.3 is compatible with 26.1
+        );
+
+        // 26.3 (Paper-based)
+        registerSupportedVersion(
+                () -> isPaperBased && Pattern.compile("^26\\.[3-9](\\.\\d+)?").matcher(minecraftVersion).find(),
+                () -> new MCVersion26_3_PAPER(Bukkit.getWorlds().get(0))
         );
     }
 
     public static void registerSupportedVersion(Callable<Boolean> isSupported, Supplier<? extends IMCVersion> versionSupplier){
         supportedVersions.add(new VersionSupportMeta(isSupported, versionSupplier));
+    }
+
+    public static String getMinecraftVersion() {
+        return Bukkit.getBukkitVersion().split("(-|\\.build)")[0];
+    }
+
+    public static boolean isPaperBased() {
+        try {
+            Class.forName("io.papermc.paper.ServerBuildInfo");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     private static IMCVersion getBoundVersion(){
@@ -210,8 +236,10 @@ public class VersionSupport {
             throw new IllegalStateException("Already bound version.");
 
         // Version Logging
-        String mcVersion = Bukkit.getBukkitVersion().split("-")[0];
-        SmileyPlayerTrader.getInstance().getLogger().info("Bukkit version is '" + Bukkit.getBukkitVersion() + "', detected Minecraft version is '" + mcVersion + "'.");
+        String mcVersion = getMinecraftVersion();
+        String softwareType = isPaperBased() ? "Paper" : "Spigot";
+        SmileyPlayerTrader.getInstance().getLogger().info(softwareType + " version is '" + Bukkit.getBukkitVersion() +
+                "', detected Minecraft version is '" + mcVersion + "'.");
 
         // Version Finding
         for (VersionSupportMeta version : supportedVersions){
