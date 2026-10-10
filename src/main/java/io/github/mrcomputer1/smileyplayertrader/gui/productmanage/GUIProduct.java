@@ -11,6 +11,7 @@ import io.github.mrcomputer1.smileyplayertrader.util.GeyserUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.I18N;
 import io.github.mrcomputer1.smileyplayertrader.util.TradeNotification;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
+import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.versions.VersionSupport;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -129,10 +130,20 @@ public class GUIProduct extends GUI {
                     (state.costStack2 == null || state.costStack2.getType().isAir()) ? null : VersionSupport.itemStackToByteArray(state.costStack2);
 
             if (!state.startedValid) {
-                if(stackBytes != null && costBytes != null) {
+                if(state.isValid()) {
                     // Send new trade notification
                     TradeNotification.sendNewTradeNotification(state.target, state.stack);
                 }
+            }
+
+            if (!state.isValid()) {
+                player.sendMessage(I18N.translate("&6Warning: This product is not currently valid:"));
+                if (!state.isProductSet())
+                    player.sendMessage(I18N.translate("&6 - Product is not set."));
+                if (!state.isCostStackSet())
+                    player.sendMessage(I18N.translate("&6 - Primary cost is not set."));
+                if (state.isProductSet() && state.isCostStackSet() && !ItemUtil.isTradeAcceptable(state.stack, state.costStack, state.isCostStack2Set() ? state.costStack2 : null))
+                    player.sendMessage(I18N.translate("&6 - Product and cost items match."));
             }
 
             if(state.isNew){

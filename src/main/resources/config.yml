@@ -103,6 +103,22 @@ requireItemInHandWhileUsingCreateCommand: false
 # vanilla - Item data is ignored on the item provided by the player when the cost item has no item data. This matches vanilla's trading behaviour.
 purchaseCostComparison: strict
 
+# Controls how trades consisting entirely of the same item are handled.
+blockSameItemTrades:
+  # When enabled, trades consisting of the same item are blocked.
+  enable: false
+  # Determines how the quantity of the product/cost items are considered matching.
+  # "ignore" - Ignore the item quantity.
+  # "=" - Match when the product and cost quantity is equal.
+  # "<" - Match when the product quantity is less than the cost quantity.
+  # ">" - Match when the product quantity is greater than the cost quantity.
+  # "!=" - Match when the product and cost quantity is not equal.
+  # "<=" - Match when the product quantity is less than or equal to the cost quantity.
+  # ">=" - Match when the product quantity is greater than or equal to the cost quantity.
+  quantityMode: "="
+  # When enabled, the secondary cost item's quantity is also considered.
+  considerSecondaryCostQuantity: true
+
 # Configures if a notification is sent to the server when a player creates a new trade.
 # - "false" indicates no message should be sent.
 # - "default" indicates the default message should be sent ("&a%MERCHANT% is now selling %ITEM_TYPE%.")

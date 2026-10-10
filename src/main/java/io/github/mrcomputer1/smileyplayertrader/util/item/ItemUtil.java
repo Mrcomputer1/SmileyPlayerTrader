@@ -1,5 +1,6 @@
 package io.github.mrcomputer1.smileyplayertrader.util.item;
 
+import io.github.mrcomputer1.smileyplayertrader.SPTConfiguration;
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
 import io.github.mrcomputer1.smileyplayertrader.util.impl.itemintegration.IItemIntegrationImpl;
@@ -252,6 +253,53 @@ public class ItemUtil {
         }
 
         return itemName;
+    }
+
+    public static boolean isTradeAcceptable(ItemStack product, ItemStack cost1, ItemStack cost2) {
+        SPTConfiguration config = SmileyPlayerTrader.getInstance().getConfiguration();
+
+        // Block same item trades
+        if (config.isBlockSameItemTradesEnabled()) {
+            // Items are the same:
+            if (product.isSimilar(cost1) && (cost2 == null || product.isSimilar(cost2))) {
+                int costAmount = cost1.getAmount();
+                if (cost2 != null && config.isBlockSameItemTradesConsideringSecondaryCostQuantity())
+                    costAmount += cost2.getAmount();
+
+                // Compare quantity
+                switch (config.getBlockSameItemTradesQuantityMode()) {
+                    case EQUAL:
+                        if (product.getAmount() == costAmount)
+                            return false;
+                        break;
+                    case NOT_EQUAL:
+                        if (product.getAmount() != costAmount)
+                            return false;
+                        break;
+                    case LESS:
+                        if (product.getAmount() < costAmount)
+                            return false;
+                        break;
+                    case GREATER:
+                        if (product.getAmount() > costAmount)
+                            return false;
+                        break;
+                    case LESS_EQUAL:
+                        if (product.getAmount() <= costAmount)
+                            return false;
+                        break;
+                    case GREATER_EQUAL:
+                        if (product.getAmount() >= costAmount)
+                            return false;
+                        break;
+                    case IGNORE:
+                    default:
+                        return false;
+                }
+            }
+        }
+
+        return true;
     }
 
 }

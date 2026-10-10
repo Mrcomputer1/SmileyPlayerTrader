@@ -1,5 +1,5 @@
 {
-  "$$version$$": 25,
+  "$$version$$": 26,
   "$$credit$$": "",
   "&e%0% is now trading with you.": "&e%0% сейчас с тобой трейдится.",
   "&2Villager Store: ": "&2Магазин Жителя: ",
@@ -257,5 +257,9 @@
   "&aCreated product %0% with ID %1%.": "&aСоздан продукт %0% под ID %1%.",
   "&f/spt create &e- Create a new product (run the command to see usage)": "&f/spt create &e- Создать новый продукт (выполните команду чтобы посмотреть использование)",
   "&cYou must be holding a matching item in your main hand!": "&cВы должны держать соответствующий предмет в вашей главной руке!",
-  "&cYou are currently on cooldown for %0% more seconds.": "&cYou are currently on cooldown for %0% more seconds."
+  "&cYou are currently on cooldown for %0% more seconds.": "&cYou are currently on cooldown for %0% more seconds.",
+  "&6Warning: This product is not currently valid:": "&6Warning: This product is not currently valid:",
+  "&6 - Product is not set.": "&6 - Product is not set.",
+  "&6 - Primary cost is not set.": "&6 - Primary cost is not set.",
+  "&6 - Product and cost items match.": "&6 - Product and cost items match."
 }

@@ -318,6 +318,54 @@ public class SPTConfiguration {
     }
     // End Purchase Cost Comparison
 
+    // Start Block Same Item Trades
+    public enum EnumBlockSameItemQuantityMode {
+        IGNORE("ignore"),
+        EQUAL("=", "==", "equal"),
+        NOT_EQUAL("!=", "~=", "not_equal"),
+        LESS("<", "less"),
+        GREATER(">", "greater"),
+        LESS_EQUAL("<=", "=<", "less_or_equal"),
+        GREATER_EQUAL(">=", "=>", "greater_or_equal");
+
+        private static final Map<String, EnumBlockSameItemQuantityMode> modes = new HashMap<>();
+
+        static {
+            for (EnumBlockSameItemQuantityMode mode : values()) {
+                for (String id : mode.ids) {
+                    modes.put(id, mode);
+                }
+            }
+        }
+
+        public static EnumBlockSameItemQuantityMode getById(String id) {
+            if (id == null)
+                return EnumBlockSameItemQuantityMode.EQUAL;
+            EnumBlockSameItemQuantityMode mode = modes.get(id.toLowerCase());
+            return mode == null ? EnumBlockSameItemQuantityMode.EQUAL : mode;
+        }
+
+        private final String[] ids;
+
+        EnumBlockSameItemQuantityMode(String... ids) {
+            this.ids = ids;
+        }
+    }
+
+    public boolean isBlockSameItemTradesEnabled() {
+        return this.config.getBoolean("blockSameItemTrades.enable", false);
+    }
+
+    public EnumBlockSameItemQuantityMode getBlockSameItemTradesQuantityMode() {
+        // default is handled by getBuId
+        return EnumBlockSameItemQuantityMode.getById(this.config.getString("blockSameItemTrades.quantityMode"));
+    }
+
+    public boolean isBlockSameItemTradesConsideringSecondaryCostQuantity() {
+        return this.config.getBoolean("blockSameItemTrades.considerSecondaryCostQuantity");
+    }
+    // End Block Same Item Trades
+
     public boolean getDisableVaultOfflinePermissionChecking() {
         return this.config.getBoolean("disableVaultOfflinePermissionChecking", false);
     }

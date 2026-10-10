@@ -254,6 +254,9 @@ public class MerchantUtil {
                     mr.addIngredient(buildItem(cost2b));
                 }
 
+                if (!ItemUtil.isTradeAcceptable(mr.getResult(), mr.getIngredients().get(0), cost2b != null ? mr.getIngredients().get(1) : null))
+                    continue;
+
                 if(!ItemUtil.doesPlayerHaveItem(merchant, is, set.getLong("id"))){
                     SPTConfiguration.EnumOutOfStockBehaviour outOfStockBehaviour = SmileyPlayerTrader.getInstance().getConfiguration().getOutOfStockBehaviour();
                     if(outOfStockBehaviour == SPTConfiguration.EnumOutOfStockBehaviour.HIDE)

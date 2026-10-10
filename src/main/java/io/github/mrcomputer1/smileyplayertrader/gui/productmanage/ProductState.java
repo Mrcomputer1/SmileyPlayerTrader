@@ -2,6 +2,7 @@ package io.github.mrcomputer1.smileyplayertrader.gui.productmanage;
 
 import io.github.mrcomputer1.smileyplayertrader.SmileyPlayerTrader;
 import io.github.mrcomputer1.smileyplayertrader.util.database.statements.StatementHandler;
+import io.github.mrcomputer1.smileyplayertrader.util.item.ItemUtil;
 import io.github.mrcomputer1.smileyplayertrader.util.merchant.MerchantUtil;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -90,7 +91,7 @@ public class ProductState {
                 this.storedCost = set.getInt("stored_cost");
                 this.storedCost2 = set.getInt("stored_cost2");
 
-                this.startedValid = productStackData != null && costStackData != null;
+                this.startedValid = isValid();
 
             }else throw new RuntimeException("Invalid ID.");
         } catch (SQLException e) {
@@ -114,6 +115,22 @@ public class ProductState {
         this.costStack2 = costStack2;
         if(this.costStack2 == null)
             this.costStack2 = TEMPLATE_ITEM.clone();
+    }
+
+    public boolean isProductSet() {
+        return stack != null && !stack.getType().isAir();
+    }
+
+    public boolean isCostStackSet() {
+        return costStack != null && !costStack.getType().isAir();
+    }
+
+    public boolean isCostStack2Set() {
+        return costStack2 != null && !costStack2.getType().isAir();
+    }
+
+    public boolean isValid() {
+        return isProductSet() && isCostStackSet() && ItemUtil.isTradeAcceptable(stack, costStack, isCostStack2Set() ? costStack2 : null);
     }
 
 }
